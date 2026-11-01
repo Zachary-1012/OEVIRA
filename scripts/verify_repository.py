@@ -39,6 +39,8 @@ EXPECTED_WORKFLOW_JOBS = {
 }
 SPECIFICATION_FILES = {
     "scripts/README.md", "scripts/verify_repository.py",
+    "scripts/setup.ps1", "scripts/start.ps1", "scripts/stop.ps1",
+    "scripts/check_python_runtime.py",
     "tests/README.md", "tests/test_repository.py",
 }
 PRODUCT_CODE_SUFFIXES = {
