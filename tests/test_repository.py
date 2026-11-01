@@ -36,6 +36,16 @@ class RepositoryAdmissionTests(unittest.TestCase):
         self.assertEqual(self.validate(), [])
         self.assertTrue(any("PRODUCT_NOT_IMPLEMENTED" in error for error in validator.validate(self.root, require_product=True, tracked_paths=self.tracked_paths)))
 
+    def test_environment_commands_do_not_change_the_specification_stage(self):
+        for relative in ("scripts/setup.ps1", "scripts/start.ps1", "scripts/stop.ps1", "scripts/check_python_runtime.py"):
+            self.assertTrue((self.root / relative).is_file(), relative)
+        self.assertEqual(self.validate(), [])
+        path = self.root / ".oevira/repository.json"
+        manifest = json.loads(path.read_text(encoding="utf-8"))
+        manifest["stage"] = "development"
+        path.write_text(json.dumps(manifest), encoding="utf-8")
+        self.assertTrue(any("own blocking checks" in error for error in self.validate()))
+
     def test_missing_specification_blocks(self):
         (self.root / "docs/PRODUCT-SPEC.md").unlink()
         self.assertTrue(any("Required specification" in error for error in self.validate()))
@@ -48,6 +58,8 @@ class RepositoryAdmissionTests(unittest.TestCase):
         cases = (
             ("docs/hidden.py", "print('hidden')\n", "hidden in docs"),
             ("scripts/helper.py", "print('helper')\n", "Non-specification file in scripts"),
+            ("scripts/unapproved.ps1", "Write-Output 'helper'\n", "Non-specification file in scripts"),
+            ("scripts/setup/extra.ps1", "Write-Output 'helper'\n", "Non-specification file in scripts"),
             ("tests/product_hook.py", "print('hook')\n", "Non-specification file in tests"),
         )
         for relative, source, expected in cases:
