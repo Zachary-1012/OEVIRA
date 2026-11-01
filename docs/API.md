@@ -205,3 +205,25 @@ Markdown/DOCX are the first result delivery bindings, not the full document or
 media scope. Office object editing, PDF annotation, video, podcast, acquisition,
 monitoring and AI use the same authorization and version foundations as their
 corresponding implementations are connected. No empty endpoint represents them.
+
+## 作品发布、模板与经验协议
+
+以下是目标专业合同，实际HTTP路由与实现同次接入；不是当前已经存在的接口清单。沿现有`/api`、服务端身份、Artifact、文件和Job扩展，不复制隔离样机账户/存储。公共无登录读取仅限实际公开release，写操作必须有产品身份与正确作用域；token/Cookie、私稿路径和内部审核备注不出普通响应。
+
+| 操作族与建议路由 | 输入/状态 | 实际结果及失败边界 |
+|---|---|---|
+| `POST /api/uploads`；`HEAD/PATCH /api/uploads/{id}`；complete/cancel | kind、目标空间、expected_size/hash、upload_id、offset、块摘要；成员来自服务端 | 持久偏移和同一上传身份；并发/摘要/长度冲突不推进；续传先读偏移；正式采用tus时按其全部适用协议实现，当前自有合同不冒tus兼容 |
+| `POST/PATCH /api/publications`及submit | 源作品版或完成上传、metadata_revision、可见范围、许可/依赖、base_version和幂等意图 | 私有草稿及提交状态；上传/处理完成不公开；客户端不能提交official或审核通过 |
+| moderation/appeal/review | 精确提交版、处理角色、结论/理由与复核父项 | 只读合法提交范围；审核角色不读未提交私稿；改内容/权利后旧决定不能自动沿用 |
+| publish/withdraw/resolve | 精确release候选、有效审核和许可、发布/撤回意图 | 不可变发布版、真实公开读回或待核；超时先查同请求，不重复发布；下架停止索引和新取用 |
+| `GET /api/releases/{id}`及授权media/renditions | 精确release、用途、Range/If-Range及适用清单/分片 | 正确200/206/416与HEAD、媒体MIME/大小/范围；所有派生端点仍核权限，模板原包不能借播放接口绕下载许可 |
+| `POST /api/templates/{id}/instantiate` | template_release、目标Workspace、用途、替换参数、请求身份 | 新私有Artifact/对象映射/来源/许可快照/首版；同请求同输入返回同副本，不改源模板；不兼容依赖具体报告 |
+| template更新/差异 | 原模板版、作者新版、个人稿版及选区 | 三方差异、保人工修改与冲突，不整体覆盖；目标编辑器必须消费专业对象 |
+| experiences创建/修订/提交 | problem、method、steps、conditions、pitfalls、results、evidence、所关联release与父版 | 带出处的可编辑经验和版本；作者陈述/实测/推断/未知分开，不自动入训练 |
+| discovery/creator/collection/queue/comment/report | 按授权/公开范围、查询快照、release、锚点、真实用户意图分页 | 不泄私域，不把收藏当授权；评论/播放计数有定义，拒绝伪造指标；举报不自动删除原件 |
+
+Upload、media processing、moderation、publication和private editing各有独立状态。发布version不能替代源Artifact版本，改公开标题也须按元数据版CAS。PrivateWorkRef不随公共响应泄漏；SourceRevision与公开回链仅在权利允许范围展示。
+
+媒体声明与实际检测分开；Rendition包含源revision、recipe版本、尺寸/编码/声道/字幕、manifest及成员校验、readiness。TemplateManifest包含kind/schema、EditableGraph、ReplacementSlot、DependencyManifest、LicenseSnapshot；许可记录观看/下载/改作/商用/再分发/署名/有效期，训练独立。普通保存/编辑不因此增加重复批准，真正公开和外部效果仍由精确意图约束。
+
+协议研究来源：tus https://tus.io/protocols/resumable-upload 只指导明确采用的续传行为；HTTP范围读取按 https://www.rfc-editor.org/rfc/rfc9110.html 。采用协议名、HEAD/PATCH方法或状态码不是完整互通/安全/容量证明，客户端与服务端版本及负向测试必须对应。

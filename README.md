@@ -67,3 +67,9 @@ Set-Location D:\寰意
 OEVIRA is a self-developed professional intelligent workspace for media,
 advertising, brand marketing and commercial operations. Product specifications,
 source, runtime behavior and release acceptance are verified separately.
+
+## 内容生态与前端实施
+
+用户与官方原创作品上传/发布、视频创意和方案模板、经验共享已经纳入完整规划；公共发布快照与私人作品隔离，许可、审核和模板复用均需真实实现。原26专业领域及全部交付要求保留。详见[完整规格](docs/PRODUCT-SPEC.md)、[API](docs/API.md)与[验收](docs/ACCEPTANCE.md)。
+
+此前ChatGPT视觉样稿被PO否定，不作为实现或截图基线。新的原创视觉和交互按[前端实施步骤](docs/FRONTEND-EXECUTION.md)执行；该文件从属于[DESIGN](DESIGN.md)，不另建产品总规划。规划入库、结构检查与产品/视觉完成分别判断。

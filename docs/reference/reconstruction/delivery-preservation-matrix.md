@@ -17,7 +17,17 @@
 
 [SQLite官方WAL说明](https://www.sqlite.org/wal.html#walresetbug)已说明特定并发写入/检查点条件的WAL-reset缺陷及3.51.3、3.50.7、3.44.6修复。按架构§16.2核实际加载版本与修复来源，不能凭Python版本号放行，也不能使用已撤回发布。开发环境读回、隔离运行库检查、产品实际备份恢复分别取证；这些要求不表示已发生数据损坏，也不以本机环境状态代替产品验收。
 
-以上核对保原机制而补全实际用户成果，不是新备份产品。完整方法体之外的`signing_config`、Evidence store和连接辅助实现尚未在本组全文核读；迁入需连这些实际依赖与新消费者复核，不以本表代签。官方网页本轮仅核Backup API总述、WAL相关条件/缺陷段及Python`Connection.backup`接口，不冒三个站点全文或全部参考代码已读。
+### 签名、连接与实际恢复依赖的适配资格
+
+以下补齐同一备份链的直接依赖，行号为本次旧根源码快照；没有调用、解密或迁入。完整读取`lumenis/shared/database/connection.py`、`repository.py`、`paths.py`；`lumenis/shared/evidence/signing_config.py`第1–139、211–277行覆盖DPAPI、私有目录、路径检查、已有签名检查和`activate_workspace_signing`完整方法；`evidence/store.py`第195–276行覆盖固定v2材料字段、密钥读取、`_integrity_payload`及重复JSON键拒绝。`migrations.py`第163–267、479–570行再核签名伴随包与恢复如何调用这些依赖。未将`signing_config.py:140–210`旧环境密钥导入分支、整个Evidence store或所有业务schema升级声明为已读；本次选定的备份/恢复路径使用私有环境字典，不迁入旧全局密钥导入入口。
+
+| 已读依赖及直接消费者 | 新Owner中的具体保留与替换 | 正常、失败与恢复验法 |
+|---|---|---|
+| `store._integrity_payload`由`migrations._snapshot_signing_identity`逐条验证；固定v2字段中JSON列先解码，再以`json.dumps(sort_keys=True, separators=(",", ":"), ensure_ascii=False, allow_nan=False)`序列化为UTF-8，以历史key ID核HMAC | 保旧原始材料、签名版本和密钥身份。`ensure_ascii=False`是不转义非ASCII字符，不是NFC/NFKC归一化；不得增加Unicode归一化改变旧签名。迁移到新主体/工作区ID时，原签名证据保持不可改，映射及新版本另有明确来源；不能修改旧材料后重签冒原证。完整性证明写入者与字节关联，不证明事实正确或当前仍获授权。归当前来源/版本与存储Owner，不引入第二Evidence库 | 同一合法历史记录换JSON空白但解码结果不变仍按原规范验证；组合字符与预组字符保原码点差异，不强行同签。改受保护字段、重复JSON键、非有限数值、缺字段或错key须拒绝该记录。独立重开仍能读原证与新映射，不能靠新签名把失败洗成成功 |
+| `activate_workspace_signing/_signed_key_ids/_dpapi/_private_directory/_assert_regular_path`由备份伴随包及隔离恢复调用；旧Windows文件绑定当前用户DPAPI，目录仅当前系统用户/SYSTEM | 保已有签名必须找到原密钥、拒绝路径重定向/硬链接别名、私有临时目录和不覆盖发布。新Store及工作区权限Owner提供显式数据根、密钥来源与运行身份，调用不得默认写`os.environ`或跨工作区复用密钥；操作系统目录ACL不能代产品客户/成员隔离。旧密钥缺失、错误用户或未支持的跨机迁移明确恢复条件，不生成替代密钥冒历史恢复；新空工作区的密钥创建与历史恢复分开 | 正常同身份包在独立新目录验证签名并重开；缺伴随文件、密钥不覆盖、错误Windows身份、别名路径或签名文件中途变化均不改当前库和原件。失败后保可诊断包及已确认恢复点；合法恢复仍复核当前访问权，不恢复旧授权令牌 |
+| `DatabaseRepository.connection`实际委托`connect_sqlite`；备份读取活库，恢复检查封闭副本；`paths.main_db_path`有旧`ZBC_DB_PATH`/`monitor.db`默认 | 保显式只读、连接关闭、事务异常回滚、外键及有界等待；封闭副本的`immutable`要求无WAL/SHM/journal及路径别名。新Store拥有连接与当前根，不能复制旧默认路径解析或另立全局Repository；活库不可使用immutable。备份/恢复仍由架构§16与智能§6原Owner承接，HTTP/Worker只消费完整操作和结果 | 新根显式库正常备份/恢复；旧根回退、活库immutable、旁文件未收口、路径冲突和权限变化须失败且保当前工作。并发写入、对象删除及取消时验证同快照DB/对象清单和完整包发布；重开检查成果/评论/版本/源引用实际可读，旧任务世代不能续写、未知外部效果须先对账 |
+
+该链已具备机制复用与必要改造的前置依据。完整对象文件集合、保留策略、客户/身份迁移、当前撤权/删除状态、任务世代隔离和兼容升级回退仍是现有合同规定的实现与验收义务，不因旧备份函数存在而关闭。后续只读实际选定的未核依赖及新消费者，不以先读完整旧仓为迁入门槛，也不整库恢复旧权限、路径或schema。官方网页本轮仅核Backup API总述、WAL相关条件/缺陷段及Python`Connection.backup`接口，不冒三个站点全文或全部参考代码已读。
 
 | 原条目/主规划行段 | 原要求完整含义与新方案落点 | 处置、必须保留的结果及判断边界 |
 |---|---|---|
