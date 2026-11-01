@@ -273,7 +273,7 @@
 | 原文完整位置 | 实际含义与现行消费者 | 采用边界与真实验法 |
 |---|---|---|
 | L1–48：目的、来源与事实边界 | C§1/2/10、I§5的案例/方法采用：研究提供可检验的方法，当前作品使用本案真实事实和约束；来源、推断、创意、批准与效果分开。一次成功只形成有条件的学习候选，不自动改默认方法或参数 | 原文禁止虚构真实品牌事实、权益和引语，不禁止用户构思新品牌、虚构故事或原创活动。用参考案例与本案事实冲突、无依据效果数字、明确虚构创作分别核；保原创及实际素材权利，不把旧authority顺序或CANONICAL字样恢复成新产品指令 |
-| L453–494：研究到创作消费的方向与实施边界 | C§1/2/10的当前作品、同一Artifact/来源/评价与I知识学习责任承接；方法通过既有Owner和明确接口消费，不能让界面直读任意底层表，不能复制第二事实库。源码资格按本矩阵§9/11及实际直接消费者适配 | 原“重新审计仓库”按当前任务只核实际影响范围，不重复全仓调查；研究提及模型不授安装或接入。用未知事实、跨客户检索、多语言改义、方法退役后重开作品验证。所引Git blob `8c305e71b9bec7d902d71677c62554702abe6be4:00-GOVERNANCE/LUMENIS-EXPERIENCE-RESEARCH-LEARNING-ASSET-V1-20260911.md`未随本合同补读而全文签收；本次不从其未核内容新增方法或视觉结论 |
+| L453–494：研究到创作消费的方向与实施边界 | C§1/2/10的当前作品、同一Artifact/来源/评价与I知识学习责任承接；方法通过既有Owner和明确接口消费，不能让界面直读任意底层表，不能复制第二事实库。源码资格按本矩阵§9/11及实际直接消费者适配 | 原“重新审计仓库”按当前任务只核实际影响范围，不重复全仓调查；研究提及模型不授安装或接入。用未知事实、跨客户检索、多语言改义、方法退役后重开作品验证。所引固定Git原件`LUMENIS-EXPERIENCE-RESEARCH-LEARNING-ASSET-V1-20260911.md`已另由主负责人完整读回1–1005并归档；具体内容采用见[体验矩阵](experience-preservation-matrix.md#原体验学习资产的完整审读与当前采用)，不恢复旧权威，所引图/视频/外链仍各自核查 |
 | L521–527：评价、可复用学习及2026-10-26增补 | C§2/10、I§4/5与验收的同Brief比较、独立来源家族、品牌/原创/可用性盲审、事实/数值/权限硬失败、任务资源预算共同承接；模型独立生成、人工稿保存、工具求解分别取证 | “训练或策略进步”不替完整原创作品；公开旧题不冒独立最终集，平均分不掩盖事实或权限错误。用相同Brief和预算保无AI人工操作及AI增强的不同证据，实际作品/重开/局部修改/专业评审在实施后验，不把训练成绩列为编码前提 |
 
 ## 7. 本次确实补回了什么，仍不能声称什么
@@ -335,7 +335,7 @@ Office与PDF部分使用第5节原完整对象合同、C§3–6及下节实际�
 | 工作簿 | 同一全文的 `_formula_result_cells:72–110`、`_project:322–383`、`_invalidate_xlsx_calculation:425–453`、`edit:638–716`；同Office入口 | 既有字符串按单cell转inline而不篡改其他引用、数字有限值、布尔/普通公式/既有style、数组结果只读，保正确基础。全簿清cache+移除calcChain只要求宿主重算，**无自身依赖图/公式求值**；新预算消费者仍须全部实现。核跨表/数组/日期/类型/失效派生，不能把显示缓存当结果 |
 | PDF及文档交付 | `H/lumenis/shared/reporting/word_pdf_export.py:68–104` `pdf_text_context`、165–336 `_export_delivery`全文；同文件339–358实际delivery调用分支 | 字形缺失失败与字体注册锁可保，指定字体实际路径必须改从新根解析；固定SC/KR字库与CJK换行不足12语塑形。该serializer是Markdown到新文档，PPT文本页/XLSX字符串不保客户原对象；不复用为PDF批注编辑器。当前定点lumenis/app非视觉搜索未取得完整PDF批注实现证据，不称全仓绝无，仍需建设真实页区批注及回源 |
 | 视频 | `H/lumenis/shared/content_creation/stream_probe.py:1–57`全文；`timeline_interchange.py:157–184`调用处及既有93–261/378–412读证；`H/shared_artifacts.py:3711–3720`真实源探针调用分支；新增时间线/渲染/交换读取见§11 | ffprobe本地限定流读取、前后指纹及取消、部分/全源覆盖语义可保。只选v:0/180秒/128流和结果限额不能覆盖全片或多流；扩分块采集实际选流并保断点，仍需全时基/合成/颜色/代理/宿主往返。原渲染证据与§11完整主方法合并使用，不冒所有辅助方法或运行已完成 |
-| 视频/播客词级剪辑 | `H/lumenis/shared/content_creation/transcript_editing.py:1–237`全文至 `word_deletion_candidate`结尾、278–322 `project_word_deletion_candidate`全方法；`H/experience_runtime.py:3564–3576`实际预览分支 | 人工转写带明确来源、校字不改时码/声音、词→源→实例→时间线有理映射、多个同源实例要求选择、只生成候选且列影响；project wrapper核原件/manifest/父版/refs。整数sample位置仍由round得到，不能声称实测对齐精度；多源分支324以后未读，复杂速度/淡化/词内剪接尚需核。试听候选不保存，采用才版本事务 |
+| 视频/播客词级剪辑 | `H/lumenis/shared/content_creation/transcript_editing.py:1–237`至`word_deletion_candidate`结尾、278–322 `project_word_deletion_candidate`、324–507多源候选、510–644分页转写全方法；`experience_runtime.py:3564–3593`及3657返回；`shared_artifacts.py:3784–3864,3891–3944`解析/准备/源绑定/采用；`video_editing.py:2037–2089 EditDecision.validate`完整 | 保人工转写来源、校字不改声音、词→源→实例有理映射、按一父时间线合并区间、选区歧义拒绝、分页覆盖及采用时权限/原件/父版再核。已发现实际静态断链：多源候选metadata含`source_bindings`，EDL校验仅接受`cuts/synchronize`，原样解析会以`CONTENT_EDL_INPUT_INVALID`拒绝。迁入须同次升级同一Media Owner的EDL版本/生成/解析/采用契约并保单源兼容，不能删绑定字段换通过。每源hash/word/clip/track/父版贯穿试听与保存，UI用真实词/片段选区不暴露工程JSON。整数sample或rounding=0不证明实际声画对齐；仍核复杂变速/重叠/淡化及真实波形/采样/帧。试听不保存，明确采用才版本事务 |
 | 播客及交付 | `H/podcast/intelligence/episode_runtime.py:400–614` 从 `_output_segments` 到 `build_offline_publication_documents` 的上述完整方法；`H/shared_artifacts.py:3723–3739`音频转码与publication调用分支；既有topic_scoring1–64原证复用 | 计划构建Timeline、章节合并、原/校正VTT、七件信息、离线RSS诚实不发布；节目完整前采、录音、take/comp、叙事/混音合同继续保留，不仅输出包。六位小数累加不是完整有理时钟；分说话人轨是轮流片段，不是源分离；builder不落盘。必须接真实渲染版本/媒体资产/权限/冻结保存，不以七文件存在闭合制作 |
 | 语言/声音 | `H/app/lib/features/shared/read_aloud_service.dart:1–301`全文：`start/stopSession/_refreshPlayback/_failUnstartedPlayback/_withBackendLock/_stopPlatform/dispose`，直接调用同目录platform `speak/observe/stop/availableLocales` | 单会话、scopeVersion、代次、精确locale、启动超时可复用到研究/稿件朗读；不是制作可分发音频。未抛异常即stop成功仍不足确认无声；观察失败时也未证明声音停止。声包/真实合成补核见§11；原生桥与ASR模型内部仍按实际Owner证据，不恢复本人声克隆或默认新provider |
 | 跨成果修订与非视觉状态 | `H/app/lib/features/shared/sh01/manuscript_controller.dart:345–397 save`、464–503 cancel、538–602 reopen/export全文；既有1–240/299–333/1395–1453与[体验矩阵](experience-preservation-matrix.md)六机制证据复用 | 冻结稿/父版键与requestId复用、失联先读原任务、取消后读回终态、scope代次和保存对象身份核验。不能直接搬旧Core接口/prepare-run步骤或旧页面；新消费者为10域各自编辑器共享状态基础。`_readTask`、完整CoreClient/签名回执/Task内部未全读，保本地输入/选区/撤销、保存途中新增输入、冲突/取消失败后重开均需新根真实验证 |
@@ -423,3 +423,15 @@ Office与PDF部分使用第5节原完整对象合同、C§3–6及下节实际�
 **复用既有完整阅读。** [business-review批次10](business-review.md#原件审读批次-10品牌知识底层收件稿18份及所引广告论文)已完整读收件箱`category-emotion-narratives-20260903.md`1–98、`luxury-quiet-luxury-narrative-20260903.md`1–52、`KOS-RULES-CONTENT-ENGAGEMENT-20260903.md`1–174及`KOS-ZHIPU-REPLY-IMPLEMENTATION-EVIDENCE-20260904.md`1–60，本批读回420–451的记录和具体采用后复用，不签成本代理再次全文。其无一手URL的模型研究、固定句壳、互动冒曝光、公开评论冒私信许可等纠正仍适用；现C§2/10和B§4/8承接实际处理，不增加供应商或恢复旧账号白名单。VIDEO-WORKFLOW 1–123既有creative-review全文证据同样复用。
 
 **未扩大的证明范围。** 本节的31份正文不是其引用的全部素材、外部论文/网页或所有历史代码已经读/跑；没有媒体实听、模型推理、CPU训练、宿主往返或产品验收。BM研究自述的“已接现网/全绿/推生产”只记录过去说法。专业效果、原数据真实性、所引当前平台规则与实际制作质量依现行合同在实际使用/实施时分别核实；未证实案例仍可留作待核方法输入，不能进入事实性客户交付。本批没有替其他代理签读固定库其余文件，也没有用目录名消除未读项；本节涉及的方法已经落入C实际行为，剩余代码迁入、实现及真实签收不是本轮研究已完成的事项。
+
+## 14. 历史媒体工程正文的时钟与权利采用
+
+本批5份完整正文112行。T为新根`研究资料/历史原件/00-GOVERNANCE/evidence/round-15/document-delivery-20261018/test-results/`；D为`研究资料/历史原件/research/engineering/documentation-evidence/reports/delivery/`。正文内历史命令、依赖、测试数字和旧模型目标不成为当前执行授权。
+
+| 原件与完整已读范围 | 具体采用与现行消费者 | 适用边界与真实验法 |
+|---|---|---|
+| T`lumenis_media_rights_20261018/REPORT.md`1–60 | 23–33保原许可文本/摘要/源与项目版、声明非独立核实、实际剪辑变更与credits同版、重开核一致；C7/8/9/10的素材权利和交付继续承接，不另建许可或文件Owner | 未声明素材不能借相邻CC0升级；修改许可或源要形成相应新版本，取消不换旧成片。旧仅CC0/CC BY声明、16KiB头及0.3秒真音频实验是旧有限实现，不限制完整合法素材类型，不证明全部商用/声音同意/长节目质量 |
+| T`lumenis_speech_timebase_20261018/REPORT.md`1–27 | 6–16源呈现原点/延迟音轨/归一化与连续性，24的累计sample漂移反例落C7共用源时钟验法，C8明确消费同一验法；保开头静音、负/非零原点和分段映射 | 每帧一个采样的偏差可在邻帧容差内却长程漂移，须与分段首PTS及累计采样核对；容差按真实时基/采样率。旧只拒绝不连续音轨不是全能力，按现C7/8补分段；AAC/MP3前导延迟、ASR识别和听审各自验，不把合成对齐词冒真人识别 |
+| D`ACTUAL_QA.md`1–10、`README.md`1–5、`VERSION_DIFF.md`1–10 | 原文/表格/媒体/链接保全与实际宿主呈现分别验；相同页面字节可沿用同版证据，改变分节/排版的页须实际复核。C3/4/10既有局部修订、未选内容保全及重开/导出承接；许可/模型依赖沿原Owner核版本 | 旧190页/11页重看、70项哈希是历史报告边界，不称本轮看过图像或读完整DOCX/PDF；PDF换行后的hash字样不替原证据。Unsloth/Qwen等旧结论不自动授权新安装、模型或服务 |
+
+本批正文所引日志、diff、源码、媒体、图像和外部规范未据报告全文冒全读/实测；没有运行产品或播放素材。工程批总阅读、同字节副本及17条原已标WITHHELD而无正文的边界见[business矩阵](business-preservation-matrix.md)末节，不把未定位私有原件当撤销视频/播客/Office完整专业义务的理由。

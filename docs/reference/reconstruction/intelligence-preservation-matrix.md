@@ -335,7 +335,7 @@ B全部字段已读；第二列逐字保原历史action作为证据，含当时�
 
 ## 6. G2与G140完整行列、逐格原件保全
 
-G2原17行与19列来自P10645–10697，I§1.1逐项继承；每一有效交叉格都要相同Source/Permission/真实结果/恢复合同。这里没有凭行列生成323个PASS。动态第17行按实际当前Adapter展开，兼容provider/本地候选不增平台通过数。
+G2原17行与19列来自P10645–10697，I§1.1逐项继承；每一有效交叉格都要相同Source/Permission/真实结果/恢复合同。这里没有凭行列生成323个PASS。动态第17行按实际当前Adapter展开，兼容provider/本地候选不增平台通过数。平台能力研究的323格交叉附件、152格动态展开及其正文完整读取与具体采用见本表§19；它们不替代G140的另一验收面。
 
 | 原来源行 / P行 | 原类别 | 具体承接与结果 |
 |---|---|---|
@@ -741,9 +741,34 @@ E/T/Q中历史Benchmark、产品成绩、外部库服务和ADOPT/ADAPT字样只�
 | 新根`server/oevira/comparison.py:44–196,238–320`；`worker.py:619–690` | 实际基线为NFKC/字面词/CJK片段匹配，先命中达到每格上限即break，不能称BM25。候选排序应在允许候选范围完整性保证后限量；Worker提交仍复核租约代次/取消、成员/工作、源hash和引用，同事务保存Artifact/版本/关联。当前分支只material_comparison/acquire_url，不证明已接全专业AI；消费者扩展沿同Job/权限/版本而非新库。[任务与实基线](../../domains/intelligence.md#training-labels-and-professional-challenges)。 |
 | 新根`server/oevira/monitoring.py:947–1104`，重点1074–1080 | 当前字面词/hash观测，旧规则/暂停完成也推进来源cursor。原件已取得与新规则已评价必须分开；保旧观测而对新规则补评，不重复采集、不掩盖空窗。[评价水位合同](../../domains/intelligence.md#monitor-evaluation-watermark)。 |
 | `lumenis/system/collector/runtime/session/browser_session.py:1–100` | 整文件已读：默认taikoo、CDP取contexts[0]、get_cookies拍成name:value、check_login以缺按钮推成功；持久浏览启动含不适合照搬的安全开关。不能作为多用户官方登录实现；保必要生命周期方法，替换明确会话归属、标准浏览安全和目标访问证明，不读取任何个人profile。[官方登录适配](../../domains/intelligence.md#browser-session-and-capture)。 |
-| `lumenis/system/collector/runtime/browser_extract.py:1–364`全文；旧根`ai_browser_runtime.py:1861,1946,2048,2166,2180,2207`为已定位调用点 | 固定DOM脚本有32768字/256块/4096节点/2秒界限、排除表单秘密、块选区及版本hash；语义相关NOT_EVALUATED，作者/原生ID/时间/评论NOT_EXTRACTED。带query/fragment媒体URL转会话引用，原件hash为空；清洗快照不等完整原页面或媒体。调用点本轮定位，主运行器其他方法仍以既有已读分段为限。[快照与字段](../../domains/intelligence.md#browser-session-and-capture)。 |
+| `lumenis/system/collector/runtime/browser_extract.py:1–364`全文；旧根`ai_browser_runtime.py:1852–2210`的`extract/capture_command/snapshot_for_source`完整方法；HTTP及采集消费者详下表 | 固定DOM脚本有32768字/256块/4096节点/2秒界限、排除表单秘密、块选区及版本hash；语义相关NOT_EVALUATED，作者/原生ID/时间/评论NOT_EXTRACTED。带query/fragment媒体URL转会话引用，原件hash为空；清洗快照不等完整原页面或媒体。已补清真实消费者，保页绑定、未知提交对账和单一来源责任；这些旧单次界限不成为完整采集能力上限。[快照与字段](../../domains/intelligence.md#browser-session-and-capture)。 |
 | `lumenis/ai_hub/context_pack.py:1–158`全文；`conversations.py:697–746`实际回到任务的调用；另定位`service.py:287–289`、`ai_gateway/core.py:187–188` | conversation_pack保完整原文、人工状态及排除依赖传播，带源回答不重核就不注入；budget_owned_request用实际tokenizer只逐个去可选整段，run_budgeted绑定同一运行。Task重开仍前后核授权，不把任务投影当可发送正文。可用于防上下文压缩丢要求，不能代来源再授权或承诺无限窗口。[上下文适配](../../domains/intelligence.md#context-and-learning-adaptation)。 |
-| `lumenis/shared/learning/memory.py:1–577`全文；调用定位`learning/loop.py:91` | 保任务绑定后清cache、持久状态机/事务CAS、晋升与active版双查、存储失败不回旧cache。旧未绑定Owner时_scoped_check返回None且_row_visible可见全部，feedback/correction固定0.8/0.9不能进新多用户权限/事实可信度。持久查询失败返回[]不能在产品冒无记录；沿既有Store分型真实错误。[记忆适配](../../domains/intelligence.md#context-and-learning-adaptation)。 |
+| `lumenis/shared/learning/memory.py:1–577`全文；`learning/loop.py:1–383,517–617`及`ai_api.py:1829–1939`完整任务学习入口，详后文 | 保任务绑定后清cache、持久状态机/事务CAS、晋升与active版双查、存储失败不回旧cache。旧未绑定Owner时_scoped_check返回None且_row_visible可见全部，feedback/correction固定0.8/0.9不能进新多用户权限/事实可信度。持久查询失败返回[]不能在产品冒无记录；沿既有Store分型真实错误。已补实际反馈/建议/审阅/未激活规则消费者，不能把其apply当规则生效或模型训练。[记忆适配](../../domains/intelligence.md#context-and-learning-adaptation)。 |
+
+### 浏览抓取到来源保存的完整直接消费者
+
+本次补读旧根`ai_browser_api.py:751–864`的`capture_component/extract_page`两个完整HTTP方法及`_get_session_or_404:105–119`；`ai_browser_runtime.py:2455–2515`的任务操作/Owner复核、2517–2533任务绑定、2535–2558用户接管互斥、3661–3690回执写入；`lumenis/system/collector/adapters/secondary_collection.py:7657–7828`包含四个浏览来源辅助方法与完整`admit_browser_snapshot`。这不是全部浏览器、Permission或采集器源码已读，也不是已完成新产品登录/抓取/保存。
+
+| 真实操作与旧方法链 | 可复用机制及必须改掉的旧行为 | 新消费者与真实验法 |
+|---|---|---|
+| 当前已打开页面提取：HTTP`extract_page`→`extract`→`format_capture/capture_structure/select_page_context`，写操作回执后再次核任务访问 | 保target/page revision/URL和运行会话绑定、浏览线程内执行、隔离执行上下文、用户接管互斥、内容脱敏及不把网页当指令。截止时间前后区分NOT_STARTED/UNKNOWN/COMMITTED；超时不能证明回滚。`main_frame_visible_light_dom`只是一种快照覆盖，不是全页面、评论、嵌入框架、附件和媒体已经采齐 | 当前受控浏览/采集Owner接工作区、客户、官方授权会话与可选Work；无AI也可操作。正常提取返回可读字段、定位与覆盖；页面跳转、输入目标变化、接管、授权撤回或旧Job代次应隔离迟到结果。实际多页/附件/媒体采集由同一系统按任务接通并分别证明覆盖，不以扩大旧字符串限额冒完整获取 |
+| 预览/选择/丢弃：HTTP`capture_component`→`capture_command`→`extract/select_capture`；同request指纹冲突拒绝，同请求未知结果保回执 | 保同请求幂等、过期/导航后不交旧正文、局部选择和仅清预览的丢弃。旧16条会话缓存上限不能成为用户总抓取数上限；须有界清理正文但保必要请求终态/对账身份，不能删回执后重复执行。丢弃预览不等取消已保存资料、删除来源或停止监测 | 同一浏览会话状态与Job/Material责任承接，不建第二抓取库。正常重复请求返回同一结果；同ID不同输入拒绝。提交确认丢失先按稳定请求身份查回，不再抓一次证明成功；过期、撤权、断线重开及清理后仍不跨用户泄漏或错误重放 |
+| 保存来源：`capture_component`→`admit_browser_snapshot`→`snapshot_for_source`；辅助`_browser_source_request/_browser_import_admitted/_browser_source_existing/_browser_source_result` | 保API会话归属与服务缝隙再次匹配、快照/回执hash绑定、真实字节暂存、来源/Artifact同事务、提交不明时保可能已提交文件并按同请求查回。旧只收两种rights/三种用途、CTH/ZBMP映射及每次`exact_approval_required=True`不能成为新产品普通已授权保存的前置表单；按当前来源事实、用户任务、客户和用途判断，仅新增权利/风险/外部效果触发所需确认 | 现有采集/资料Owner与Store、auth、Job共同保存Material、原始对象或明确标注的清洗快照及其版本；研究、经营/品牌分析、监测和创作使用同一合法来源。正常保存后退出再开仍能定位正文/选区/父版本；同请求重放不重复建资料。对象损坏、跨客户、权利变更、部分暂存和提交不明分别验证。快照保`original_resource_sha256=None`及未核事实状态，不能用快照摘要冒原网页或媒体字节 |
+| 任务关联与权限：`_check_bound_task_operation`→`_check_bound_task_owner`、HTTP会话Owner检查及来源准入重核 | 保任务/attempt取消或到期、真实用户/平台会话与当前权利检查；客户端给task/run不构成绑定。旧`v4_sessions`、CTH/BMP和`workspace:local`单principal应映射当前成员/客户/平台会话与权威运行端世代，不能照搬旧账号库或默认主体。手动浏览无需虚构任务，但其来源仍有归属与权限 | 新auth/Store负责身份和权限，Job负责服务端任务绑定/代次；浏览及采集处理具体操作。正常人工浏览及授权任务均可完成；异步返回与保存处复核当前归属、撤权、取消和世代。保持资料的合法历史版本，不把新的访问许可或登录凭据还原为旧包中的状态 |
+
+上述方法链已可按明确接口适配，不必先读完整旧浏览器或采集器才实施。这份资格不包含旧个人profile/default taikoo会话、通用OS控制或整套全局Permission/DB的直接迁入；也不把预览、HTTP成功或源记录存在当用户成果。新owner实际接通后仍需用用户任务证明来源准确性、真实保存/重开、专业消费者引用及失败恢复。
+
+### 记忆、反馈与规则建议的实际入口资格
+
+已补读`learning/loop.py:1–383`的构造/任务绑定、反馈/修正/建议、持久读取、审阅、未激活规则采用和列表全部方法，以及517–617的prompt组合/循环/stats；没有将384–516调用质量分析称全文已读。`ai_api.py:1829–1939`完整HTTP入口实际构造`LearningLoop(...).bind_source_task(...)`，按当前任务核读写，反馈失败不报成功；`security/permission.py:6105–6186`完整prepare/confirm/重核方法绑定候选内容、任务上下文、原revision及提交后的状态。以下资格属于同一记忆/策略责任，不新增学习产品或自动训练入口。
+
+| 实际调用链 | 必须保留、纠正与新Owner | 正常/失败/恢复验法 |
+|---|---|---|
+| HTTP任务learning→`record_user_feedback/generate_rule_suggestion`→LearningMemory；`record_ai_correction`由同类`run_learning_cycle`调用 | 保反馈/修正/建议不同类型、原任务和内容版本，RAW不自动事实化。新auth/Store绑定用户、工作区、客户、真实业务/创作对象；无db_path的进程内列表不能冒产品保存。固定0.4/0.5/0.8/0.9只是旧启发值，不作事实可信度、模型质量或训练资格；人工接受也不自动成为正确训练标签 | 正常针对已保存成果记录反馈，退出重开同对象仍可见；并发修改、越客户、撤权、缺父版或落库失败须保原结果并返回真实状态。反馈可以用于本次改稿，不能因尚无参数训练许可而拒绝正常修订，也不能悄悄进入共享参数 |
+| HTTP prepare/confirm→精确候选准入→`review_rule_suggestion/apply_approved_rule`→同事务修改Learning记录及`rule_version_registry` | 保内容hash/revision/CAS、审阅历史、提交时复核及同请求回执；`apply`仅建立`is_active=0`候选、Learning阶段validated，不能说已激活/已训练/已经影响用户工作。旧prepare只允许actor_id为None的本地主体，不能原样阻断正式多用户；新权限按真实成员角色/工作区/客户和所改策略范围处理。人工草稿更正、明确偏好、策略采用与参数训练仍分别归现有责任 | 合法审阅/撤回与重复确认返回同一已提交结果；内容或revision变化、过期授权、异步撤权拒绝新写。提交已成而响应/缓存刷新失败，应查持久回执不重复建候选。策略激活另由当前策略Owner完成并实际验证影响、退化与回退，不把旧接口的`active_policy_changed=False`冒闭环完成 |
+| `list_rule_suggestions`及`build_prompt_context/run_learning_cycle` | 列表当前吞异常返回[]须改成可区分的存储不可用；不能让故障看似无建议。旧prompt取前5规则/3正样本并截200/150字符，task_type未参与筛选；新上下文责任保来源/适用条件/否定约束与完整必要片段，按实际模型token预算和相关性取舍，不能截掉关键限制。旧未绑定路径的全局关键词不可进多用户上下文 | 正常重开只见仍获准且适用于本任务的记录；存储错误、撤回、源更正与客户切换不能回旧cache或空列表冒正常。以含关键否定/例外的长规则验证不被截坏；候选或未生效策略不得进入“已验证规则”。当前生产源码定点检索仅见`run_learning_cycle`内部调用`build_prompt_context`，未找到该循环到实际模型推理的外部调用者；新业务/创作AI消费者必须显式接入并证明真实效果，函数存在不是模型已使用 |
+
+这条反馈/建议持久链已有可执行适配依据；实际模型上下文接入和策略激活是明确的新消费者工作，不再笼统悬挂“loop调用者待读”。原完整记忆、纠正/忘记、可验证策略与CPU/未来GPU训练要求均保留；本组没有运行任何学习、训练、模型或产品数据操作。
 
 88条材料中，80条课程覆盖audio、audio_video_judgement、brand_campaign、business_outcome、creative_strategy、douyin_shortform、korean_global、video八track，每track五个CUR案例及对应REV，另有8条基础合成。全部正文补读及具体处置见§18；这些是文本课程范围，不是八个已训练/运行模型。音频案例描述中英韩转写、词时码、匿名说话人、听觉/解释分离和技术测量，但没有对应音频或逐词金标；保专业音频要求，由合法真实素材与独立标签补评价，不以文本改写替代。
 
@@ -898,3 +923,61 @@ Swarmclaw附件未核只限制对该原件及其独有细节的采用声称，�
 准备设计现已具体到：每条输入/目标的权利和状态、只读版本视图、样本血缘与接触记录、按客户/事件/来源家族分组、分离开发校准与独立最终用途、不可把未知当负例、独立适任审阅及争议仲裁、全业务/Office/创意/媒体/多语组合工作、模型包/消费者兼容和当前撤权重核。参照的[官方数据泄漏说明](https://scikit-learn.org/stable/common_pitfalls.html#data-leakage)、[分组验证](https://scikit-learn.org/stable/modules/cross_validation.html#cross-validation-iterators-for-grouped-data)、[阈值调优](https://scikit-learn.org/stable/modules/classification_threshold.html#tuning-the-decision-threshold-for-class-prediction)仅支持这些方法，不授依赖安装或背书本地成绩。
 
 仍未形成的实物/实证须准确区分：原训练授权的可核用途链、修正后的合格样本版本、独立评价原件及适任审定、真实冻结分组、实际可运行基线/候选、质量与资源测量、模型重载/回退及全部消费者真实结果。前几项按上述明确规则由研发整理和核验；必须实施后产生的性能/运行证明不伪装已完成，也不反过来成为编码前永远不能满足的条件。某参数候选未晋升不取消对应专业能力或整个行业AI范围，GPU条件不代这些准备，也不阻有条件的基础工作。
+
+## 19. 平台结构附件与扩展调用：确切全文和消费者采用
+
+本节`PC`为新根只读原件`研究资料/历史原件/research/intelligence/02_platform_intelligence/research-20261018/platform_capability_research_20261018/`，`PG`为同根相邻`platform_evidence_gap_research_20261018/`；`EX`为`研究资料/历史原件/research/engineering/documentation-evidence/reports/original_research_gap_closure_20261018/`。本节补的是下列确切原件及结构附件，不以ZERO-AUTH-MATRIX、BACKEND_GAP、另件摘要或包目录签替代阅读；原件名称中的旧产品名、研究日期和历史责任不成为当前执行规则。
+
+### 正文身份及完整范围
+
+| 确切原件 | 完整读取与当前归档SHA-256 |
+|---|---|
+| `PC/00_REUSED_OFFICIAL_BASELINE.md` | 1–233全部正文、总览表、分平台条件、合同、待证伪表及末尾缺口；`1b6803eea3da74c3b48d8ba9f78b88de31b7b33d40148dfcaccb43144f103b6b` |
+| `PC/REPORT.md` | 1–133全部正文与文件说明、路线表、观察合同、市场/媒体、对标及采用边界；`6f455ba7f61aea3cdf30fca1e957d07917eb25219c947209e238d7be0e49caa2` |
+| `PC/G2_RECONCILIATION_APPENDIX.md` | 1–90全文；`cc789b4b0bcc0e1a5bbdd4af3c69aed4b0695fb3718eee0528640de915851f76` |
+| `PG/01_REPORT.md` | 1–72全部正文、固定版本说明、14格增补含义、恢复与12项验法；`93df30c5c9c7ddd71484361b59c325db84416671fca1dd5cd876071d60390e4c` |
+| `EX/10_SKILLS_MCP_GITHUB_DEEP_RESEARCH.md` | 1–164全文，包括D01–D12、20项未运行验收、限制及S1–S9来源说明；`58b13ab0847929218fcb101caf3518818e1ba12cc37011f627d2b44c5476c533` |
+| `EX/17_REA_PUBLIC_SAMPLE_RECONSTRUCTION.md` | 1–68全文，包括三固定样本、静态推论、异步/取消/保存、未做事项与收据定位；`8ad16fb6444d81b7e1eaa3c6a93f93b99528f0bb41747028b8aea66bd382ec4f` |
+
+### 结构附件全部字段的读取边界
+
+| 原件 | 完整范围及读取方式 |
+|---|---|
+| `PC/01_PLATFORM_CAPABILITY_MATRIX.json`及同名CSV | 全部header和22行各14专业字段、路线、身份、来源引用与状态；长`source_evidence_text`复用完整已读基线，各对应段核脱敏姓名和空白差异后的内容相等，不称字节相同；其他字段逐行完整读。CSV全部字段与JSON投影相等 |
+| `PC/02_PLATFORM_MARKET_REVIEW.json`及同名CSV | 176行所有字段；公共值、22个平台完整记录、每行市场及TikTok的GB/EEA例外无损展开，逐行重建与原JSON相等；CSV全部字段投影相等。8市场是研究维度，不是用户选择或已覆盖市场 |
+| `PC/03_ROUTE_ELIGIBILITY.json`、`04_ACCEPTANCE_CASES.json`、`05_OBSERVATION_CONTRACT_PROPOSAL.json` | 全15路线、全16案例A01–A16、观察合同全部字段；案例只已读，未运行 |
+| `PC/06_G2_17x19_CROSSWALK.json`及同名CSV、`07_G2_DYNAMIC_OTHER_ADAPTERS.json` | 全部root信息、323格及152格的每一字段与关联；反复相同值字典化，142种不同代码证据（42路径）的全部值逐项读回，并读全部行/列/引用映射，完整解码与原JSON相等；CSV逐字段相等。没有只读首行、头尾或凭数量签全 |
+| `PC/evidence/source_register.json`、`README.md`、`VALIDATION.json`、`G2_VALIDATION.json` | 83条来源记录与全部字段、README全文、两校验文件全部字段；历史校验只核其结构，不变平台或产品验收 |
+| `PG/02_CELL_DELTA.json`、`04_ACCEPTANCE_CASES.json` | 14格全部变化/边界与12案例全部字段，未运行。Bluesky仍为研究候选，不据此新增接入 |
+| `PG/03_SOURCE_READING_LEDGER.json`、`05_INPUT_REUSE_MANIFEST.json`、`06_READ_FAILURES.json`、`07_VALIDATION.json`及`README.md` | 67条源文件读取账、9条复用账、6条失败账、结构校验全部字段及README全文；阅读账本本身不等重新读完其底层文件和网站 |
+
+### 方法、实际专业消费者与验收
+
+| 原文关系 | 现行承接与具体增强 |
+|---|---|
+| PC基线1–42、159–176；报告5–27、55–90；15路线和22能力行 | I§1/1.1/2保同一采集系统内公开HTTP/Feed/开放文件、用户官方授权浏览和原已批准API路线。16社媒＋2辅助＋4渠道不是范围上限；官方API未知不否定已有合法浏览，浏览成功也不扩API/使用权。专业账号与地域条件只约束具体来源路线，不恢复固定开发者身份白名单或要求独立编辑先建业务主体 |
+| PC基线45–158、189–224；报告31–53、92–106；观察合同和176市场行 | I§1.2/1.3/3区分原生ID/命名空间、作者与主体关系、发布/编辑/索引/观察时间、单位与分母。搜索摘要、Feed摘要、count和已取评论正文不互换；账户地区、内容地点、受众市场、语言独立。供舆情、场内品牌、竞品、客户提案和经营比较；同名对象、多个城市、单位/期间、晚到和删改负例核准确，公开样本不冒总体 |
+| PC基线198–224、报告92–106、A01–A16；G2全19维 | I§1.1/1.2/3/3.2保每页真实返回/去重/过滤、根评论和回复队列、查询指纹、停止原因、实际持久检查点与独立规则评价进度。短页/空页/零新增不自动抓完；先多后少通过同范围原件和回执查明分页、回复、去重、权限、限额和删除，不能固定归因为平台上限。用户实际完成监测→分析→可修改交付→客户修订→继续关注，验漏报、重复通知、引用及故障空窗 |
+| PC基线181–208、报告100–116；PG48–52 | I§1.2/2/5保取得、展示、媒体原件、二改、导出、训练等用途及不同许可/留存；链接到期不等正文失效。源变更沿报告段落、表格、PPT对象、媒体片段及导出版本定位影响，只修应变部分，保人工确认稿；不把研究或厂商宣传当商业许可和覆盖证明 |
+| PC的G2附录与两个全格附件 | 本表§6和I§1.1保17×19，另保G140；动态第17行按真实Adapter展开。Google/贴吧未见直接模块是历史静态缺口，不能据此删原能力；Overture本地候选、xhs_app_topic兼容路径不增独立平台。142种代码证据仅证明研究所指历史定义，不能冒新根接通，两套会话文件不照搬成两套权威Owner |
+| PG30–46、14格delta、12验法 | I§1.2/2.2明确媒体-only对象不是空结果；图片组、视频、播放列表、预览与原件不同。来源UTF-8字节半开区间、客户端UTF-16码元、Unicode码点在同版原文中核边界并转换，清洗后的偏移不可直接回写；以中文/表情/组合字符和媒体对象验引用准确与编辑范围。线程depth上限不证明所有回复可见，blocked/notFound不当零评论 |
+| PG54–62及固定版本说明20–28 | I§1.2/3.2/6来源cursor与本地连续事件序列分开，合法间隙不自动拒绝，host/endpoint/协议/查询隔离，验证应用和持久结果后才推进；原件、回执与检查点同事务或幂等提交协调。旧cursor/重放耗尽/版本链异常显示空窗，当前快照不冒删除历史恢复；有签名/前驱才按真实协议核。该通用方法不新增Bluesky/Jetstream服务 |
+| EX10的D01–D06/D08、20案例S01–S13；EX17的消息/可变请求反例 | I§7.1批准与自测绑定完整schema、包/launcher/依赖身份；展示截断不作批准依据，同版本换内容重核。发现启动本身执行代码，readOnlyHint/shell=False不证明隔离；沿原宿主先核资源和权限。握手只用已协商能力，输入输出与业务语义分别判。按块预先限流量、有界队列背压和stderr消费，不能先分配无界输出再判断超限；合法获准工具仍须交真实成果 |
+| EX10的D07/D12、S14–S20；EX17第3节和验收3 | I§7.1端到端时限含创建等待/请求/轮询；停止等待、本地停止和远端取消分证。同operation ID仍带provider/资源类型/输入版本，重开对账不重生成。远端成功但下载/Artifact保存失败保可恢复未完输出，不冒整体成功；取消迟到/创建后崩溃/保存失败须保持作品和外部效果真实 |
+| EX10的D09–D11、S16–S19 | I§7.1 GitHub用户/App/已选仓库交集，凭据不等身份已验证，state沿原Owner单次核验。Link续页、ETag/观察时间、Retry-After/速率头和精确目标保全；403区分限流/权限，不能催无用重登录或把50条当全集。HTTP MCP研究不授权新传输接入，stdio证据不代HTTP运行 |
+
+### 不扩大的证据声明
+
+PC的旧源引文和PG复用manifest所列哈希与当前归档字节有差异，本节使用上表实际读取对象身份，不声称旧hash验证了当前字节。姓名脱敏/空白等对应差异只按实际比较记录，不把未比较的全部包解释成同版。完整读25个指定平台正文/结构对象与上述两件扩展正文，不等读取整个研究包。
+
+83条来源登记和67条读取账不代表本节重开了所有外链、固定源码、协议HTML、图片、全SDK、传递许可或其余附录；其中READ_SELECTED、SAVED_NOT_FULLY_READ及原HTML/提取文本的边界继续保留。PG的固定atproto、bsky-docs、Jetstream版本与历史源数值只支持其当时研究；当前额度、条款、账号资格与真实覆盖在对应实施时按当版一手依据及实际授权核验，不写全平台永久常量。EX的SDK/REA结果是原报告记载，本节未运行工具或复现其图与目标宿主。哈希、图数量和结构解析不证明专业质量。
+
+本节没有采集、账号访问、训练、推理、包安装、新集成或产品运行；16、12和20项案例是已读验收设计，未执行。所补条款由既有采集、浏览、监测、资料/成果、扩展与运行责任兑现，并由业务、研究及完整创作消费者签真实输入、可修改结果、保存/重开/恢复。研究采用不能提前签迁入、持续运行、专业效果或上线完成。
+
+## 20. 历史语义派生的父来源反例
+
+完整读新根`研究资料/历史原件/00-GOVERNANCE/evidence/round-15/document-delivery-20261018/test-results/lumenis_semantic_parity_20261018T0602Z/README_UNADOPTED.md`1–20。原11行明确指出：专用semantic读取器核catalog映射，而通用`list_scoped_canonical`只验child范围回执，不复查父Source Evidence、原件和当前catalog，其他消费者可能绕撤权。原作者自己标“源码发现，未实验复现”；本次也没有执行旧delta，不把27个旧用例当已修。
+
+采用落I5「派生资料的准入和继续使用」：同一来源准入责任在通用列表/搜索/引用/报告/导出及缓存核实际父依赖与当前用途，不另造语义权限系统；未核资料不因目录绑定升级FACT。正常有完整父链的资料可被真实业务和独立创作使用。反例在child完整时分别撤回父来源用途、变更目录关系、替换原件版，核各通用消费者与在途任务不再沿失效用途输出；恢复重新核父依赖，不能只重签child。资料、人工稿和合法历史按其权利保全。
+
+本次只读报告正文，未据此新签读semantic.py、canonical_data.py、intelligence_library_api.py或引用测试；现已核代码范围仍按I5与矩阵原记录。工程批18种506行/9条同字节复用及17条原登记WITHHELD无正文边界见[business矩阵](business-preservation-matrix.md)末节。平台25件读证仍按本矩阵§19的实际正文/逐字段/无损展开范围复用，外部83源网页和67条ledger所引正文不随索引读证自动升级。
