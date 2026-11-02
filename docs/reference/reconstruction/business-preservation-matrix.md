@@ -451,6 +451,10 @@ Q原件850–874已全文读；原件称起始挑战/建议，后主规划P5810�
 
 ## 原业务样本与同任务对标的具体采用
 
+历史工程中的26份HTTP/合成结果JSON亦完成全字段审读：来自`lumenis_backend_scope_20261018T0540Z`、`lumenis_development_20261018`、`lumenis_graph_parity_20261018T0549Z`和`lumenis_integrated_backend_20261018T0605Z`下的`identity_candidate_saved_result.json`、`synthetic_control_saved_result.json`及cold/warm/prepare结果。741个共享节点和每件独有字段/引用映射均核读，逐件无损还原相等；不因HTTP200或签名通过代签业务结果，也没有重新执行这些请求。
+
+身份样本仅40训练＋40测试重复两种布尔模式，两个agreement列同值；满分不证明真实身份泛化、条件独立或校准，I§4按真实连通家族与独立依据评价。合成控制是已知权重和固定后段效果，前误差近零导致比值不可定义、三个placebo不合格而p值null；B§7保此反例及正常计算，不把合成效果当营销增量。旧响应中来源可读/报告保存通过与analysis未计算、heat/reach未知、多模态未知并存，B/I/C各实际消费者分别签成果；原始数据/工程检查、专业分析及发布不合成一项全绿。合成例只保其工程用途，不自动进事实、训练或最终行业金标。
+
 归档研究目录中的`real_public_validation_research_20261018/CASE_READING.md`1–15、`EXPERIMENT_DESIGN.md`1–9、`FIELD_CONTRACT.md`1–45、`REPORT.md`1–105，以及`competitor_research_20261018/01_official_competitor_benchmark.md`1–178均完整读正文、表格与尾段。下表采用方法与反例，不把报告记载数值当独立复算结果；CASE_READING是两论文的选择性阅读记录，不冒论文全文。原始UCI全行、研究脚本/预测附件和外部厂商页面不随这些正文代签。
 
 | 原研究实际问题 | 现行消费者与采用 | 正常工作和反例验收 |
