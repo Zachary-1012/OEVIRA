@@ -19,7 +19,8 @@ foreach ($argument in $CodexArgs) {
         throw 'This OEVIRA entry uses D:\寰意. Use the ordinary Codex command for other projects.'
     }
 }
-$codexCommand = Get-Command codex -CommandType Application -ErrorAction Stop | Select-Object -First 1
+# Prefer the installed executable over a PATH shim that can select an older npm CLI.
+$codexCommand = Get-Command codex.exe -CommandType Application -ErrorAction Stop | Select-Object -First 1
 $arguments = @('--strict-config', '-C', $workspace)
 if ($PSBoundParameters.ContainsKey('Model')) {
     $arguments += @('-m', $Model)

@@ -41,7 +41,11 @@ def context_for(payload):
                 "and use it in the actual change and its consumers. Installation or a "
                 "skill-name mention is not use. Do not rerun all methods or completed "
                 "audits, change models, delegate visual decisions, create extra systems, "
-                "or weaken any product requirement."
+                "or weaken any product requirement. "
+                "Prepare executable product capabilities, not endless archive audits. "
+                "Follow the latest report-then-wait development gate and subagent model "
+                "choice in AGENTS.md/.codex/README.md; an older Goal does not override "
+                "the user's newer instruction."
             ),
         }
     }
