@@ -44,6 +44,8 @@
 
 ## 十个研究与创作领域的操作合同
 
+文档类操作由后台按目标、材料和明确修改意见执行；客户端提供文件预览、来源核对、业务参数、意见、版本与下载，不以本合同对象字段要求建设完整Office手动编辑器。DOCX/PPTX/XLSX/PDF保持各自原生结构、公式、母版、备注和未选内容；动态HTML交付须有真实数据交互与隔离预览。视频/播客继续由完整媒体编辑消费者操作。以下目标合同不因此升级为当前已实现/运行接口。
+
 编号对应[创作合同](domains/creative.md)。这些工作可独立开始，不强制客户、主体、Campaign或先创建分析工作。
 
 | 领域 | 专业输入/定位 | 操作和可继续结果 | 跨领域保全 |
@@ -218,7 +220,7 @@ corresponding implementations are connected. No empty endpoint represents them.
 | publish/withdraw/resolve | 精确release候选、有效审核和许可、发布/撤回意图 | 不可变发布版、真实公开读回或待核；超时先查同请求，不重复发布；下架停止索引和新取用 |
 | `GET /api/releases/{id}`及授权media/renditions | 精确release、用途、Range/If-Range及适用清单/分片 | 正确200/206/416与HEAD、媒体MIME/大小/范围；所有派生端点仍核权限，模板原包不能借播放接口绕下载许可 |
 | `POST /api/templates/{id}/instantiate` | template_release、目标Workspace、用途、替换参数、请求身份 | 新私有Artifact/对象映射/来源/许可快照/首版；同请求同输入返回同副本，不改源模板；不兼容依赖具体报告 |
-| template更新/差异 | 原模板版、作者新版、个人稿版及选区 | 三方差异、保人工修改与冲突，不整体覆盖；目标编辑器必须消费专业对象 |
+| template更新/差异 | 原模板版、作者新版、个人稿版及选区 | 三方差异、保人工修改与冲突，不整体覆盖；目标文档生成/改版或媒体编辑消费者必须按类型消费专业对象 |
 | experiences创建/修订/提交 | problem、method、steps、conditions、pitfalls、results、evidence、所关联release与父版 | 带出处的可编辑经验和版本；作者陈述/实测/推断/未知分开，不自动入训练 |
 | discovery/creator/collection/queue/comment/report | 按授权/公开范围、查询快照、release、锚点、真实用户意图分页 | 不泄私域，不把收藏当授权；评论/播放计数有定义，拒绝伪造指标；举报不自动删除原件 |
 
