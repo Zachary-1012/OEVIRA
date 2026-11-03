@@ -160,5 +160,28 @@ class RepositoryAdmissionTests(unittest.TestCase):
                 document.write(f"\n[historical source]({target})\n")
             self.assertTrue(any("Active document link leaves repository" in error for error in self.validate()))
 
+class ContinuityContextTests(unittest.TestCase):
+    def test_latest_authorization_is_not_replaced_by_a_stale_wait_gate(self):
+        spec = importlib.util.spec_from_file_location(
+            "oevira_continuity_contract_test", ROOT / ".codex/continuity.py")
+        continuity = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(continuity)
+        # Keep the test within this checkout; never resolve the user's old root.
+        continuity.FORMER_ROOT = ROOT / "inactive-context-test"
+        for event in ("SessionStart", "UserPromptSubmit"):
+            result = continuity.context_for({"hook_event_name": event, "cwd": str(ROOT)})
+            context = result["hookSpecificOutput"]["additionalContext"]
+            self.assertIn("latest direct user authorization", context)
+            self.assertNotIn("report-then-wait", context)
+            self.assertIn("task-scoped development", context)
+            self.assertIn("nor resumes a paused task", context)
+            self.assertIn("Preserve the user's current model/settings", context)
+        self.assertEqual({}, continuity.context_for(None))
+        self.assertEqual({}, continuity.context_for({"hook_event_name": "Stop", "cwd": str(ROOT)}))
+        self.assertEqual({}, continuity.context_for({"hook_event_name": "SessionStart", "cwd": "relative"}))
+        self.assertEqual({}, continuity.context_for({
+            "hook_event_name": "SessionStart", "cwd": str(ROOT.parent / "unrelated-context-test")}))
+
+
 if __name__ == "__main__":
     unittest.main()
