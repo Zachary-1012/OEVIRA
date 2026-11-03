@@ -1,4 +1,4 @@
-"""Validate the specification baseline, never claim a working product."""
+"""Validate repository contracts alongside mandatory product build/test jobs."""
 from __future__ import annotations
 
 import argparse
@@ -37,11 +37,11 @@ EXPECTED_WORKFLOW_JOBS = {
     "contracts": "Repository contracts",
     "windows": "Cross-platform repository checks",
 }
-SPECIFICATION_FILES = {
-    "scripts/README.md", "scripts/verify_repository.py",
-    "scripts/setup.ps1", "scripts/start.ps1", "scripts/stop.ps1",
-    "scripts/check_python_runtime.py",
-    "tests/README.md", "tests/test_repository.py",
+IMPLEMENTATION_FILES = {
+    "server/requirements.txt", "server/oevira/__init__.py",
+    "server/tests/test_core.py", "server/tests/test_materials.py",
+    "app/pubspec.yaml", "app/lib/main.dart", "docs/API.md",
+    "scripts/start.ps1",
 }
 PRODUCT_CODE_SUFFIXES = {
     ".py", ".pyc", ".js", ".mjs", ".cjs", ".ts", ".tsx", ".jsx",
@@ -66,7 +66,7 @@ def _tracked_files(root: Path, supplied: list[str] | None) -> tuple[list[str], s
         return supplied, None
     try:
         result = subprocess.run(
-            ["git", "ls-files", "-z"], cwd=root, check=False,
+            ["git", "ls-files", "--cached", "--others", "--exclude-standard", "-z"], cwd=root, check=False,
             stdout=subprocess.PIPE, stderr=subprocess.PIPE,
         )
     except OSError as exc:
@@ -136,7 +136,9 @@ def _workflow_errors(root: Path) -> list[str]:
         name_match = re.search(r"(?m)^    name:\s*(.*?)\s*$", body)
         if not name_match or name_match.group(1) != job_name:
             errors.append(f"Repository workflow check name is missing or changed: {job_name}")
-        for command in ("python scripts/verify_repository.py", "python -m unittest discover -s tests -v"):
+        build = "flutter build windows --release" if job_id == "windows" else "flutter build web --release --no-web-resources-cdn"
+        for command in ("python scripts/verify_repository.py", "python -m unittest discover -s tests -v",
+                        "python -m unittest discover -s server/tests -v", "flutter analyze", "flutter test", build):
             if not re.search(rf"(?m)^\s+run:\s*{re.escape(command)}\s*$", body):
                 errors.append(f"Repository workflow job {job_id} is missing required step: {command}")
     return errors
@@ -161,10 +163,10 @@ def validate(
         errors.append("Required workflow checks differ from the approved fixed set")
     if manifest.get("preserved_sha256") != EXPECTED_PRESERVED_SHA256:
         errors.append("Preserved license/attribution digest set differs from the approved fixed set")
-    if manifest.get("stage") != "specification" or manifest.get("release_ready") is not False:
-        errors.append("This gate only validates specification; implementation needs its own blocking checks")
+    if manifest.get("stage") != "development" or manifest.get("release_ready") is not False:
+        errors.append("Development builds do not establish full-product release acceptance")
     if require_product:
-        errors.append("PRODUCT_NOT_IMPLEMENTED: specification checks cannot pass product release")
+        errors.append("PRODUCT_NOT_RELEASED: complete product, packaging and real-work acceptance remain required")
     for name in DOCUMENTS.values():
         path = root / name
         if not path.is_file() or not path.read_text(encoding="utf-8").strip():
@@ -173,9 +175,10 @@ def validate(
         readme = root / name / "README.md"
         if not readme.is_file():
             errors.append(f"Source responsibility is missing: {name}/README.md")
-        for path in (root / name).rglob("*"):
-            if path.is_file() and path != readme and not any(part in IGNORED for part in path.relative_to(root).parts):
-                errors.append(f"Product implementation cannot enter a specification-only gate: {path.relative_to(root).as_posix()}")
+    for name in IMPLEMENTATION_FILES:
+        path = root / name
+        if not path.is_file() or not path.stat().st_size:
+            errors.append(f"Required development source or contract missing: {name}")
     for name, expected in EXPECTED_PRESERVED_SHA256.items():
         path = root / name
         if not path.is_file() or hashlib.sha256(path.read_bytes()).hexdigest() != expected:
@@ -189,39 +192,6 @@ def validate(
             errors.append(f"Unexpected active directory: {top.name}")
         elif top.is_file() and top.name not in ROOT_FILES:
             errors.append(f"Unexpected root file: {top.name}")
-    for folder in ("scripts", "tests"):
-        for path in (root / folder).rglob("*"):
-            if path.is_file() and not any(part in IGNORED for part in path.relative_to(root).parts) and path.relative_to(root).as_posix() not in SPECIFICATION_FILES:
-                errors.append(f"Non-specification file in {folder}: {path.relative_to(root).as_posix()}")
-    for path in (root / "docs").rglob("*"):
-        if path.is_file() and not any(part in IGNORED for part in path.relative_to(root).parts) and path.suffix.lower() in PRODUCT_CODE_SUFFIXES:
-            errors.append(f"Product code cannot be hidden in docs: {path.relative_to(root).as_posix()}")
-    for directory in sorted(DIRECTORIES | {"."}):
-        parent = root if directory == "." else root / directory
-        paths = parent.glob("*") if directory == "." else parent.rglob("*")
-        for path in paths:
-            if not path.is_file() or any(part in IGNORED for part in path.relative_to(root).parts):
-                continue
-            name = path.relative_to(root).as_posix()
-            if path.is_symlink() or not path.resolve().is_relative_to(root.resolve()):
-                errors.append(f"Path escapes repository: {name}")
-                continue
-            if _is_sensitive_path(name):
-                errors.append(f"Private data/credential path in repository: {name}")
-            if path.suffix.lower() != ".md" or _is_sensitive_path(name):
-                continue
-            body = path.read_text(encoding="utf-8")
-            if not name.startswith("docs/reference/"):
-                for target in re.findall(r"\]\(([^)]+)\)", body):
-                    target = target.strip("<>")
-                    url = urlsplit(target)
-                    if url.scheme or url.netloc or target.startswith("#"):
-                        continue
-                    destination = (path.parent / unquote(url.path)).resolve()
-                    if not destination.is_relative_to(root.resolve()):
-                        errors.append(f"Active document link leaves repository in {name}: {target}; use a repository reference and record the historical source as text")
-                    elif not destination.exists():
-                        errors.append(f"Broken local link in {name}: {target}")
     tracked, git_error = _tracked_files(root, tracked_paths)
     if git_error:
         errors.append(f"Tracked-file inventory unavailable: {git_error}")
@@ -236,6 +206,8 @@ def validate(
             if path.is_symlink() or not path.resolve().is_relative_to(root.resolve()):
                 errors.append(f"Tracked path escapes repository: {name}")
                 continue
+            if name.startswith("docs/") and path.suffix.lower() in PRODUCT_CODE_SUFFIXES:
+                errors.append(f"Product code cannot be hidden in docs: {name}")
             try:
                 body = _read_text_bytes(path)
             except OSError as exc:
@@ -243,6 +215,16 @@ def validate(
                 continue
             if body is not None and SECRET.search(body):
                 errors.append(f"Credential-like content found: {name}")
+            if body is not None and path.suffix.lower() == ".md" and not name.startswith("docs/reference/"):
+                for target in re.findall(r"\]\(([^)]+)\)", body):
+                    target = target.strip("<>")
+                    url = urlsplit(target)
+                    if not url.scheme and not url.netloc and not target.startswith("#"):
+                        destination = (path.parent / unquote(url.path)).resolve()
+                        if not destination.is_relative_to(root.resolve()):
+                            errors.append(f"Active document link leaves repository in {name}: {target}; use a repository reference and record the historical source as text")
+                        elif not destination.exists():
+                            errors.append(f"Broken local link in {name}: {target}")
     errors.extend(_workflow_errors(root))
     return sorted(set(errors))
 
@@ -256,7 +238,7 @@ def main() -> int:
         for error in errors:
             print(error, file=sys.stderr)
         return 1
-    print("PASS: repository specification and structure. Product implementation/release: NOT_VERIFIED.")
+    print("PASS: repository contracts. Product build, real-work and release evidence are separate gates.")
     return 0
 
 

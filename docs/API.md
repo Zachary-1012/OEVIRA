@@ -44,15 +44,17 @@
 
 ## 十个研究与创作领域的操作合同
 
+文档类操作由后台按目标、材料和明确修改意见执行；客户端提供文件预览、来源核对、业务参数、意见、版本与下载，不以本合同对象字段要求建设完整Office手动编辑器。DOCX/PPTX/XLSX/PDF保持各自原生结构、公式、母版、备注和未选内容；动态HTML交付须有真实数据交互与隔离预览。视频/播客继续由完整媒体编辑消费者操作。以下目标合同不因此升级为当前已实现/运行接口。
+
 编号对应[创作合同](domains/creative.md)。这些工作可独立开始，不强制客户、主体、Campaign或先创建分析工作。
 
 | 领域 | 专业输入/定位 | 操作和可继续结果 | 跨领域保全 |
 |---|---|---|---|
 | 1 研究与分析 | 问题、材料/来源版、页段表时码、计算变量、适用期间 | 阅读/检索/并读、引证/反证、专业计算和研究写作；主张保依据、方法、区间和不确定性 | 更正定位受影响主张/段落/导出；没有AI仍可读、算、写和导出 |
 | 2 原创与跨媒介 | 受众、事实/禁用主张、品牌口径、创意意图、Persona及Topic/Series/Post/Campaign关联 | 构思、路线比较、叙事与完整内容、跨媒介/语言变体、局部修订；输出可编辑创作对象 | 事实主稿与创意表达分别版本化；父层更改不能无差别重生成全部变体 |
-| 3 文稿/Word | 原件版、结构/样式、段落/表/引用/批注/修订锚点 | 原创及原稿编辑、精确修改、布局/批注/修订处理、原生文件往返 | 未选样式、页眉脚、媒体与备注等按完整合同保全；不能降为纯文本再导出 |
-| 4 演示/PPT | 原件版、幻灯片稳定ID、对象ID/属性、母版/主题/媒体及备注 | 新建完整演示、指定对象编辑、布局/图表/媒体/动画、评论修订及原生往返 | 页序/对象/母版关系保全；仅用页码和新字符串不足以表达完整专业编辑 |
-| 5 工作簿 | 工作簿/工作表/区域/表/命名范围、公式与缓存值、口径与计算环境 | 表格编辑/清洗、公式/图表/透视、参数情景、重算及原生交付 | 公式文本与结果分开，未重算/不支持函数明确；不能用缓存或CSV冒完整工作簿 |
+| 3 文稿/Word | 原件版、结构/样式、段落/表/引用/批注/修订锚点 | 原创写作与文稿编辑；系统生成或按意见精确改版、布局/批注/修订保全、预览/检查/下载、原生文件往返 | 未选样式、页眉脚、媒体与备注等按完整合同保全；不能降为纯文本再导出 |
+| 4 演示/PPT | 原件版、幻灯片稳定ID、对象ID/属性、母版/主题/媒体及备注 | 系统生成完整演示、按意见限定对象改版、布局/图表/媒体/动画与备注保全、预览/检查/下载及原生往返 | 页序/对象/母版关系保全；仅用页码和新字符串不足以表达完整专业改版 |
+| 5 工作簿 | 工作簿/工作表/区域/表/命名范围、公式与缓存值、口径与计算环境 | 系统生成或按意见改版工作簿、清洗、公式/图表/透视、参数情景、重算、预览/下载及原生交付 | 公式文本与结果分开，未重算/不支持函数明确；不能用缓存或CSV冒完整工作簿 |
 | 6 PDF | 原件、页坐标系/旋转、文本/图像位置、批注及出处 | 阅读、检索、比对、批注、终稿检查与导出 | 批注版和原件分开；扫描OCR不冒原生文字，改稿应回到可编辑来源或明确新文档版 |
 | 7 视频全生产 | 素材/代理/原片、脚本/分镜/take、媒体时基、轨道/片段/复合对象、色彩/声音/字幕 | 导入/整理、粗精剪、多轨/多机位、合成/调色/音频/字幕、预览渲染、工程交换和成片 | 代理编辑映回原片；时间线重排保源时间和关联字幕/声音；完整工程及依赖与成片分别交付 |
 | 8 播客全生产 | 前采/脚本/录音/take、多轨/说话人、源时间、编辑决定、响度目标、章节/转写 | 录制、选段/剪辑、修复/混音/自动化、章节/节目包装、工程与多规格母版 | 文本校对不自行重新配音；编辑时间与源时间保映射，章节/字幕/转写跟随真实剪辑 |
@@ -97,7 +99,7 @@ Job按架构的实际状态、权威运行端世代、attempt/lease generation�
 
 以下保留原本地基础协议，供复用和兼容核对；它不是全产品实现清单。现有 `server/oevira/api.py` 与 `app/lib/src/api.dart`、`models.dart` 已有Work/Material/Job/文本Artifact消费者；`office_api.py`、`monitoring.py` 含独立的PPT修订与监测接口。静态源码存在不等运行或专业验收，未提交成果也不自动算线上发布。迁入时在这些实际消费者上接完整对象，不用“以后再接”掩盖前端仍只有文本。
 
-已核的具体兼容点：`ArtifactItem`只显式承载body/citations/inputSnapshot，专业对象类型与选区须扩到其实际编辑消费者；`ApiClient.exportArtifact`目前只识别DOCX/Markdown文件名和MIME，必须同步所有已支持格式；PPT修订的`base_version/allowed_slides/changes`与监测的规则版/逐源检查可复用其边界，但不能代表完整Office和语义事件能力。旧训练审阅只接CTH/ZBMP而另一训练预检接受Shared的范围差异，按智能合同统一到同一工作空间/客户/专业任务，不再由旧领域字符串挡住独立创作。
+已核的具体兼容点：`ArtifactItem`只显式承载body/citations/inputSnapshot，专业对象类型与选区须扩到其实际编辑消费者；`ApiClient.exportArtifact`已按服务端同一格式集合`md/docx/pptx/xlsx/pdf/html`处理文件名和MIME（`app/lib/src/api.dart:1886`、`:1989–1994`；服务端`server/oevira/api.py:1354`），新增格式须两端同改；PPT修订的`base_version/allowed_slides/changes`与监测的规则版/逐源检查可复用其边界，但不能代表完整Office和语义事件能力。旧训练审阅只接CTH/ZBMP而另一训练预检接受Shared的范围差异，按智能合同统一到同一工作空间/客户/专业任务，不再由旧领域字符串挡住独立创作。
 
 ### Local foundation wire format
 
@@ -108,7 +110,7 @@ Dates are UTC ISO-8601. IDs are opaque. Unknown values remain null with a reason
 ### Session and transport
 
 The local core serves the Web build and `/api` on the same loopback origin
-(`http://127.0.0.1:8317` by default). It validates Host and Origin; no wildcard
+(`http://127.0.0.1:8317` by default, matching `scripts/start.ps1` and `app/lib/src/platform/launch_context_io.dart`; `-Port` selects another loopback port, as the 8329 development run did). It validates Host and Origin; no wildcard
 CORS or implicit access to the user's personal browser profiles is permitted.
 The launcher creates a short-lived, single-use local capability in its protected
 data root. Web receives it in a fragment, clears the fragment immediately, then
@@ -125,6 +127,63 @@ No capability or session value is written to diagnostics or committed evidence.
   and sets an HttpOnly SameSite=Strict session cookie. The token supports the
   native client and is never placed in a URL or localStorage.
 - `GET /api/session`: authenticated user/workspace; does not return the token.
+
+### Account lifecycle routes
+
+Account operations use the same `users`, `sessions`, `memberships` and Store
+as the local workspace. Success remains `{data:...}` and errors remain the
+common error envelope. The current app factory injects email delivery only
+when explicit SMTP environment settings are complete. It uses STARTTLS by
+default or implicit TLS when configured; cleartext SMTP is accepted only for a
+loopback test relay. `OEVIRA_PUBLIC_BASE_URL` is required to create clickable
+workspace invitation links. An SMTP `250` acceptance means the transport
+accepted the message, not that the recipient's inbox received it. The local
+API binds loopback only; a public OAuth callback/deployment is not enabled by
+setting a public URL alone. `GET /api/account/capabilities` is the availability
+source; missing mail or callback configuration is reported unavailable, never
+replaced by a test-only mailer or client-only OAuth success.
+
+SMTP settings read by `create_app` are `OEVIRA_SMTP_HOST`, `OEVIRA_SMTP_PORT`,
+`OEVIRA_SMTP_FROM`, optional `OEVIRA_SMTP_USERNAME` and
+`OEVIRA_SMTP_PASSWORD` (both or neither), `OEVIRA_SMTP_SECURITY` (`starttls`,
+`tls`, or loopback-only `none`), and optional `OEVIRA_SMTP_FROM_NAME`.
+Google/Apple server values use `OEVIRA_GOOGLE_CLIENT_ID`,
+`OEVIRA_GOOGLE_CLIENT_SECRET`, `OEVIRA_GOOGLE_REDIRECT_URI` and the matching
+`OEVIRA_APPLE_*` values. Provider callback URLs must exactly equal the product
+base URL plus `/api/account/oauth/{provider}/callback`; Apple additionally
+requires a public HTTPS domain. These settings are read from the process
+environment by the normal launcher; secrets are not returned by capabilities.
+
+| Route | Access | Input/result |
+|---|---|---|
+| `GET /api/account/capabilities` | Anonymous; an included valid session is read | Reports email, OAuth, export and deletion availability. |
+| `POST /api/account/email/register` | Anonymous | `{email,display_name?,password?}` → accepted-if-eligible plus one-time `reference`, masked address, `expires_at`, `resend_at`; code is delivered only by configured mail. |
+| `POST /api/account/email/verify` | Anonymous or existing local session | `{reference,code}` → `email_verified`; it confirms registration but does not silently create a product session. |
+| `POST /api/account/email/login/request` | Anonymous | `{email}` → uniform accepted-if-eligible response, regardless of account existence. |
+| `POST /api/account/email/login/complete` | Anonymous or local session | `{reference,code,workspace_id?}` → authenticated session or an expiring workspace-selection challenge. A current local session produces a 10-minute local-data choice preview plus a transient local return session, so the user can finish active local operations before choosing. |
+| `POST /api/account/password/login` | Anonymous or local session | `{email,password,workspace_id?}` → authenticated session or workspace-selection challenge. A current local session receives the same explicit local-data choice. Email equality does not bind an OAuth identity. |
+| `POST /api/account/password/reset/request`, `POST /api/account/password/reset/complete` | Anonymous | Request uses `{email}`; completion uses `{reference,code,new_password}`. |
+| `POST /api/account/oauth/{google\|apple}/start`, `POST /api/account/oauth/{google\|apple}/complete`, `GET/POST /api/account/oauth/{google\|apple}/callback` | Start/complete may begin without a product session; linking requires the current valid session; callback is bound to the configured provider URL and a pending state | Start uses `{code_verifier,intent}`; callback accepts the provider's GET query or form POST and returns only `code/state` (or a normalized error) in the product URL fragment. The Web client keeps the PKCE verifier in tab-scoped session storage, removes callback values from the URL, and completes using `{code,state,code_verifier}`. Provider claims are locally verified; matching email never merges or links accounts automatically. Native callback consumers are not enabled. Completing from a current local session returns the same explicit local-data choice. |
+| `POST /api/account/local-data/preview`, `POST /api/account/local-data/choice` | Account session bound to the choice | Preview uses `{reference}`. Choice uses `{reference,choice}` where choice is `keep_separate` or `merge_local_data`; merge repeats all conflict/CAS/ownership checks inside the transaction. `keep_separate` returns a transient local return-session token without adding an account workspace membership. |
+| `GET/PATCH /api/account/preferences` | Account session | Model-improvement consent is versioned; update uses `{model_improvement_consent,expected_version}` and reports `training_started:false`. |
+| `GET /api/account/login-methods`, `GET /api/account/sessions` | Account session | Returns current login-method state and the caller's active sessions without credentials or token hashes. |
+| `GET /api/account/workspaces`, `POST /api/account/workspaces/{workspace_id}/switch`, `GET /api/account/workspaces/{workspace_id}/members` | Account session with active membership in the selected workspace | Lists accessible workspaces and active members by display name/role/join time. Switching revokes the current workspace session and issues a session for another existing active membership; it never moves data or grants a new membership. |
+| `GET /api/account/workspaces/{workspace_id}/invitations` | Active workspace owner | Lists invitation IDs, recipient email, requested role, delivery state and expiry; never returns the secret invitation token. |
+| `POST /api/account/workspaces/{workspace_id}/invitations`, `POST /api/account/workspaces/{workspace_id}/invitations/{invitation_id}/resend`, `DELETE /api/account/workspaces/{workspace_id}/invitations/{invitation_id}` | Active workspace owner; SMTP and product URL must be configured | Create uses `{email,role}` with assignable roles `editor` or `viewer`; owner status is granted only by explicit transfer. A transport-accepted invitation returns `delivery_semantics=smtp_accepted_not_proof_of_inbox_delivery`; an unknown send outcome stays explicit and requires owner inspection/rotation. Resend invalidates the previous token first. |
+| `POST /api/account/invitations/preview`, `POST /api/account/invitations/accept` | Preview is token-bound and anonymous; acceptance requires a signed-in account with a verified matching email | Preview uses `{token}` and returns workspace name, masked invited email, requested role and expiry without consuming the invitation. The email link opens the product and preserves intent through sign-in. Acceptance also uses `{token}`, consumes it and creates/reactivates a row in existing `memberships`; the user must explicitly accept and same-email login methods are never auto-linked. Returns a session in the joined workspace. |
+| `PATCH /api/account/workspaces/{workspace_id}/members/{user_id}`, `POST /api/account/workspaces/{workspace_id}/owner-transfer` | Active workspace owner | Role changes carry `expected_role` for CAS. Owner transfer carries `expected_owner_user_id` and `new_owner_user_id`; the previous owner becomes editor. The last active owner cannot be removed/demoted. |
+| `DELETE /api/account/workspaces/{workspace_id}/members/{user_id}`, `POST /api/account/workspaces/{workspace_id}/leave` | Owner removes a member; a user leaves their own membership | Deactivates membership, revokes only that user's sessions in this workspace, invalidates in-flight job leases, pauses their monitoring and closes/scrubs their browser sessions. Legal works/versions are preserved. A last owner must transfer ownership first; if a non-owner leaves their last workspace, a new empty personal workspace keeps the account usable without moving old data. |
+| `POST /api/account/exports`, `GET /api/account/exports/{id}/download` | Recent-auth account session to create; same account to download | Creates a ZIP of account-owned records/files in member workspaces. Download checks owner, expiry, exact size and SHA-256; links expire after 24 hours. Secrets and external browser authorization state are excluded. |
+| `POST /api/account/deletion/request`, `POST /api/account/deletion/confirm`, `GET /api/account/deletion/status`, `POST /api/account/deletion/cancel/request`, `POST /api/account/deletion/cancel` | Request/confirmation/status use an account session and email proof; cancellation request/completion can recover a scheduled account | Requires a completed export and a clean owner handoff preflight. Last workspace/commission owner, active browser/recording operation or unfinished upload blocks scheduling with a precise resolution. Confirmation revokes sessions, stops lease-fenced writes, pauses owned monitoring and clears saved browser auth state. After 30 days Worker removes private workspaces and transfers shared current ownership to surviving owners; historical authors keep separate opaque IDs with an anonymous display name. Public Publication/Release source content and version copies are withdrawn/erased under SPEC §20.4. |
+
+Account challenge references are random, single-use and purpose-bound. Codes
+are salted hashes with server-side expiration, resend cooldown, request and
+attempt limits. Incorrect code returns `INVALID_VERIFICATION_CODE`; an
+expired code returns `VERIFICATION_CODE_EXPIRED`; resend cooldown/rate limits
+return `429`. On anonymous account routes an expired cookie is treated as
+anonymous and cleared so login cannot become a redirect loop. An explicitly
+invalid Bearer token remains `401`; public community routes continue to
+authenticate every supplied session so private/team reads are not downgraded.
 
 All following routes require a valid cookie or Bearer session and derive
 workspace authorization on the server. Another workspace's IDs return 404.
@@ -172,6 +231,52 @@ automatically retried through an account or browser. Known access rules and
 public-network destination checks apply to every request and redirect.
 Progress is measured work, never decorative percentages.
 
+Comparison accepts two or more distinct authorized materials without the old
+10/20-material or 500-citation ceilings. Database reads are batched without
+changing input order. Processing budgets remain explicit: an over-budget task
+keeps its selection and reports the actual input size rather than publishing a
+truncated result. Evidence matching reports omitted hits separately from the
+candidate analysis; it does not claim those omitted excerpts were analyzed.
+
+### Subject directory and monitoring binding
+
+`GET/POST /api/business/subjects` lists or creates `brand`/`company` subjects;
+names are at most 200 characters. Creation returns `{subject,possible_matches,replayed}`.
+`GET /api/business/subjects/{id}` returns the subject with `evidence` and
+`relationships`; evidence text is `source.excerpt`. PATCH/DELETE and POST
+`/{id}/restore` use `base_version`. Evidence and relationship endpoints attach
+exact source/identity/time objects, not a third subject type. Same names are
+candidates for review, not implicit merges. Removal preserves history; re-add
+requires fresh review.
+
+Monitoring configuration accepts nullable `subject_id`. An explicit binding
+must resolve in the current workspace; free-text scope never creates one.
+Removing a bound subject pauses the corresponding rules and stops their new
+execution transactionally, preserving already acquired materials and history.
+Re-adding a subject does not resume its monitors without an explicit action.
+Existing unbound monitors remain valid during the additive v4-to-v5 migration.
+
+### CTH Cases and shared source observations
+
+| Method / path | Input | Returned data |
+| --- | --- | --- |
+| GET `/api/business/cases` | optional `state=open|closed|all`, `subject_id` | Workspace-scoped Case records |
+| POST `/api/business/cases` | `{subject_id,submission_id,title,question,source_refs:[{material_id,source_native_id?}]}` + `Idempotency-Key` | New open Case, exact saved source Material references, review state |
+| GET `/api/business/cases/{id}` | — | Case, active Subject link, saved source references, provenance and current review state |
+| GET `/api/business/cases/{id}/versions` | — | Immutable Case snapshots |
+| PATCH `/api/business/cases/{id}` | `{base_version,title?,question?}` | New Case version; stale writes return 409 |
+| GET `/api/business/relationships` | — | Unique relationship edges in the current workspace |
+| GET `/api/business/subjects/{id}/metric-observations` | — | Metric history associated with that Subject |
+| GET `/api/business/materials/{id}/metric-observations` | — | Metric history associated with that Material |
+
+Case state, source review, Subject identity review and historical creation receipts
+are separate. A historical `app_evidence_records` Case-creation receipt is not a
+business-fact Evidence item; source Materials remain independently addressable.
+`has_tenant` retains venue/company-to-brand-or-merchant direction. Merchant literals
+remain candidates; `market_activity` is a market-level observation and does not
+establish current China operations. Incoming and outgoing Subject views refer to
+the same stored edge, while the workspace relationship route returns each edge once.
+
 The deterministic comparison preserves excerpts, dates, numbers and source scope.
 Matching is not semantic verification, contradiction proof or an AI answer.
 Users can change comparison criteria or remove materials and create a new result.
@@ -187,7 +292,7 @@ inputs remain distinguishable from a successfully searched input with no match.
 | GET `/api/artifacts/{id}` | optional `version=n` | Selected immutable version and history |
 | POST `/api/artifacts/{id}/versions` | `{base_version,title,body,citations}` | New version |
 | POST `/api/artifacts/{id}/restore` | `{base_version,restore_version}` | New version based on history |
-| POST `/api/artifacts/{id}/exports` | `{version,format:"md"|"docx"}` + `Idempotency-Key` | Export with authenticated `download_url` |
+| POST `/api/artifacts/{id}/exports` | `{version,format:"md"|"docx"|"pptx"|"xlsx"|"pdf"|"html",audience?:"internal"|"client"}` + `Idempotency-Key` | Export with authenticated `download_url` |
 | GET `/api/exports/{id}/file` | — | Actual validated export bytes |
 
 Artifact fields: `id,title,body,version,versions:[{version,created_at,revision_note}],citations,work_id,input_snapshot,created_at,updated_at`.
@@ -201,29 +306,107 @@ history. A repeated idempotency key with different input returns 409; a complete
 request returns its persisted result. File writes, DB metadata and job completion
 must survive interrupted execution without silently creating duplicate results.
 
+### Word original-file revision
+
+GET `/api/materials/{id}/document` inspects body/table paragraphs without
+rewriting the source. POST `/{id}/document-revisions` accepts
+`{title?,work_id?,revision_note?,changes:[{object_id,before,after}]}` and an
+Idempotency-Key. It returns `{artifact,document}` with real DOCX download data.
+GET `/api/artifacts/{id}/document?version=n` opens a saved revision; POST
+`/{id}/document-revisions` requires `base_version`. Document object IDs bind to
+the exact file hash and structural location, so edits from a different source
+version cannot silently target another paragraph. The unchanged text retains
+its original run styling, and unselected objects and package parts are preserved.
+Unsupported structures stay read-only; signed files reject edits that would
+invalidate their signature. These are backend file-processing operations for automatic generation and
+requested revisions, not a requirement for a complete manual Office editor.
+
+The client preserves an uncertain save's exact request and idempotency key
+before retrying, including across reopening. An explicit rejection permits
+correction; a lost response is not evidence that the first write failed.
+Downloads use authenticated `/api/document-exports/{id}/file` and return real
+DOCX bytes. Generic text editing must not rewrite a document-backed Artifact.
+
 Markdown/DOCX are the first result delivery bindings, not the full document or
 media scope. Office object editing, PDF annotation, video, podcast, acquisition,
 monitoring and AI use the same authorization and version foundations as their
 corresponding implementations are connected. No empty endpoint represents them.
 
+## Media语音生成与转写接口
+
+以下Media接口已由同一Media owner注册并使用workspace身份、现有Material上传和版本链；接口成功不等于语种质量或来源权利通过。
+
+| 路由 | 请求与真实行为 | 保存、限制与失败 |
+|---|---|---|
+| `GET /api/media/speech/capabilities` | 返回本机实际可执行的Flite/eSpeak voice、语言映射和Whisper CPU运行时版本/哈希；缺件/不匹配显示不可用，不下载、不联网回退 | 声音自然度/发音、ASR准确率与词级时间精度均单独评估，不从voice清单推导质量 |
+| `POST /api/media/speech/synthesize` | `{engine?:"ffmpeg_libflite"|"espeak_ng", text, language, voice}`；按明确引擎/语言/voice生成完整合成WAV和来源声明。Flite现限ASCII英文；eSpeak接受运行时真实列出的voice；两者保真实原文、引擎/voice和合成标志 | 不改项目、不建Material、不发布；客户端以原`POST /api/uploads`分块写入Material，再显式调用项目`sources`添加。同一文件后续保存有Material SHA和WAV内嵌声明； rights待核、synthetic、非本人克隆，长度超限整体拒绝不截断 |
+| `POST /api/media/projects/{project_id}/transcriptions` | 请求`version/source_asset_id/audio_stream_index/audio_channel_index/task`及可选`language_hint`，并带`Idempotency-Key`。冻结输入来源/哈希/单一源声道/音流/任务，进入同一Worker Job；仅当前打开版本可创建 | 不改音频；Whisper base在CPU本地以30秒块与1.5秒上下文生成未审阅候选，持久化各完成块。已检测PTS缺口/重叠则该次转写失败，源和工程保持不变 |
+| `GET /api/media/transcriptions/{id}?word_offset=&word_limit=`；`POST /api/media/transcriptions/{id}/resume` | 分页读取源SHA/声道/源样本范围/PTS时基、候选文本/估计词界、模型版本及任务状态；只对cancelled/interrupted任务允许resume | 候选默认`review_state=unreviewed`并注明词界估计、质量NOT_EVALUATED；恢复保留已完成块，从最后完整块续做 |
+| `POST /api/media/projects/{project_id}/transcriptions/{id}/adopt` | `{base_version, word_corrections?, words?, review_state?}`；同一project当前版本CAS。`word_corrections`按候选`word_id`只改文字/样本范围；若提交`words`，须保留完整候选的有序ID集合 | 仅采用时写入新的可撤销Timeline版；旧素材/音频未改。实际word-cut必须另行选确切片段/词实例并调用`word-cut-previews`；translate结果不作为源词时间切音频。 |
+
+转写`task`为`transcribe`或`translate`；language hint使用Whisper语言代码。`audio_channel_index`必选，立体声/多声道不折叠求平均。对流内非连续包PTS目前明确拒绝，避免扁平化后错误映射；该限制不阻止原件播放、人工对齐或手工剪辑。产品取消使用现有`POST /api/jobs/{job_id}/cancel`，不得用HTTP请求超时推断Job失败。
+
 ## 作品发布、模板与经验协议
 
-以下是目标专业合同，实际HTTP路由与实现同次接入；不是当前已经存在的接口清单。沿现有`/api`、服务端身份、Artifact、文件和Job扩展，不复制隔离样机账户/存储。公共无登录读取仅限实际公开release，写操作必须有产品身份与正确作用域；token/Cookie、私稿路径和内部审核备注不出普通响应。
+本节列当前Server注册的社区/发布/media路径及其边界，沿现有Store、身份、Artifact、Material、Media工程和Job工作；不建立第二账户、项目、媒体存储或审核应用。除本节列明的公开读取与公开媒体grant外，接口要求有效产品session并按Workspace/Work/Material当前成员权限授权；任何公开路由仍验证所带Cookie/Bearer，防止过期令牌被降级成公开匿名访问。撤回/过期许可使release及其媒体取用失败。正式公网托管/CDN未配置，release响应固定`delivery=local_review_only`；配置一个URL本身不改变此状态。
 
-| 操作族与建议路由 | 输入/状态 | 实际结果及失败边界 |
+| 当前路由 | 输入与实际结果 | 关键失败与边界 |
 |---|---|---|
-| `POST /api/uploads`；`HEAD/PATCH /api/uploads/{id}`；complete/cancel | kind、目标空间、expected_size/hash、upload_id、offset、块摘要；成员来自服务端 | 持久偏移和同一上传身份；并发/摘要/长度冲突不推进；续传先读偏移；正式采用tus时按其全部适用协议实现，当前自有合同不冒tus兼容 |
-| `POST/PATCH /api/publications`及submit | 源作品版或完成上传、metadata_revision、可见范围、许可/依赖、base_version和幂等意图 | 私有草稿及提交状态；上传/处理完成不公开；客户端不能提交official或审核通过 |
-| moderation/appeal/review | 精确提交版、处理角色、结论/理由与复核父项 | 只读合法提交范围；审核角色不读未提交私稿；改内容/权利后旧决定不能自动沿用 |
-| publish/withdraw/resolve | 精确release候选、有效审核和许可、发布/撤回意图 | 不可变发布版、真实公开读回或待核；超时先查同请求，不重复发布；下架停止索引和新取用 |
-| `GET /api/releases/{id}`及授权media/renditions | 精确release、用途、Range/If-Range及适用清单/分片 | 正确200/206/416与HEAD、媒体MIME/大小/范围；所有派生端点仍核权限，模板原包不能借播放接口绕下载许可 |
-| `POST /api/templates/{id}/instantiate` | template_release、目标Workspace、用途、替换参数、请求身份 | 新私有Artifact/对象映射/来源/许可快照/首版；同请求同输入返回同副本，不改源模板；不兼容依赖具体报告 |
-| template更新/差异 | 原模板版、作者新版、个人稿版及选区 | 三方差异、保人工修改与冲突，不整体覆盖；目标编辑器必须消费专业对象 |
-| experiences创建/修订/提交 | problem、method、steps、conditions、pitfalls、results、evidence、所关联release与父版 | 带出处的可编辑经验和版本；作者陈述/实测/推断/未知分开，不自动入训练 |
-| discovery/creator/collection/queue/comment/report | 按授权/公开范围、查询快照、release、锚点、真实用户意图分页 | 不泄私域，不把收藏当授权；评论/播放计数有定义，拒绝伪造指标；举报不自动删除原件 |
+| `GET /api/community/capabilities`；`GET /api/community/media/sources` | capability报告审核/精选角色及`delivery=local_review_only`、ffprobe状态；媒体来源返回当前session可读的Material、Media工程、已完成render和可读字幕/章节sidecar，不返回服务端文件路径 | capability不是托管/审核质量证明；源权限在创建、读/写、审核、range读取时再次核对；不可读原件/旧工程源明确返回不可用 |
+| `GET /api/publications`、`GET /api/publications/{id}`；`POST /api/publications`；`PATCH /api/publications/{id}` | 私有列表/精确草稿版本。创建支持`artifact_id/artifact_version`，或`source_kind=media_material|media_render|media_project`及精确`source_id/source_version/media_selection`。种类为`work/template/experience`，范围为`private/team/unlisted/public`；媒体manifest只从已保存原件/完成render/工程版生成 | 客户端不能设置official、review或approved；私有输入快照不复制到release；本机路径、原Material/Artifact ID只在获准私有响应中存在；可见范围改变不自行发布 |
+| `POST /api/publications/{id}/media-source-revisions` | 只允许Media template草稿/驳回稿使用更高的同项目确切Media版；提交`base_version/source_version/media_selection/content`，由服务端重建槽、依赖和媒体manifest，重新检查精确权利 | 并发修改返回版冲突；不接受客户端伪造的`media/template`快照；提交或已审核版本须先按正常状态流程重开草稿，不沿用旧审核 |
+| `POST /api/publications/{id}/submit`、`GET /api/moderation/submissions`、`GET /api/moderation/submissions/{id}/media/{member}`、`POST /api/publications/{id}/review` | submit带精确`base_version`和`preview_acknowledged=true`；审核队列只给服务端审核角色已提交快照/媒体成员；结论`approved/rejected`加理由和确切版；媒体预览只读提交版中的所选成员 | 上传不等已审核或公开；作者不能审核自身提交；修改内容、媒体、依赖或权利后旧审核无效；队列不暴露源Material ID、文件路径及私有输入 |
+| `POST /api/publications/{id}/publish`；`POST /api/publications/{id}/withdraw`；`POST /api/publications/{id}/appeals` | publish带已批准精确`base_version/review_id`和`Idempotency-Key`；发布新不可变release并撤回同一publication旧release；withdraw立即撤销新取用；appeal关联具体review及理由 | 同键异输入冲突；下架停止Discovery/新媒体grant；SMTP/公开托管未配置不产生虚构外部效果 |
+| `GET /api/discovery?q=&kind=&order=&before=`；`GET /api/creators/{id}`；`GET /api/community/follows`；`POST /api/creators/{id}/follow` | Discovery支持`latest/following/featured`，limit为1–100，返回`next_cursor/order/explanation`；featured须有明确审核角色/原因/排序窗口。创作者名来自公开署名而非账户邮箱/姓名；follow输入`{follow: bool}` | following需登录；featured不是热度或成效统计；release需当前public、许可有效且未撤回；无发布的创作者页不可枚举 |
+| `POST /api/releases/{id}/items`；`GET /api/community/items` | `kind=collection|queue`、非负`position`、可选有限`progress_seconds`；续播位置仅适用于有确切时长的媒体并须在programme duration内；返回当前可访问release或`availability=unavailable` | 非媒体/时长未知不得伪造进度；撤回后保存项保留为不可用，不绕过release权限 |
+| `GET/POST /api/releases/{id}/comments`；`POST /api/releases/{id}/reports`；`GET /api/moderation/reports`；`POST /api/moderation/reports/{id}/resolve` | 文本评论可锚精确UTF-8正文区间；媒体评论锚`member_id/start_ms/end_ms`。举报需`Idempotency-Key`及用户理由；审核报告仅能dismiss或withdraw_release并写理由 | 评论/举报身份为不含联系信息的内部UUID；举报不自动证明或删除内容；每用户每日20条限频，report state冲突需刷新审核队列 |
+| `POST /api/moderation/releases/{id}/feature`；`DELETE /api/moderation/releases/{id}/feature` | 审核角色按理由、rank 1–10000、时区明确的`starts_at/expires_at`作手工精选；可撤销 | 仅当前有效public release可精选；精选排序不使用伪造播放/收藏/效果数 |
+| `POST /api/templates/{release}/instantiate` | 文档模板接受工作、用途及slot参数，生成新私有Artifact；`oevira-media-template/1`接受用途和每个公开slot ID到授权Material ID的替换映射，可选Work/title，生成真实MediaProject初版 | 源发布必须当前可取用且适用许可允许改作/用途；替换媒体须匹配kind、流数和工程实际使用时长；精确幂等重放返回同一私有副本；撤回后不创建新副本 |
+| `POST /api/media/projects/{id}/template-updates/preview`；`POST /api/media/projects/{id}/template-updates/apply` | preview带私有项目`base_version`和同一Publication lineage的更新release；返回`preview_hash/changes/conflicts/required_source_replacements`。apply带同hash、逐冲突`keep_current/take_template`、可选新slot映射及幂等键 | 更新release与Media源版本都须高于现有血缘；base/hash过期或有未解决冲突拒绝；CAS失败不写入；按稳定对象键三方合并并保留用户手改 |
+| `POST /api/releases/{id}/media/{member}/playback`；`GET/HEAD /api/community/media/streams/{token}` | grant指定`purpose=view|download`和可选share token；返回仅用10分钟的内部stream URL；文件流支持HTTP Range/HEAD、正确MIME、ETag、Content-Range、`Accept-Ranges`及`no-store`。字幕/章节也是各自有权利检查的release成员 | private/team流每个Range请求重核当前session/成员；过期/撤回/许可失效令牌404/拒绝；当前没有HLS分片、CDN或正式公网托管，接口返回local_review_only，不等于长时、多码率、并发/外网分发已验收 |
 
-Upload、media processing、moderation、publication和private editing各有独立状态。发布version不能替代源Artifact版本，改公开标题也须按元数据版CAS。PrivateWorkRef不随公共响应泄漏；SourceRevision与公开回链仅在权利允许范围展示。
+`experience`内容的`experience`字段精确保留`problem/mechanism/steps/conditions/counterexamples/results/limitations/evidence/claim_type`；step至少一条，非`unknown`结果主张必须带evidence。响应明确`independent_validation=not_established_by_publication`及`training_eligibility=not_granted`。作品、模板、经验均使用同一私有Publication状态机/审核/release，不把作者报告、观察、推断和未知互相改写。
 
-媒体声明与实际检测分开；Rendition包含源revision、recipe版本、尺寸/编码/声道/字幕、manifest及成员校验、readiness。TemplateManifest包含kind/schema、EditableGraph、ReplacementSlot、DependencyManifest、LicenseSnapshot；许可记录观看/下载/改作/商用/再分发/署名/有效期，训练独立。普通保存/编辑不因此增加重复批准，真正公开和外部效果仍由精确意图约束。
+每个发布依赖以精确ID/version/SHA、included与单独view/download/adapt/commercial/redistribute/training/attribution/expiry记录权利；媒体真实流探测/章节/字幕边界复核，依赖必须与分发成员用途相符。公开视频API匿名响应把依赖ID映射为`dependency-N`，去除服务端路径、Work/Material ID、原稿输入快照和工程原manifest。Media-template公开graph仅含槽ID、需求约束、时间线结构、可编辑章节/字幕/效果和替换说明，不携带原始媒体字节/源ID；私有原manifest仅为准确审查保留，账号删除时擦除源信息并保留收件人的合法Media副本、许可快照和更新时间记录。
 
-协议研究来源：tus https://tus.io/protocols/resumable-upload 只指导明确采用的续传行为；HTTP范围读取按 https://www.rfc-editor.org/rfc/rfc9110.html 。采用协议名、HEAD/PATCH方法或状态码不是完整互通/安全/容量证明，客户端与服务端版本及负向测试必须对应。
+上传仍使用现有`/api/uploads`分块偏移/摘要/完成协议，不声称tus互通。当前本地测试已验证有界WAV上传、许可检查、Range 206、VTT/章节读取、Source-version CAS、模板复制、用户冲突保留、源撤回后精确重放及账号删除后合法副本/许可保全；这不能代替正式公开托管、HLS/自适应码率/长媒体压力、多浏览器解码或独立内容审核质量验收。HTTP范围读取遵[ RFC 9110](https://www.rfc-editor.org/rfc/rfc9110.html)。
+
+## 浏览承载、来源读取与监测的统一协议
+
+浏览仍由 `browser.py / browser_api.py` 的同一 BrowserSession、权限、受保护状态和 Material 保存操作拥有。默认引擎为 Chrome；每个会话拥有独立 Chrome 进程和非持久 context，跨用户不共享进程音频。Windows 宿主嵌入该会话的真实窗口，Web 宿主通过 WebRTC 传输实际页面画面与输入；不对客户端暴露 CDP 端口，不改写目标站 CSP/DOM，也不以截图轮询代替实时浏览。明确的外部打开动作使用用户的外部浏览器；默认行为留在产品内。
+
+| 接口 | 输入与实际结果 |
+|---|---|
+| `POST /api/browser-sessions/{id}/host/offer` | 当前 `page_id`、CSS viewport 与完整 offer SDP；同一成功 envelope 返回 answer SDP、`host_id`。信令沿当前认证，实时通道持续重核会话/工作/客户权限；不配置外部 STUN/TURN 服务。 |
+| `POST .../host/native`、`POST .../host/{host_id}/heartbeat`、`POST .../detach` | 本机宿主取得经同会话目标/PID 核定的窗口；心跳返回当前页、标签和事件。隐藏、尺寸调整与关闭宿主不另建会话；正常分离隐藏 Chrome 窗口，继续/恢复仍走原 BrowserSession。 |
+| `GET/POST .../host/tabs` | 读取标签；新增、切换、关闭携带 `base_version` 和 `Idempotency-Key`，提交同一会话的保护状态。 |
+| `POST .../host/{host_id}/uploads`、`POST .../uploads/cancel` | 只接受当前文件选择事件的 `chooser_id` 与用户选定文件字节；取消保原选择，不接受客户端裸路径。 |
+| `GET .../host/{host_id}/downloads/{download_id}`、`POST .../save` | 以会话内下载对象取得实际文件，或通过同一 Material/Work 保存、解析、来源记录和幂等回执承接。部分/失效下载不当成完整文件；成功结果可重开。 |
+| `GET /api/browser-history`、`POST /api/browser-history/clear`、`GET /api/browser-bookmarks` | 用户/工作区私有的安全地址与标题；历史最多 1000 项，清理记录不删除已保存 Material/Work，也不冒清除网站登录。 |
+| `POST /api/browser-sessions/{id}/bookmark`、`DELETE /api/browser-bookmarks/{id}` | 服务端核当前页保存书签；同 URL 去重，删除核书签版本与归属。含临时授权参数的脱敏地址不能伪造可用的登录续接链接。 |
+
+Web 的有序 `input` 通道绑定 `sequence / page_id / page_revision`；鼠标、滚轮、键盘、IME 文本和网页弹窗分别分型。陈旧页面和未知效果不自动重放。网页确认框可保持原点击等待，同时交付事件并接用户明确答复；不默认确认。复制读取当前网页/输入框选区，粘贴接用户本机明确提供的文字，不能读取服务器系统剪贴板。Web 声音来自单一浏览进程的独立音频轨，能力缺失单独返回；画面不签音频成功。Native 宿主服从页面可见性与 `TickerMode`，隐藏时不能盖住产品导航、资料或对话层。
+
+公开 URL 读取继续使用 `acquire_url` 和原共享 Worker。HTML 原始响应与主内容投影分开；RSS/Atom 保逐条来源、作者、原生时间及实际观察到的分页，`entries_truncated / links_truncated` 明示范围。`text_sha256` 是文本投影身份，不是原站原件证明。现有本机代理使用合格数值地址建立隧道；遇网络客户端的合成地址时只向当前系统配置的 DNS 重新核公网地址，仍禁止私网/保留地址和重绑定，不新增 DNS 服务或修改系统配置。HTTPS 沿系统信任链验证，不能关闭证书核验。
+
+监测 `work_id` 与 `follow_source_links` 是不同输入，后者默认关闭。`GET /api/works/{id}/monitor-source-candidates` 仅提供该工作已有资料的可选来源、去重、排除原因与分页；用户选定的 URL 才进入规则。启用后续发现时，仅沿已选来源同站的获准链接/Feed 条目进入同一采集队列，保父资料、来源、规则版与发现时刻；跨站链接不自动扩大范围，预算和截断不冒全站覆盖。来源读取水位与规则评价水位分别持久化，旧规则迟到结果不能吞掉新规则下应复核的变化。变化证据区分新增、删除和改写，保确切前后文本；HTML 字节/空白变化不能单独冒内容变化。`Retry-After` 与实际失败原因沿原 Job 记录保存，下一次允许检查时间可读回；重开后先收取已完成结果再安排新检查，避免重复效果。
+
+## 业务成果、委托和发布的实际核心协议
+
+`business_execution`使用已有Work、Material、Artifact及其不可变版本，不增加第二套业务成果库。`POST /api/works/{id}/business-results`接收`operation`、业务`inputs`及可选`citations/subjects/relationships/tables/title`；每次写入带`Idempotency-Key`。服务端核当前成员和客户委托、资料权限、主体/关系版及文件完整性，冻结输入后在数据库写事务外计算，提交时重核要求与来源。结构化结果的每段有稳定`id/title/body/data`；正文表格和结构化数值同源，现有`/api/artifacts/{id}/exports`按同一格式集合提供Word(docx)、PPT(pptx)、XLSX、PDF、动态HTML及适用时的Markdown(md)。业务成果导出可传`audience:"client"`生成客户视图；缺章节客户正文、待复核客户正文或客户限制清单时拒绝导出，不回退内部正文。客户视图只冻结`client_body`、客户适用限制和逐项明确授权的`client_citations`，不携带内部账本、原始业务快照或私有引用；缺省`internal`保持原行为，幂等键按视图区分。
+
+`GET /api/business/operations`列出当前可调用操作。经营、消费者、财务情景、财报事实/更正/季度选择、策略、媒介、合作、活动排期、实验/归因/增量、事件与服务回应各保自己的输入和结果结构。调用者不得把枚举本身当完整专业能力或要求用户手填算法JSON。保存的CSV/TSV/XLSX可以用`tables`指定材料、工作表、业务字段到源列的映射和已确认的逐行上下文；数值类型明确，缺格为null，全量非空行计数，不因列重排改口径。财报操作只从已授权Material读原字节/原文，成果保存来源hash、事实、位置及采用条件，不把原件字节塞进JSON。
+
+`POST /api/works/{id}/business-jobs`将相同业务请求放入现有Job/Worker。操作返回202及持久Job；读取、取消、失败重试沿现`/api/jobs/{id}`。业务要求版、成员/客户/来源、租约世代及取消状态在提交前再次核对，已保存结果凭同键读回。取消、失租和失败不生成成功成果；数值计算不占数据库长写锁。
+
+`POST /api/business-results/{id}/revisions`使用`base_version`、命名的`input_changes`或`section_edits`。只采用实际变化段；碰到已确认或人工改写的段返回`CONFIRMED_SECTION_AFFECTED`及逐段前后差异，用户明确选择`accept_sections`后才能替换。`confirm_sections`由用户确认，模型不能代签或借采纳参数覆盖人工稿。重放返回原提交的确切版本，不能把历史请求落进后来的用户版本。`/restore`恢复方案内容为新版本，保当前实际行动、费用、退款、服务记录与观察，相关旧批准不自动恢复；普通通用文本保存/恢复不能绕过业务结构。
+
+`POST /api/business-results/{id}/commands`用`Idempotency-Key`接收`base_version`、命名`command`、对象型`payload`及可选精确引用/修订说明；事务内核当前成员、委托、版本与来源后追加同一Artifact的新版本。通用动作含记录选择、计划行动、内部行动决定/撤回、人工记录执行、费用及更正/退款、结果观察、服务履约事件。行动目标、负责人、交付物、前置项与结果依赖保持独立；人工记录明确不等平台回执或产品实际发出。效果未知必须指向原待核记录查回执，不自动重发。费用分原币种、估计/承诺/实支/退款；退款必须指原实支，向下更正实支也重核累计退款。服务回应、承诺、履约、关闭和重开分记录，履约引用真实已存承诺。
+
+`POST /api/business-results/{id}/actions/{action_id}/execute`的`base_version`绑定保存该行动的业务Artifact当前版；`execution.version`独立绑定行动指定导出的源Artifact精确保存版。保存行动会递增行动Artifact版本，因此源版本可以早于计划版本，消费者应按该精确源版读取并复核，不得把“当前行动版不同于文件目标版”判为目标变化。文件Job完成时只代表精确导出字节已生成并有可下载回执，不代表已发送客户。`artifact_export`记录状态`executed`/回执`file_generated`；浏览器已确认输入则是`awaiting_outcome_verification`/`browser_input_delivered`，对方发布、联系或付款仍需独立结果核对；`execution_unknown`不允许盲目重发。文件受众随行动精确保存为`internal`或`client`，失败不降级到内部视图。
+
+`collaboration_plan`还使用同一路由追加完整协作生命周期，动作名为`adopt_collaboration_candidate`、`decline_collaboration_candidate`、`record_collaboration_terms`、`confirm_collaboration_agreement`、`submit_collaboration_deliverable`、`record_collaboration_feedback`、`request_collaboration_revision`、`accept_collaboration_deliverable`、`reject_collaboration_deliverable`、`cancel_collaboration`及`record_collaboration_cost`。`payload`身份引用解析自当前保存的协作候选；候选项目须为当前Work。协议来源与交付来源只能选择同一Work可访问的精确Material SHA-256或Artifact版本。协议确认需精确的当前`creator_collaboration_agreement`批准、完整报价/权益/交付/档期/取消条件和已明确为本协议金额的报价状态；quote或estimate不会由审批自动转成承诺。每次交付提交冻结其`agreement_id`和精确来源；协议变化后旧交付不得按新协议接收，必须在当前协议下提交新版本。已审批接收决定不可改写为返修或拒收；同协议已接收的交付不得重复提交。逐项反馈可关联锚定该提交Artifact版本的原评论，或明确记录为用户输入；返修请求必须指向该提交的反馈。拒收、取消、实支与退款都是保留依据的用户记录，不等外部通知、客户回执、付款或退款成功；只有当前已连接且已授权的原执行渠道才可能产生外部回执。
+
+客户私域由`/api/business/commissions`及其成员、工作绑定维护。委托版本与当前成员角色决定读写；绑定在加入私有内容前完成，不把已含资料的工作静默移入另一客户。主体客观身份仍沿原Business目录；引用客户来源须核目标委托。`/api/artifacts/{id}/comments`锚定确切版本的Unicode原文范围，解决意见须指向实际改版或保不采用理由；`/approvals`绑定精确版本、用途、范围及批准人，真实效果前重核当前版本与批准人资格。
+
+发布API使用同Store的PublicationDraft/Release及审核记录。创建/改版保存用户明确选定的公开内容，私有输入快照不随包复制；提交、审核、明确发布、撤回互不替代。审核角色和官方身份只能由服务端角色授予，审核者只能取已提交选定内容。`/api/discovery`仅列当前公开且许可有效的Release，`/api/releases/{id}`按private/team/unlisted/public及许可重新鉴权。没有配置正式托管时返回`local_review_only`，不能称全网已发布。文稿模板`instantiate`创建新私有Artifact和对象映射，保原许可、取得时点、替换参数与缺依赖；不覆盖原作者或已有改稿。公开经验始终区分作者记录、观察、推断和未知，发布、收藏与复用均不授训练资格。

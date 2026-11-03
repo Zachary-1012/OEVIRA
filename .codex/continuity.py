@@ -43,9 +43,10 @@ def context_for(payload):
                 "audits, change models, delegate visual decisions, create extra systems, "
                 "or weaken any product requirement. "
                 "Prepare executable product capabilities, not endless archive audits. "
-                "Follow the latest report-then-wait development gate and subagent model "
-                "choice in AGENTS.md/.codex/README.md; an older Goal does not override "
-                "the user's newer instruction."
+                "Follow the latest direct user authorization and task-scoped development "
+                "boundary in AGENTS.md/.codex/README.md; an older Goal or historical "
+                "waiting instruction cannot override the user's newer instruction. "
+                "Keep the user's current subagent model choice."
             ),
         }
     }
