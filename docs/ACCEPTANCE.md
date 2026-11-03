@@ -222,7 +222,6 @@ PRODUCT-SPEC.md和DESIGN.md定义的全部实际工作面逐项检查入口、�
 
 按批准的技术栈建立兼容性锁定记录，逐项验证目标 Python、Flask/Waitress、SQLite、Flutter、Astro、Playwright 及文档/PDF处理组件的版本组合、平台支持、许可证、可分发边界和运行环境。开发机当前已安装版本只记为环境观察，不能作为产品兼容性 PASS。干净 Windows/Web 构建、依赖安装、启动、升级和回滚使用同一已验证锁定；变更组件或版本后重跑受影响的安装、文档保全、浏览器隔离和真实用户工作验收。当前锁定记录为`server/requirements.txt`（直接依赖精确版本）与`server/constraints.txt`（Python 3.13传递版本），覆盖文档生成与读取（python-docx、python-pptx、openpyxl、XlsxWriter、reportlab、pdfplumber、lxml）、统计计算（numpy、scipy、pymc、arviz、pytensor、statsmodels、ruptures、networkx）及服务/浏览/实时（Flask、waitress、playwright、aiortc、dnspython、truststore）；这些依赖由PO授权实际开发（t18u）覆盖接入，许可、平台与运行验证完成前不记兼容性PASS，未列入者不安装。
 
-
 ## 22. 26个专业领域的完整签收
 
 下表是逐领域签收入口，不代替对应领域合同的详细条款。B、C、I仅为三份文档章节的缩写，不新增Owner或产品系统。每域同时满足前文共通规则和自身输入、专业处理、操作、消费者、失败、恢复与质量要求；不能仅按“有页面、有接口、有标题”判定完成。
