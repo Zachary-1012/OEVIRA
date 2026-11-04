@@ -441,3 +441,36 @@ Office与PDF部分使用第5节原完整对象合同、C§3–6及下节实际�
 归档`tts_attribution_research_20261018/evidence/01–13`及三份比对/来源收据已完整读附件，主负责人另核完整`07_read_aloud_platform.cpp.txt`和其中Stop/Observe关系。旧`read_aloud_service`278–284以无异常当stop成功；Windows片段103–105忽略原生Speak返回值，直接写STOPPED，251–253又在该状态直接返回而不观察；iOS/macOS摘录未使用stopSpeaking返回值。这里是固定摘录的静态行为，不声称整个平台桥已全文审计或新根已复现。
 
 C§9由同一朗读/媒体会话Owner保原生结果语义、会话/回调代次、实际播放观察及失败恢复，分别核正常停止、已停止、原生失败、观察失败、停止中换稿和迟到旧回调；停止未确认不让新旧声音重叠。系统朗读不等可分发合成音轨或播客制作。旧三locale枚举不取消十二语×八专业任务，完整96格矩阵是历史NOT_RUN，各任务仍需实际语言/素材与适任审阅，不能借UI三语或文本测试签声音质量；Android摘录仅历史研究，不恢复已撤回客户端。
+
+## 2026-11-04：创作研究落实到原生对象、专业制作与交付
+
+C1–C10及横向C11已在各自正文增加“实施确定”，不是文末字段附表；原完整E/P/UX和已核原件仍保。原11段“当前代码现状”分离到本轮既有证据目录，旧声音运行版本及录音缺口明确为历史观察，不作为现行产品上限。
+
+| 本轮重读与确切范围 | 具体落地 | 下游和独立判据 |
+|---|---|---|
+| creative-quality研究1–148，SHA `33799020…` | C1论证与反证；C2事实底稿→有区别机制→可制作稿→跨媒介/语言改写，单件、批次及换品牌的独立检查 | B4预算/策略，Content、Documents、Media；不把18题/48样包当范围或已通过成绩 |
+| timing-interchange1–47，`1471b5c7…`；podcast-timecode1–44，`ec037123…` | C7有理时钟/分段映射/不同剪辑命令、统一预览渲染；C8真实take/词稿/音轨及输出sidecar | API媒体Anchor/ChangePlan、架构同工程图；原生工程与实际交换/宿主读回分别验 |
+| local-TTS研究1–47，`226d4a0b…`；multilingual-quality1–56，`54e763e4…` | C9朗读真实停止/释放、声音类型/许可、12语×8任务的独立错误与质量 | 不升级为新声音克隆或默认外部引擎；原声、字幕、校文和配音结果分别签收 |
+| retrieval-reference1–59，`84a9bf49…`；creator-attribution1–62，`f1a9885f…` | C1精准引用和反证、C10真实效果与原作品/发布版、退款及指标区别 | I5同权限检索与原文核对、B7真实归因，不以语言分数/互动份额签整个作品 |
+| 已有Office原包/源码研究、原专业需求与本轮Microsoft结构/公式文档 | C3/4原包关系和对象sidecar、选区run/group变更；C5公式AST/依赖图/真正重算；C6PDF坐标/父稿映射与HTML同数据交互 | 架构Documents、API类型化锚及改版，验收对象/公式、未选保全、真实呈现和目标宿主；没有恢复完整Office手工编辑器 |
+| 原内容生态与跨成果合同 | C10 RevisionBatch/DeliveryBatch真实成员、C11发布与私有模板实例独立版本/许可 | 评论能打开实际变更，缺依赖/权利/部分失败不全绿；作者更新不覆盖用户稿 |
+
+Microsoft说明只支持各自原生格式语义，OTIO文档只支持时间范围概念；本文的原件保全、求值图和消费者方案是寰意自身设计，不是外部库完整能力认证。四本媒体教材与先前原片研究沿已有阅读边界，未在本轮重报全页/全音轨新读，更不声称已生成合格作品。
+
+## 2026-11-04续读：独立写作、引用、结构、语言和交付的完整方法
+
+本节原件均位于归档的`research/engineering/documentation-evidence/reports/product_research_deadline_20261018/interaction_equivalent_20261017/evidence/`；本轮完整读正文，引用的旧代码、附件和历史Node成绩不自动算本轮核验。实际source hash/完整范围见同一接手证据目录`workflow-source-adoption-20261104.json`。
+
+| 完整原件与范围 | 采用/纠正到现行正文 | 不照搬的原型限制 |
+|---|---|---|
+| MANUSCRIPT_STRUCTURE_DESIGN 1–32 | C2“文稿结构调整…”保AST/原始范围、层级与后代、未选文字/换行、预览父版和撤销资格；空间摆放不改内容结构 | 受限ATX不是完整Markdown；旧262144字节/256标题/原模板不作产品范围；不恢复Office手工排版 |
+| NEXT_JOURNEY_CONTRACT 1–147；SAVED_REPORT_CONTRACT 1–71；SAVED_REPORT_VIEW 1–59 | C1/C2/C10与API：自有空白稿可直接开始；保存快照与持续输入分代，查看旧版不盖草稿，旧内容成为当前父版的新修订；真实读回/导出及取消后已发生写入分别说明 | 不继承local-only ID、独立journal、Shared Header/Owner编号、固定版本数或普通保存一律DATA_EXPORT批准；最小DOM测试不签当前产品 |
+| NEXT_PLANNED_WORKFLOW_AUDIT 1–38；REFERENCE_DRAFT_CONTRACT 1–25 | C1“原文采用…”、API完整性：原文摘录/笔记/来源准入分账；正文与实际来源关系同现有提交边界；缺/损ledger不冒无引用原稿，历史用途不靠删UI行解除 | 不绕旧拒绝scope，不把SHA草稿ID冒Evidence，原研究StageB候选不原封复制为第二存储；当前完整采集/引用/交付义务继续 |
+| CONTENT_LANGUAGE_AND_RESUME_CONTRACT 1–42；CONTENT_SELECTION_ADAPTER 1–5 | C9及API：UTF16/码点/UTF8/字素分开，原文/CRLF/组合与双向控制保真，显示诊断不改原文，适用规则版可追 | 原有界本机切片与三语UI不证明Web续传/十二语质量，不继承旧容量封顶，失败不静默U+FFFD替换 |
+| EXPORT_VERIFICATION_CONTRACT 1–47 | C10“精确交付身份…”与API：源Artifact、draft指纹、输出hash分开；自洽响应不代独立预期/语义，核后字节保不可变，切格式/撤权/晚到回执隔离 | 测试adapter不等生产、下载触发不等磁盘交付；非确定性格式不武断要求不同导出字节相同 |
+| TOPIC_PLANNING_CONTRACT 1–47 | C8十信号规则：原上限90不伪百分比，未知不当零，原始精度与显示舍入区别；嘉宾三判断只约束相应用途，自有稿/音频可直接制作 | 0.16等旧权重和35/75阈值是版本化方法，不成为普适选题收益保证；256/10000合成对照不签专业质量 |
+| CHAPTER_ROUTE、REMAINING_STATE 1–155及RISK_REVIEW 1–11等同批状态研究 | C7/8/C10与DESIGN：原声/章节点/文字分开；恢复不复活媒体句柄，旧风险严重度未知不造，真实对象父版不能由本地分支树替代 | 历史sample索引与新有理时基不混；旧原型branch不自动加入产品版本模型，翻面/收纳不是关闭媒体会话 |
+
+本轮官方补核只读适用内容：CommonMark0.31.2 §3、4.2/4.3定义，Unicode UAX29的版本/引言及字素概念，W3C Selection API2026-06-11工作草案§2的方向/锚/Range关系；未全文审完全部规范或跑一致性测试，不宣称工作草案已成推荐标准，也不因此安装库。采用的是准确源范围与保真方法，实际实现和母语/浏览器体验后续独立验证。
+
+
