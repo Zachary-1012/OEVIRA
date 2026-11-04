@@ -478,3 +478,20 @@ Q原件850–874已全文读；原件称起始挑战/建议，后主规划P5810�
 | T`lumenis_integrated_backend_20261018T0605Z/PR_BODY.md`1–34、`README.md`1–22、`REPORT.md`1–34；T`lumenis_scope_tracking_20261018/README.md`1–90 | 原完整业务/媒体/研究义务、真实同版结果与有效未提交成果保全仍适用；结构/哈希/局部回归不能代语义与用户签收。AGENTS、全部领域合同和ACCEPTANCE承接。旧19组/195G/四表面/20B资源状态不重设当前执行顺序或缩减范围 | 旧2447通过/7失败、0.3秒媒体与500行CSV都只是当时有界证据；所引源码、运行日志、2617行指针附件与全部页面未由本次读正文签全读/全验；新根运行另验 |
 
 **未定位正文的确切边界。** 原`RESEARCH_SOURCE_MANIFEST.json`中17条工程Markdown均`destination=null`、`WITHHELD_PRIVATE_SOURCE_OR_CONTROL`，当前源inventory及归档清单无候选，旧精确目录也不存在。它们是`lumenis_delta_audit_20261018/`下added_tests_supplement_review、backend_findings、changed_tests_complete_review、collector_skills_supplement_review、frontend_requirements_supplement_review、importer_impl_review、kos_permission_complete_diff_review、media_impl_review、runtime_new_owner_review、statistics_impl_review共10个`.md`，以及integrated包`evidence/lumenis_delta_audit_20261018/`下除added_tests、changed_tests、frontend_requirements外7条。17条对应11种原登记字节身份：两份backend_findings不同，其余6对记录相同；只证明登记身份关系，未取得正文不能签读或采用。此分类不是判它们无产品内容，也不取消现有完整要求；没有探测私人会话/凭据。已读18份中的具体方法按上表和其他两矩阵落合同，引用附件、历史代码或运行状态仍按各自确切读证核实。
+
+## 2026-11-04：研究结论已原位进入九个业务条目
+
+本次是规划实际修改，不是又一份待root采纳建议。原矩阵及原件不覆盖；B1–B9每个条目中的“实施确定”已写处理顺序、具体方法、正常结果与反例，API/架构/验收同期承接。原“当前代码现状”九段逐字转存到既有本轮证据目录，未把旧状态当本期实现或能力上限。下表只提供出处与实际落点，不代替条目正文。
+
+| 本轮实读原件与版本 | 原文采用/纠正 | 已写入正式消费者 |
+|---|---|---|
+| search-comparability完整1–38行，SHA256 `917e4731…`；vintage完整1–39，`e83ebefb…` | 查询/市场/窗口/归一化及信息当时可得分开；独立0–100不比较市场份额 | B2同口径处理、B3当时/最新事实视图；API比较/财报结果字段与ACCEPTANCE§24.6 |
+| domain-analysis完整1–150，`6089f2ac…` | 描述、预测、因果与决定分开；单位/样本/真实约束、可逆方案及反证 | B2趋势基线和滚动评价、B3情景、B5合作、B6容量/前置MILP、B7实验、B9决定，不再只列方法名 |
+| financial-source完整1–35，`78e7a973…` | 同事实重复、跨文件context和采购义务更正反例；不让文件级修订改全部事实 | B3事实链/季度/费用/退款，架构Analysis与来源依赖、API类型与验收手算对照 |
+| creator-attribution完整1–62，`f1a9885f…` | 订单命名域、触点事件时钟、信用守恒及退款；互动份额不冒销售归因 | B5合作/费用、B7有条件分摊、B9真实结果；保此前正确源码观察但不重复签当前PASS |
+| 固定库brand-marketing-knowledge-20260903完整1–57，`d2e015a7…`；-17-marketing-calendar-kotler-cook完整1–51，`7f6509cd…` | 框架要改变本案策略/资源，节点看真实地区年份；历史情绪优先、默认乙方、比例/热度不当通则 | B4策略机制及三方表达、B6节点/排程、C2跨媒介制作；不擅改品牌或恢复默认业务角色 |
+| 固定研究收件箱kotler-marketing-theory完整1–46，`f8b3d0d0…` | 原4R取Relevance/Reaction/Relationship/Reward，CDV按TCV−TCC但异量纲不硬加；混合作者归属纠正；Marketing4.0错四A按Wiley原书目录纠正五A，不补重复四I | B4正文的3C/4R/CDV/五A及反例已明确；这是对历史AI网络整理的有据纠正，不把它称Kotler原著全文 |
+| 行业基础01-行业知识与业务方法综合研究完整1–78，`ffd12fca…` | Brief/SOW、交易角色、变更、费用、履约、经营口径、不同商业场景和专业责任；不继承统计摘要/商业保证 | B1/3/4/5/6/8/9与客户交付；现有40方法卡/案例的逐内容义务继续保留，不由本批原件数量封顶 |
+
+SciPy milp官方接口用于已批准数值栈的具体排期路线，时间序列作者教材用于基线/回测边界；本轮未安装、求解或做业务实测。SIT、原40卡、案例、主张与行业资料沿上述已有同版承接继续使用，没有把本轮重读叫全部原研究新读。当前完整文件、SHA、原范围和新落点在同一证据目录的`source-adoption-20261104.json`，私有原件不入Git。
+
