@@ -153,6 +153,14 @@
 
 `MethodInvocation`记录方法ID/配方版、适用条件、实际参数、输入引用、随机性/预算及诊断。它附在已有Analysis/Artifact，不另开算法服务。`AnalysisResult`中结构化值与章节、图表、文件引用同源；格式合格、计算完成、独立专业质量和用户采用分别返回，不能以一个ok包揽。方法撤回后的历史结果保当时依据，但新调用不能继续沿旧资格运行。主题派生操作另保任务用途、分词/完整别名/stop_terms及过滤规则版、计量单位/分母/覆盖；一般主题的可选停用词不能套用到品牌提及、SOV或主体比较，原标题/正文/标签与各派生结果分别可读回。
 
+### 业务算法资格、影响集与明确停止结果
+
+以下字段扩展原MethodInvocation/AnalysisResult，不建立新分析服务。身份候选保candidate_pair、原生标识命名域、comparison_levels、missing/conflict、blocking_paths及model/calibration_revision；有分值但未经概率校准时只返回score，不返回伪probability。候选簇的桥接和相斥证据逐项可见，采用合并仍调用原Business父版命令，不由图连通性触发。
+
+预算请求的scenario_set明确各情景版本、成本/收益原单位、固定费用、锁定承诺、选项组、资源占用、硬约束及objective_mode；非概率情景不接受伪造概率。响应区分solver_status、独立feasibility_check、objective/bound/gap、precision、stop_reason和实际缺口；允许返回已核可行但未证最优，不允许把未找到可行解写成已证不可行。金额与资源由B3/B6同版计算，UI、PPT和XLSX直接消费结果引用。
+
+排期ChangePlan的impact_set每条边声明precedence、resource_competition、shared_budget、delivery_commitment或确切既有依赖，包含生成闭包所用时间域/资源版及边界固定项。锁定不因被纳入影响集自动解除；采用时核全部相关父版及资源世代。对实验另保assignment_unit、planned_probabilities、assigned/exposed/recorded/analyzed计数、成熟期、SRM方法/适用性/结果、固定期或预定K时点的序贯停止设计、总α/检查分配及M个主比较的检验族；诊断不通过仍可返回描述统计，但effect_qualification须明确不能支持何种判断。后续补证生成新分析版，不更改原分配和原交付。
+
 ## 十个研究与创作领域的操作合同
 
 文档类操作由后台按目标、材料和明确修改意见执行；客户端提供文件预览、来源核对、业务参数、意见、版本与下载，不以本合同对象字段要求建设完整Office手动编辑器。DOCX/PPTX/XLSX/PDF保持各自原生结构、公式、母版、备注和未选内容；动态HTML交付须有真实数据交互与隔离预览。视频/播客继续由完整媒体编辑消费者操作。以下目标合同不因此升级为当前已实现/运行接口。
@@ -181,6 +189,14 @@
 媒体命令除父工程版，还保源/实例/轨、source/timeline坐标域、有理时基、剪切/移动/速度/混音等类型和依赖影响。源预览、工程合成预览、A/B候选和最终输出各自有类型、所据版本及范围；预览可读不代表已采用。录音take是稳定素材身份和已落盘分段集合，停止/文件完成/可播放/已入工程分别回执，设备错误不吞掉成功段。
 
 `RevisionBatch`仅协调本次跨对象变更，保存每成员父版/目标/实际新版本或失败，不复制领域状态。`DeliveryBatch`冻结实际文件/工程/媒体成员与共享依赖、用途和检查状态；只有必需成员完成才可标完整，单成员失败可续做。客户意见始终关联所评版、原锚与处置理由；采取修改时另关联实际差异和新对象，不能只改resolved字段。有据不采取或原稿已满足可按创作§10保原版证据关闭意见，准确标未改，不制造新对象或冒已改稿。对外发送、客户接收和发布沿独立授权/效果回执，不由导出完成推断。
+
+### 共享部件、三方合并与媒体交付的具体字段
+
+原ChangePlan增加可核read_set、write_set、shared_usage、copy_map及preserve_invariants；每项含part/object引用、原父版、预期原值或语义指纹及允许变化的字段。copy_map记录原共享part/对象到新私有副本的身份与关系重绑，仅在确有局改隔离需要时生成，不复制整份客户成果。未变part按字节核，变更part的未选使用者按格式语义核，二者不能相互代替。输出包含实际改动、未选保全检查、签名/兼容性变化、原生文件版及独立重开结果；规划字段不冒本轮已实现协议。
+
+三方合并绑定base/current/incoming三份确切版本及object_id/field；冲突保两边值、删除/修改和顺序关系，不能仅行号匹配。跨文件RevisionBatch引用对应ChangePlan及真实依赖，新版本不覆盖锁定稿。模板实例化复用同一copy_map和SourceUse检查，不新增模板专属权限或成果状态机。
+
+媒体交换响应沿原Artifact输出target_profile/adapter_revision、完整输入依赖、逐对象loss_items（exact/approximate/bake_required/unsupported）、时间/声音/效果比较项及实际验证范围。bake_required须绑定用户选择的范围，不自动变成已渲染。分段Job记录owned_output_range、source_required_ranges和全局时基；重叠计算区不在多个成品片段重复输出。Podcast成员附episode_ref、audio_revision、transcript_revision、chapter_revision及对应媒体hash/时长，格式、媒体类型及时间映射保准确；附件版与音频版允许独立变化但必须声明兼容的成品版本。导出包、内发布和外部订阅状态分别返回。
 
 ## 七个系统与智能领域的操作合同
 
@@ -215,6 +231,12 @@ Observation响应分别表达取得状态、source_validity、SourceUse、identi
 `Anchor.offset_unit`声明UTF-16码元、Unicode码点或UTF-8字节；规范服务端文本操作用码点，边界映射取同版原文及明确分段规则。界面字素保护不是自动转换授权，半个代理项/字素和未映射显示文本拒绝该范围操作，保原输入；不静默规范化。完整字段替换与局部范围操作分型，expected原文及父版同时核，不能靠可见diff猜底层提交位置。
 
 `ExportRef`区分源Artifact版本/hash、生成配方/用途、文件身份和实际输出bytes hash；服务端回执和客户端核验对应同一下载对象。验证后的字节到交付阶段保不可变副本或受控独占，客户端选择/权限/格式改变使迟到结果不能冒新导出。响应hash自洽不代独立语义验证，下载请求发出不代磁盘读回或接收方已收到。
+
+### 取得验证、页面读集与原生方法描述
+
+来源回执将checked_at与published/event/observed时点分开；条件取得含representation_key、validator和所复用完整Source版，304不返回伪正文，字段覆盖仍逐数据面保留。Browser动作除现有page/frame/navigation及控制世代，增加只含必要非秘密信息的read_set与expected_postcondition；quote/position锚绑定source_representation和offset_unit。重定位产生新锚与映射状态，多个匹配不能自动取第一个；历史引用继续指原版。
+
+现有能力注册条目补origin_kind（native_method或reviewed_external）、method_revision、legacy_aliases、operation_ref、input_schema/output_schema及完整指纹、effect_class、required_scope、resource_bounds、cancel/recovery语义和acceptance_refs。原生方法绑定B/C/I当前用例，不等待旧包；外部方法另有包字节/来源/许可与隔离资格。operation_ref未接处理器时准确返回不可用，不能生成空success。旧编号、展示名称和包内allowed-tools均不授权限；真实schema/方法/依赖变化使旧批准需重核。参数错误、输入缺失、范围失权、资源超限、效果待核和领域失败沿现有错误信封分型，不另造任务状态机。
 
 ### 通用检索、原生资料与主体消费者的目标合同
 
