@@ -216,6 +216,34 @@ Observation响应分别表达取得状态、source_validity、SourceUse、identi
 
 `ExportRef`区分源Artifact版本/hash、生成配方/用途、文件身份和实际输出bytes hash；服务端回执和客户端核验对应同一下载对象。验证后的字节到交付阶段保不可变副本或受控独占，客户端选择/权限/格式改变使迟到结果不能冒新导出。响应hash自洽不代独立语义验证，下载请求发出不代磁盘读回或接收方已收到。
 
+### 通用检索、原生资料与主体消费者的目标合同
+
+下列字段扩现有retrieval/Acquisition/Browser与Analysis用例；具体接口新增或兼容接线须在实现时连同当前客户端完成，不是本轮运行声明。`POST /api/search`接收同一OperationIntent及query、WorkContext、可选SubjectRef、允许来源集合、业务时区/期间、所需字段/内容、用途、freshness要求和分页/预算；不要求SubjectRef或平台登录永远存在。范围可组合workspace、public、connected及显式browser_targets，不能从空范围推全部私有资料。当前相关工具和聊天调用同一检索用例，不另存聊天专属结果。
+
+响应沿现有成功信封返回query_id/query_revision、scope_used、真实来源覆盖/错误、可续接cursor及结果。每项包含可访问ObjectRef/SourceRef、精确来源/解析版、原生ID与URL、作者/平台、published/modified/event/observed时点及各自未知状态、Anchor/选区、content_kind、原文/摘要/系统说明的区分、可用媒体/评论范围、SourceUse与当前允许动作；未取得正文只标snippet，不能签全文。排序理由与具体方法版可查，相关性不授事实资格。长期监测另有明确意图，查询/打开发现不创建订阅；仅预览可临时展示，保存/分析/引用时由同一Material/Observation取得可持久版本。
+
+检索返回的字段/全文排序先做当前权限/用途/数据域过滤，分页、总数与片段都不能泄露其他客户。缓存含输入/来源/权限版本和实际取得时刻；超freshness、断连、撤权与源变更准确标stale/unavailable/partial，旧缓存不冒实时。结果不足时在原允许范围补取，用户显式限定集合不暗扩；全期间统计沿独立analysis input_snapshot的完整纳排集合，不能以Top-N或当前页充当分母。cursor只延续原query/账号/源版/排序及水位，过期重建可解释结果而非拼接不同集合。
+
+现有Observation/Material投影的`subject_associations`逐项复用SubjectRef与关联版，保role（publisher/about/mention/account_owner/location）、evidence_anchor、有效期间/未知、observed_at、relation_revision及resolution_state；内容可关联多个有据主体，未知关联不必丢弃合法观察。角色可按现有业务关系schema扩展，不能通过更改字符串自动授已核身份。关联/纠错沿Business既有命令，带base_version、精确来源版、理由和影响；不得重写原取得时间、原作者或原字节。
+
+Analysis input_snapshot冻结本次纳入/排除ObjectRef集合或可独立重建的不可变集合引用、纳排理由、采样单位、去重规则及query/source/relation/MetricDefinition/method版本。结果返回实际支持的指标、单位/分母/覆盖与资格、支持/反证、可修改锚、准确依赖和下游Artifact/Work引用；展示游标只决定显示子集。原生内容→主体档案/关系→经营/传播/合作/事件/预算等专业结果→原生文件与作品均用这条依赖，不让前端/模型另算另一真值。更正或撤权按同一影响集返回需要重核/可继续/失权部分，保合法历史及人工锁定。
+
+### 用户现有浏览器与实时上下文的目标协议
+
+`BrowserSession`扩connection_mode=managed|attached_extension|attached_protocol、process_ownership=owned|borrowed及服务端核定ConnectionRef。ConnectionRef含已配对device_ref/adapter_id/version、获准浏览器实例、目标标签集合、站点/动作/用途范围、permission_generation与真实capabilities；是现Browser会话的连接元数据，不另建权限系统。浏览器原生权限和产品授权都必须成立，不能客户端自报任意tab_id便取得访问。建立配对时给用户可辨设备/浏览器/账户与范围、短期一次nonce及受众；复连核原身份和当前权限，失联不自动改用其他浏览器或账户。
+
+| 现有接口的目标扩充 | 输入与回执要求 |
+|---|---|
+| `POST /api/browser-sessions`及`/{id}/reopen` | 建managed会话或引用已建立的ConnectionRef及选定目标；只做连接/必要可读性核验，已有任务等待连接时按原意图续接。Browser能力逐项返回live_context、semantic_actions、coordinate_actions、tab_capture、target_audio、files等实际支持/限制。 |
+| `POST /api/browser-sessions/{id}/read`与`/capture` | read返回有界当前投影及coverage，capture才把所选范围沿Source/Material持久化；都保connection/page/frame、navigation_generation、document_revision、semantic_revision、captured_at、projection_kind/version、SourceUse及权限代次。请求目标或选区过期时返回STALE_TARGET及合法刷新动作。 |
+| `POST /api/browser-sessions/{id}/actions`与既有semantic-actions | 带page/frame/navigation/document/semantic基线、实际语义节点或当前CSS坐标/视口、独立operation_id、控制世代和必要效果授权。绑定相同目标，执行前复核、执行后读实际结果；不以dispatch成功签网站提交。 |
+| `POST .../checkpoint`、`/suspend`、`/close`及host detach | 复用原暂停/控制/关闭语义；borrowed仅停止订阅与动作、释放产品持有连接，不关用户标签/进程/登录或改其viewport。owned临时目标只有确属产品时才释放。取消Job与断开会话分别记录。 |
+| `GET .../operations/{operation_id}`与`POST .../reconcile` | 查询原意图是否送达、实际提交及可查回执。已执行但响应失联是outcome_unknown，先对账；重连不重放旧点击、上传、发布或付款。 |
+
+document_revision随同URL正文、DOM及实际可读内容的更改推进，不只在导航时变化；semantic_revision分别绑定对应可访问语义/动作目标。原生tab_id只留适配器映射，对外仍用服务端page_id。上下文增量经现Browser事件/实时通道发送单调seq、base_revision/new_revision及受影响page/frame。缺序、导航、页面重建或授权换代必须取新快照；服务端校接收次序与原始捕获时刻，不能把收到时刻伪作网页更新时刻。SPA、跨源iframe、懒加载/虚拟列表、shadow DOM、附件、媒体和字幕分别保coverage；截图与OCR不冒语义树/完整原文，字幕不冒直接音频理解。原目标已变或节点消失不根据旧坐标猜点。
+
+连接策略由现Browser和权限责任共同持有：activeTab临时授权不能跨域延续；debugger不能作为optional_permissions；原生附着只用实际浏览器支持且用户允许的机制。扩展内容消息核sender/tab/frame/origin及schema，本机桥核已配对扩展身份、用户/工作/设备和nonce/序号，网页脚本不能变成受信指令。秘密值不进投影、日志或模型，第三方页面不能改变允许动作；文件只接当前chooser与用户选定对象，不枚举电脑文件。borrowed音频只能目标标签捕获，缺能力单项不可用；普通Web或手机缺配对桥时返回连接入口，不假装已读电脑标签。
+
 ### 浏览快照与操作回执不可互相替代
 
 Open Original默认沿当前SourceRef及确切来源版进入真实受控原文；用户明确外开时，服务端从该引用投影并重核允许的URL scheme、目标/重定向与当前权限，不接受任意裸路径冒来源。缺URL、非法目标、拒绝、启动失败及`HANDOFF_ACCEPTED`分别返回；后者仅证外部浏览器接受启动，无法观察外部页时loaded/readable保持UNKNOWN。`RETURNED`仅证回到原任务，不签原文读取、采集或来源准入成功；返回仍恢复原对象与阅读锚。
@@ -539,6 +567,24 @@ corresponding implementations are connected. No empty endpoint represents them.
 
 转写`task`为`transcribe`或`translate`；language hint使用Whisper语言代码。`audio_channel_index`必选，立体声/多声道不折叠求平均。对流内非连续包PTS目前明确拒绝，避免扁平化后错误映射；该限制不阻止原件播放、人工对齐或手工剪辑。产品取消使用现有`POST /api/jobs/{job_id}/cancel`，不得用HTTP请求超时推断Job失败。
 
+### 寰意内创意分享与发布后外部分享的目标合同
+
+本节定义完整目标；后文历史Server社区路由只保当时兼容边界，其media/artifact限制不缩减这里的短文、图文、多图、横竖/长短视频、音频/播客和系列。沿同一PublicationDraft/Release、Store、Artifact/Material/Media、身份和Job扩充，不复制社区业务引擎。
+
+`Publication.kind`仍为work|template|experience。`content.blocks`含稳定block_id及paragraph|heading|link|image|video|audio类型，文字/链接有原生内容与允许引用，媒体引用确切成员/源版本；有序item_id和可选group_id表达多图组合，成员保alt、caption、原比例、展示crop、字幕/章节及各用途权利。私有草稿保存来源Material/Artifact映射，公开响应只给获准publication member ID、发布派生物及可公开署名/来源，不泄私有路径、客户ID、原输入快照。短文由原Artifact用例自动创建最小私有稿，title/summary/模板字段按实际格式需要，不强迫每条短文填写。旧body在兼容读取时映为稳定文字块，迁移保原件与版本映射，不维护可独立改写的第二正文。草稿的变化带base_version和幂等意图；保存失败保输入，重开恢复同一稿。
+
+`creator/coauthors`保实际署名及共同署名的接受记录，`subject_refs`只表达作品的创作对象/相关主体，不能代官方身份、商标权、客户批准或经营事实。Series沿现有内容集合引用有序Publication/Release成员，冻结版和跟随当前公开版分别明示，逐成员当前权限/撤回状态生效；一个成员失效不把其他合法作品删掉或泄出受限标题。
+
+发布请求沿`POST /api/publications/{id}/publish`及OperationIntent，绑定base_version、content_digest、visibility、rights_digest、selected_member_ids、用户意图与当前授权世代。必要自动检查和人工审阅按同一已定义策略执行：审核决定不创造用户意图，已明确且未改变的发布意图可等待检查后继续提交，实质内容/受众/权利变化才返回需要修正或确认的差异。自动合格不伪造人工审核员，人工角色只访问对应提交版；不为普通内容创建必经全量人工审批。响应分别报accepted/checking/review_required及原Job、已提交ReleaseRef和实际delivery状态；未托管只返回local_review_only，不能创建假公网URL。
+
+`PublicationRelease`冻结确切内容/成员/许可/审阅及可见范围。private/team/unlisted/public继续分别授权，评论绑定release及block_id/item_id、同版文字范围或媒体时码，旧版评论的文字锚/媒体成员/时码不漂到新版；新改稿形成新草稿/新release，旧链接不得静默指向不同正文冒原分享版。公开索引/封面/媒体、收藏/关注/评论和下载按当前访问资格过滤；撤回保适用墓碑与合法历史，不继续取原正文。播放进度按确切release/member和真实时长，多图位置按item_id，返回原筛选、游标、焦点与滚动锚，不以换页重建另一作品。
+
+`POST /api/releases/{id}/shares`为原发布Owner上的目标适配入口；请求含同一OperationIntent/幂等键、channel=permalink|system_share|export|platform、精确release/member选择、目的地/账号/受众、SourceUse/许可及父访问世代。permalink产生当前可访问的确切发布链接；private/team链接仍需成员，unlisted明确可撤销凭证且不入发现；export仅生成获准成员文件/格式，platform仅用实际已支持且授权的通道。系统不得因为分享方便把私有稿改公开、夹带未选/无该次分发权的客户材料或重新上传同一未知效果；获准且明确选择的客户作品沿同一成员与权利交集处理。
+
+回执沿原OperationReceipt/Job，effect_type区分link_copy、file_export、share_handoff和platform_publish，effect_phase说明prepared/handed_off/confirmed/failed/cancelled/outcome_unknown并保实际证据；这些是既有外部动作结果，不是第二任务状态机。复制链接完成只证link_copy，Web Share resolve、二维码或拉起外部编辑页只证handoff；外平台成功需对应账号/内容的真实回执。`GET /api/releases/{id}/shares/{operation_id}`读原回执，重试先查结果；无可查询渠道的未知结果保持待核，由用户核实或明确处理，不盲目重复。取消分享不撤回内部作品，内部撤回不假称已经删除外平台副本。
+
+官方平台的投稿、转发、好友分享及各应用资格分别校通道能力；一个外部通道不支持商业内容不变成寰意内部创作/发布的禁止范围，也不能换账号/伪装应用绕过条件。没有该通道时保合法链接、文件交付和已成立的内部发布，准确显示不可用项；发布环境、供应商和付费仍遵实际授权。网页分享使用真实平台可用性及用户触发，规范依据为[Web Share](https://www.w3.org/TR/web-share/)与[抖音当前发布/分享规范](https://developer.open-douyin.com/docs/resource/zh-CN/dop/operation-standard/platform-capabilities/useclue)，不是承诺已获得其接入资格。
+
 ## 作品发布、模板与经验协议
 
 本节列历史Server社区/发布/media路径及其当时边界；不是本轮注册或运行证明，沿现有Store、身份、Artifact、Material、Media工程和Job工作；不建立第二账户、项目、媒体存储或审核应用。除本节列明的公开读取与公开媒体grant外，接口要求有效产品session并按Workspace/Work/Material当前成员权限授权；任何公开路由仍验证所带Cookie/Bearer，防止过期令牌被降级成公开匿名访问。撤回/过期许可使release及其媒体取用失败。正式公网托管/CDN未配置，release响应固定`delivery=local_review_only`；配置一个URL本身不改变此状态。
@@ -568,19 +614,19 @@ corresponding implementations are connected. No empty endpoint represents them.
 
 ## 浏览承载、来源读取与监测的统一协议
 
-浏览仍由 `browser.py / browser_api.py` 的同一 BrowserSession、权限、受保护状态和 Material 保存操作拥有。默认引擎为 Chrome；每个会话拥有独立 Chrome 进程和非持久 context，跨用户不共享进程音频。Windows旧嵌入窗口接口保兼容记录；当前目标为该会话的实时页面帧参与同一物理空间GPU合成、输入经逆变换映回网页。Web通过WebRTC传输实际页面画面与输入并参与同场景合成；不对客户端暴露 CDP 端口，不改写目标站 CSP/DOM，也不以截图轮询代替实时浏览。明确的外部打开动作使用用户的外部浏览器；默认行为留在产品内。
+浏览仍由 `browser.py / browser_api.py` 的同一 BrowserSession、权限、受保护状态和 Material 保存操作拥有。以下既有managed承载以Chrome独立进程/非持久context隔离用户，不能据此排除上文attached_extension/attached_protocol目标合同；borrowed连接不取得用户浏览器进程所有权，也不共享其整进程音频。Windows旧嵌入窗口接口保兼容记录；当前目标为该会话的实时页面帧参与同一物理空间GPU合成、输入经逆变换映回网页。Web通过WebRTC传输实际页面画面与输入并参与同场景合成；不对客户端暴露CDP端口，不为嵌入而移除目标站CSP或复制改写整页；获准的页面输入、表单编辑和操作仍在原目标发生，也不以截图轮询代替实时浏览。明确外开可交用户原浏览器；需实时读取或操作时必须通过已配对的附着通道，普通外开回执不冒连接成功。managed默认留在产品内，attached始终保用户选择的真实浏览器/目标及可见停止入口。
 
 | 接口 | 输入与实际结果 |
 |---|---|
 | `POST /api/browser-sessions/{id}/host/offer` | 当前 `page_id`、CSS viewport 与完整 offer SDP；同一成功 envelope 返回 answer SDP、`host_id`。信令沿当前认证，实时通道持续重核会话/工作/客户权限；不配置外部 STUN/TURN 服务。 |
-| `POST .../host/native`、`POST .../host/{host_id}/heartbeat`、`POST .../detach` | 本机宿主取得经同会话目标/PID 核定的窗口；心跳返回当前页、标签和事件。隐藏、尺寸调整与关闭宿主不另建会话；正常分离隐藏 Chrome 窗口，继续/恢复仍走原 BrowserSession。 |
+| `POST .../host/native`、`POST .../host/{host_id}/heartbeat`、`POST .../detach` | 既有managed本机宿主取得经同会话目标/PID核定的产品窗口；心跳返回当前页、标签和事件。仅owned窗口允许宿主管理其隐藏/尺寸/分离，继续恢复沿原BrowserSession；borrowed只分离连接，不隐藏、移动、缩放或关闭用户浏览器/标签。 |
 | `GET/POST .../host/tabs` | 读取标签；新增、切换、关闭携带 `base_version` 和 `Idempotency-Key`，提交同一会话的保护状态。 |
 | `POST .../host/{host_id}/uploads`、`POST .../uploads/cancel` | 只接受当前文件选择事件的 `chooser_id` 与用户选定文件字节；取消保原选择，不接受客户端裸路径。 |
 | `GET .../host/{host_id}/downloads/{download_id}`、`POST .../save` | 以会话内下载对象取得实际文件，或通过同一 Material/Work 保存、解析、来源记录和幂等回执承接。部分/失效下载不当成完整文件；成功结果可重开。 |
 | `GET /api/browser-history`、`POST /api/browser-history/clear`、`GET /api/browser-bookmarks` | 用户/工作区私有的安全地址与标题；历史最多 1000 项，清理记录不删除已保存 Material/Work，也不冒清除网站登录。 |
 | `POST /api/browser-sessions/{id}/bookmark`、`DELETE /api/browser-bookmarks/{id}` | 服务端核当前页保存书签；同 URL 去重，删除核书签版本与归属。含临时授权参数的脱敏地址不能伪造可用的登录续接链接。 |
 
-Web 的有序 `input` 通道绑定 `sequence / page_id / page_revision`；鼠标、滚轮、键盘、IME 文本和网页弹窗分别分型。陈旧页面和未知效果不自动重放。网页确认框可保持原点击等待，同时交付事件并接用户明确答复；不默认确认。复制读取当前网页/输入框选区，粘贴接用户本机明确提供的文字，不能读取服务器系统剪贴板。Web 声音来自单一浏览进程的独立音频轨，能力缺失单独返回；画面不签音频成功。历史Native宿主服从页面可见性与`TickerMode`；当前空间功能面须按实际几何遮挡和焦点参与合成，不得让原生窗口/DOM视频压住其他物件。隐藏仅控制绘制，不能自动停止录音/监测或重建会话；实时帧与音频的失败分别呈现。
+Web 的有序 `input` 通道绑定 `sequence / page_id / page_revision`；鼠标、滚轮、键盘、IME 文本和网页弹窗分别分型。陈旧页面和未知效果不自动重放。网页确认框可保持原点击等待，同时交付事件并接用户明确答复；不默认确认。复制读取当前网页/输入框选区，粘贴接用户本机明确提供的文字，不能读取服务器系统剪贴板。managed的Web声音来自已核隔离浏览进程的独立音频轨；borrowed只允许目标标签的获准音轨，不能沿用整进程捕获混入其他标签。能力缺失单独返回；画面不签音频成功。历史Native宿主服从页面可见性与`TickerMode`；当前空间功能面须按实际几何遮挡和焦点参与合成，不得让原生窗口/DOM视频压住其他物件。隐藏仅控制绘制，不能自动停止录音/监测或重建会话；实时帧与音频的失败分别呈现。
 
 公开 URL 读取继续使用 `acquire_url` 和原共享 Worker。HTML 原始响应与主内容投影分开；RSS/Atom 保逐条来源、作者、原生时间及实际观察到的分页，`entries_truncated / links_truncated` 明示范围。`text_sha256` 是文本投影身份，不是原站原件证明。现有本机代理使用合格数值地址建立隧道；遇网络客户端的合成地址时只向当前系统配置的 DNS 重新核公网地址，仍禁止私网/保留地址和重绑定，不新增 DNS 服务或修改系统配置。HTTPS 沿系统信任链验证，不能关闭证书核验。
 
