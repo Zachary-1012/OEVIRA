@@ -2,7 +2,6 @@
 param(
     [string]$Model,
     [string]$Effort,
-    [switch]$AllowLowerModel,
     [switch]$CheckOnly,
     [switch]$Desktop,
     [Parameter(ValueFromRemainingArguments=$true)]

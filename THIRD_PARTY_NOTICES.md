@@ -1,8 +1,13 @@
 # Third-party materials
 
-The product uses the following approved components. Product behavior,
-permissions, acquisition orchestration and result continuity are implemented in
-this repository; the components retain their own copyright and licenses.
+This register identifies the approved implementation components and the exact
+local dependency versions selected under the current product plan. A listing is
+not a claim that its source, package, font, model or binary is present in a given
+GitHub tree, nor that its product behavior, packaging or release has passed.
+The repository manifest and actual tree determine the stage; local unpublished
+implementation and runtime assets are accounted for separately. These components
+retain their own copyright and licenses. This register grants no rights to
+materials in Git history.
 
 | Component | Bound version | License / source |
 | --- | --- | --- |
@@ -11,6 +16,8 @@ this repository; the components retain their own copyright and licenses.
 | python-docx | 1.2.0 | MIT — https://github.com/python-openxml/python-docx |
 | lxml | 6.1.3 | BSD-3-Clause with the distribution's LICENSES.txt exceptions and bundled-library notices — https://github.com/lxml/lxml |
 | pdfplumber | 0.11.10 | MIT — https://github.com/jsvine/pdfplumber |
+| pypdfium2 and bundled Windows PDFium | pypdfium2 5.14.0 (`py3-none-win_amd64`); bundled PDFium 156.0.8076.0, origin `pdfium-binaries` | Apache-2.0 / BSD-3-Clause for pypdfium2 code; CC-BY-4.0 for its documentation/examples; PDFium and bundled libraries retain the actual wheel's component licenses — https://github.com/pypdfium2-team/pypdfium2 |
+| Playwright Python package and bundled driver | 1.64.0 | Apache-2.0 for Playwright; retain Microsoft/Puppeteer attribution and the bundled Node.js and third-party notices — https://github.com/microsoft/playwright-python |
 | python-pptx | 1.0.2 | MIT — https://github.com/scanny/python-pptx |
 | XlsxWriter | 3.2.9 | BSD-2-Clause — https://github.com/jmcnamara/XlsxWriter |
 | openpyxl | 3.1.5 | MIT — https://foss.heptapod.net/openpyxl/openpyxl |
@@ -26,6 +33,7 @@ this repository; the components retain their own copyright and licenses.
 | typing-extensions | 4.16.0 | PSF-2.0 — https://github.com/python/typing_extensions |
 | Noto Sans SC (`app/assets/fonts/NotoSansSC.ttf`) | bundled asset | Adobe copyright; SIL Open Font License 1.1; Reserved Font Name `Source`; notice in `app/assets/fonts/NotoSansSC-OFL.txt` |
 | Noto Sans KR (`app/assets/fonts/NotoSansKR.ttf`) | bundled asset | Adobe copyright; SIL Open Font License 1.1; Reserved Font Name `Source`; notice in `app/assets/fonts/NotoSansKR-OFL.txt` |
+| Noto Color Emoji (`app/assets/fonts/NotoColorEmoji.ttf`) | font Version 2.057; unchanged 2D font asset from `googlefonts/noto-emoji` commit `e20cbc2bbec1926686be9f9bee7d1d2cfa1fea0e` | Copyright 2022 Google Inc.; SIL Open Font License 1.1, original notice in `app/assets/fonts/NotoColorEmoji-OFL.txt` — https://github.com/googlefonts/noto-emoji |
 | Flutter SDK | 3.47.5, revision 6a19cca56475dbfba1478ee68d7bd0c2ef891da1 | BSD-3-Clause and bundled notices — https://github.com/flutter/flutter |
 | Dart SDK | 3.13.4, included in that Flutter SDK | BSD-3-Clause and bundled notices — https://github.com/dart-lang/sdk |
 | http | 1.6.0 | BSD-3-Clause — https://github.com/dart-lang/http |
@@ -34,6 +42,11 @@ this repository; the components retain their own copyright and licenses.
 | web | 1.1.1 | BSD-3-Clause — https://github.com/dart-lang/web |
 | record | 7.1.2 | BSD-3-Clause — https://github.com/llfbandit/record |
 | path_provider | 2.1.6 | BSD-3-Clause — https://github.com/flutter/packages |
+| video_player | 2.14.0 | BSD-3-Clause; Copyright 2013 The Flutter Authors — https://github.com/flutter/packages/tree/main/packages/video_player/video_player |
+| video_player_win | 3.3.0 | BSD-3-Clause; Copyright 2022, jakky1 — https://github.com/jakky1/video_player_win |
+| crypto | 3.0.7 | BSD-3-Clause; Copyright 2015, the Dart project authors — https://github.com/dart-lang/core/tree/main/pkgs/crypto |
+| cupertino_icons | 1.0.9 | MIT; Copyright (c) 2016 Vladimir Kharlampidi — https://github.com/flutter/packages/tree/main/third_party/packages/cupertino_icons |
+| Microsoft.Windows.ImplementationLibrary (WIL) | 1.0.220914.1; native build dependency of video_player_win | MIT; Copyright (c) Microsoft Corporation. All rights reserved. Retain its complete LICENSE with distributions — https://github.com/microsoft/wil |
 
 The product API Python dependencies are fixed in `server/requirements.txt`;
 the isolated CPU-only Media speech runtime is pinned in
@@ -60,7 +73,30 @@ binary distribution obligations; the lxml BSD label alone is not a blanket
 license determination for its wheel. Developer test helpers and unneeded
 schematron resources are not required by OEVIRA's document operations.
 
+The current `pdfplumber` distribution requires `pypdfium2`; the locked Windows
+wheel includes PDFium and an exact `data/windows_x64/BUILD_LICENSES/` set. Preserve
+the complete wheel license tree, including PDFium, binary-builder and bundled
+library notices, with any distributed binary. pypdfium2's documentation/examples
+are separately CC-BY-4.0; its code label does not relicense those materials or
+PDFium dependencies. This register does not certify a redistribution package.
+
+The unchanged Noto Color Emoji TTF has SHA-256
+`15671215ab769fdc7162a045d56fd7d7e477c51b04e6b3c761d914d8fdd6cc44`;
+its original OFL file has SHA-256
+`6a73f9541c2de74158c0e7cf6b0a58ef774f5a780bf191f2d7ec9cc53efe2bf2`.
+The local Web font fallback uses this bundled asset without a runtime font
+download. Preserve the original font and license bytes and expose their
+copyright and license through the application's license registry. The font is
+not sold by itself or relicensed as OEVIRA-owned artwork.
+
 ## Browser presentation transport
+
+The installed Playwright distribution includes its Apache-2.0 license,
+`playwright/driver/package/NOTICE` (Microsoft and Puppeteer attribution), the
+driver's package license, and `playwright/driver/LICENSE` for Node.js and bundled
+components. Retain the complete applicable files with any distributed driver;
+the Playwright Apache label does not replace the driver's third-party notices.
+Browser-engine distribution rights are separate from the Python package.
 
 The isolated browser remains the installed Chrome/Chromium engine controlled by
 Playwright 1.64.0. OEVIRA adds no personal browser profile or public relay service.

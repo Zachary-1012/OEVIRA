@@ -1,6 +1,6 @@
 ---
 name: oevira-pstack
-description: Apply Lauren Tan's pstack engineering methods to OEVIRA architecture, repeated defects, cross-module changes, verification and performance claims. Use during these development tasks; preserves the complete product scope and current user-selected execution settings.
+description: Apply Lauren Tan's pstack engineering methods to OEVIRA architecture, repeated defects, cross-module changes, verification and performance claims. Use during these development tasks; preserves the complete product scope.
 ---
 
 # pstack for OEVIRA
@@ -33,7 +33,7 @@ Source: [architect](https://github.com/cursor/plugins/blob/1ba91fc25c0977741dd0e
 
 Read the actual implementation, consumers and constraints. Write the caller's real operation first, then derive the types, signatures and boundary; include failure, cancellation and recovery. Compare materially different designs when there is a genuine ownership or architecture choice. Prefer interfaces that hide implementation work while preserving full professional behavior. Established choices do not require another design competition.
 
-Repeated workarounds, escape casts, multiple writers or callers coordinating internals are evidence to revisit the boundary. Do not publish a sketch, placeholder or partial migration as a working capability. This adaptation uses the current authorized agent/model settings and existing root; upstream arena defaults, model fallbacks and candidate worktrees are not invoked.
+Repeated workarounds, escape casts, multiple writers or callers coordinating internals are evidence to revisit the boundary. Do not publish a sketch, placeholder or partial migration as a working capability. This adaptation uses the existing product root; upstream optional automation and candidate worktrees are not part of this repository workflow.
 
 Keep a complete operation under its domain owner. A caller should not coordinate storage-shaped records, repeated validation and internal load/save stages to perform one professional action. An abstraction must remove such work, not merely wrap another call. Read the architect references when this boundary is the actual design problem.
 
@@ -73,6 +73,6 @@ Before measuring, state what difference would change the decision and the expect
 
 ## Adaptation boundaries
 
-The methods improve implementation and reduce redundant work; they do not reduce approved capability. They do not change models, reasoning effort or service tier; enable autonomous schedules; grant external communication, account access, collection, training, spending or deployment; or restore rejected UI. Visual decisions remain with the root. No upstream installer, hook, automation or model runner is bundled or executed by this skill. Apply task-appropriate validation rather than running an entire checklist for every edit.
+The methods improve implementation and reduce redundant work; they do not reduce approved capability. They do not grant autonomous schedules, external communication, account access, collection, training, spending or deployment, or restore specifically rejected UI. Visual quality follows the approved design and actual user outcomes. No upstream installer, hook, automation or model runner is bundled or executed by this skill. Apply task-appropriate validation rather than running an entire checklist for every edit.
 
 Preserve license notices, real constraints and useful design reasons when simplifying comments. Handle unknown protocol fields according to the actual compatibility and security contract. Do not import upstream cloud/worktree defaults, private-conversation inspection, bot hosting or service installation instructions as project authorization. The full method-body review and source-specific corrections are recorded in [the adoption review](../../../docs/reference/reconstruction/pstack-review.md).
