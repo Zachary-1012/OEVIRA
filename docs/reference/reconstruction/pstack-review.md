@@ -54,3 +54,18 @@ arena、swarm、reflect、automate-me和figure-it-out中的固定/降级模型�
 适配保留原方法的关键动作：从真实调用者推导领域结构；对反复错误优先修结构并用实际旧反例验证；跨格式、持久化及异步消费者追踪；直接读回结果；测性能时核实际执行、正确性、失败、瓶颈和波动。架构方法不执行上游默认模型/arena调度，证明质量不退化为哈希或关键词计数。未审工具实现不自动启用，也不因阅读或安装数量声称方法已在所有产品能力中兑现。
 
 这是开发工具的采用，不是产品接入，也不把技能操作展示给产品用户。可机械验证的缺陷修进现有检查；无法自动判定的专业质量继续按适用真实任务和评审验证。
+
+## 2026-11-05：执行者工具与现成方法的定向优化
+
+本次先复用上文已核pstack，再核当前OpenAI配置/MCP说明的适用段、Flutter官方工具与测试说明，以及`flutter/agent-plugins`固定提交`b7d5a0be4195b82fe073620fb52f594b0809eacf`的README和三份完整技能正文：`flutter-fix-layout-issues`、`flutter-add-widget-test`、`flutter-add-integration-test`。未据此宣布全插件库、依赖源码或所有视觉参考已经审完。方法独立改写进原技能和开发入口，没有复制整包、模型metadata、安装器或固定Agent安排。
+
+| 具体研究 | 已确定的采用及必要纠正 | 落点 |
+|---|---|---|
+| [OpenAI配置层级](https://learn.chatgpt.com/docs/config-file/config-basic)、[MCP配置](https://learn.chatgpt.com/docs/extend/mcp) | 核当前用户/项目/命令行作用域、实际CLI兼容及工具发现；保模型与账号，失效工具准确禁用；不拿enabled或readOnlyHint当可用性/安全证明，不写伪信任 | `.codex/README.md`；真实安装解析在原launch.ps1 |
+| [官方Flutter工具体系](https://docs.flutter.dev/ai/tools)、上述三份固定技能 | 已有SDK MCP加原测试即可处理诊断和持久回归，不整包装新框架。先核有限父约束，不能见overflow一律Expanded；按真实schema调用，不能把示例tap等名字当已安装工具 | 原pstack技能Flutter段、前端实际实现与既有验收 |
+| [pumpAndSettle完整API说明及所示实现](https://api.flutter.dev/flutter/flutter_test/WidgetTester/pumpAndSettle.html)、[integration_test官方说明](https://docs.flutter.dev/testing/integration-tests)相关测试/平台段 | 有界等待、真实状态断言；测试入口隔离，不能把driver控制暴露在正式main；停止/重开/持久成果须另核，不以按钮存在签闭环 | 原技能与开发入口的实际测试顺序 |
+| [Playwright CLI官方说明](https://playwright.dev/docs/getting-started-cli)、[Chrome DevTools官方介绍](https://developer.chrome.com/blog/chrome-devtools-mcp)、[Context7维护者README](https://github.com/upstash/context7) | 区分一次调试、持续测试和版本查文档；复用已有DevTools及Playwright，不为工具数重复安装。Context7不接私有源码和客户资料，检索版本与本地库行为交叉核 | 原开发工具路线，不成为产品新增服务/依赖 |
+
+本机本轮确实对已配置Dart、Context7和Chrome DevTools完成initialize和完整tools/list，再结束所启动进程。其返回版本为1.2.2、4.1.1、1.9.0；这只是该时点开发工具连接/发现结果，不证明实际产品工作、浏览器页面或模型推理通过。Dart初始列表没有run_tests/launch_app，按CLI测试及实际后续能力处理；不从新网页倒推旧SDK支持。没有新装包、访问个人浏览器或启动产品。来源返回的工具指令仍服从本任务授权，不自动热重启用户工作。
+
+旧根现存AI编程研究基线保会话隔离、Evidence、故障分类和安全停止方法，但不恢复缺失的旧MCP脚本、独立运行系统、模型先行门槛及历史派工。本轮针对实际缺口修启动解析和旧服务配置；其它已有工具直接复用。缺原材料时保原专业目标，以新的有据方法补定义；旧身份未找回与新方法可执行分别签收，不能永久待旧件，也不能声称新资料就是旧原件。

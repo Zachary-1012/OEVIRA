@@ -1,7 +1,8 @@
-﻿[CmdletBinding(PositionalBinding=$false)]
+[CmdletBinding(PositionalBinding=$false)]
 param(
     [string]$Model,
     [string]$Effort,
+    [string]$CodexPath,
     [switch]$CheckOnly,
     [switch]$Desktop,
     [Parameter(ValueFromRemainingArguments=$true)]
@@ -10,23 +11,53 @@ param(
 
 $ErrorActionPreference = 'Stop'
 $workspace = [IO.Path]::GetFullPath((Join-Path $PSScriptRoot '..'))
-if ($workspace -ne 'D:\寰意' -or -not (Test-Path -LiteralPath (Join-Path $workspace 'AGENTS.md'))) {
-    throw 'OEVIRA requires its current D:\寰意 development root.'
+$requiredRoot = 'D:\' + [char]0x5BF0 + [char]0x610F
+if ($workspace -ne $requiredRoot -or -not (Test-Path -LiteralPath (Join-Path $workspace 'AGENTS.md'))) {
+    throw 'OEVIRA requires its registered development root.'
 }
 foreach ($argument in $CodexArgs) {
-    if ($argument -cmatch '^(?:-C|--cd)(?:=|$)' -or $argument -cmatch '^-C.+') {
-        throw 'This OEVIRA entry uses D:\寰意. Use the ordinary Codex command for other projects.'
+    if ($argument -cmatch '^(?:-C|--cd)(?:=|$)' -or $argument -cmatch '^-C.+' -or $argument -cmatch '^--worktree(?:=|$)') {
+        throw 'This entry uses the existing OEVIRA workspace, not another root or managed worktree.'
     }
 }
-# Prefer the installed executable over a PATH shim that can select an older npm CLI.
-$codexCommand = Get-Command codex.exe -CommandType Application -ErrorAction Stop | Select-Object -First 1
-$arguments = @('--strict-config', '-C', $workspace)
-if ($PSBoundParameters.ContainsKey('Model')) {
-    $arguments += @('-m', $Model)
+# Resolve a real executable. Do not run an npm shim, install, or select a model.
+if ($PSBoundParameters.ContainsKey('CodexPath')) {
+    if (-not [IO.Path]::IsPathRooted($CodexPath) -or
+        [IO.Path]::GetExtension($CodexPath) -ine '.exe' -or
+        -not (Test-Path -LiteralPath $CodexPath -PathType Leaf)) {
+        throw 'CodexPath must be an existing absolute .exe path; an invalid explicit choice is not replaced.'
+    }
+    $executable = (Get-Item -LiteralPath $CodexPath).FullName
+    $resolution = 'explicit'
+} else {
+    $pathCommand = Get-Command codex.exe -CommandType Application -ErrorAction SilentlyContinue | Select-Object -First 1
+    if ($pathCommand) {
+        $executable = $pathCommand.Source
+        $resolution = 'path-executable'
+    } else {
+        $packages = @()
+        if (Get-Command Get-AppxPackage -ErrorAction SilentlyContinue) {
+            $packages = @(Get-AppxPackage -Name OpenAI.Codex -ErrorAction SilentlyContinue | Sort-Object { [version]$_.Version } -Descending)
+        }
+        $executable = $null
+        foreach ($package in $packages) {
+            $candidate = Join-Path $package.InstallLocation 'app\resources\codex.exe'
+            if (Test-Path -LiteralPath $candidate -PathType Leaf) {
+                $executable = $candidate
+                $resolution = 'registered-desktop-package'
+                break
+            }
+        }
+        if (-not $executable) {
+            throw 'No Codex executable was resolved. Supply -CodexPath for an existing installation; this entry does not install software.'
+        }
+    }
 }
+$arguments = @('--strict-config', '-C', $workspace)
+if ($PSBoundParameters.ContainsKey('Model')) { $arguments += @('-m', $Model) }
 if ($PSBoundParameters.ContainsKey('Effort')) {
-    if ($Effort -notmatch '^(none|minimal|low|medium|high|xhigh|max|ultra)$') {
-        throw 'Unknown reasoning effort. Choose a value supported by your selected model.'
+    if ($Effort -notmatch '^[a-z][a-z0-9_-]*$') {
+        throw 'Use a simple effort identifier; the selected CLI and model validate supported values.'
     }
     $arguments += @('-c', ('model_reasoning_effort="' + $Effort + '"'))
 }
@@ -35,7 +66,8 @@ $arguments += $CodexArgs
 if ($CheckOnly) {
     [PSCustomObject]@{
         Workspace = $workspace
-        Executable = $codexCommand.Source
+        Executable = $executable
+        Resolution = $resolution
         ModelOverride = $PSBoundParameters.ContainsKey('Model')
         EffortOverride = $PSBoundParameters.ContainsKey('Effort')
         ChangesGlobalConfiguration = $false
@@ -46,7 +78,7 @@ if ($CheckOnly) {
 }
 Push-Location -LiteralPath $workspace
 try {
-    & $codexCommand.Source @arguments
+    & $executable @arguments
     $result = $LASTEXITCODE
 } finally {
     Pop-Location
