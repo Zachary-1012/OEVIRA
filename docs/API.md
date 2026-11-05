@@ -228,6 +228,14 @@ Observation响应分别表达取得状态、source_validity、SourceUse、identi
 
 Analysis input_snapshot冻结本次纳入/排除ObjectRef集合或可独立重建的不可变集合引用、纳排理由、采样单位、去重规则及query/source/relation/MetricDefinition/method版本。结果返回实际支持的指标、单位/分母/覆盖与资格、支持/反证、可修改锚、准确依赖和下游Artifact/Work引用；展示游标只决定显示子集。原生内容→主体档案/关系→经营/传播/合作/事件/预算等专业结果→原生文件与作品均用这条依赖，不让前端/模型另算另一真值。更正或撤权按同一影响集返回需要重核/可继续/失权部分，保合法历史及人工锁定。
 
+### 多路径检索与既有成果复用的目标字段
+
+同一`query_id/query_revision`在现有QueryPlan及取得回执中返回可按需展开的`query_paths`，逐路径含`path_id/parent_path_id`、起点SourceRef/Anchor、query/scope/data_surface、发现的原生对象引用、实际取得或未执行状态、coverage、checkpoint_ref和stop_reason。路径身份与内容身份分开：不同路径发现同一对象仅增加发现关系，返回同一获权ObjectRef及本次实际Observation；路径不能自行授SubjectRef或来源独立性。路径/父线索的返回同样按当前权限过滤，不通过数量或标题泄露其他客户；普通界面先显示结果和必要缺口，不要求用户操作内部路径ID。
+
+复用现有`input_snapshot`和`OperationReceipt`的结果引用，增加可解释的reuse说明：所用输入/来源/解析/方法版、覆盖、原观察时刻、当前核验时刻及本次复用或失效理由；这是原结果的消费记录，不建立第二结果存储或完成状态。缓存键覆盖workspace/data_domain、获权来源与身份、查询范围/排序/数据面、输入及方法版；freshness与撤权另作当前条件核验，命中键不自动有效。新源观察和旧结果重用不得共用虚构的“刚刚取得”时间。集合统计绑定完整输入快照，不以query_paths数或显示子集作分母。
+
+取消、续接和补证继续调用原Job/Acquisition命令，沿同一原操作读回已持久单元，仅请求仍缺且获准的数据面。路径重复、缺UID、规范化歧义和反证是可报告结果；它们不触发自动合并主体、联系、投诉或公开发布。
+
 ### 用户现有浏览器与实时上下文的目标协议
 
 `BrowserSession`扩connection_mode=managed|attached_extension|attached_protocol、process_ownership=owned|borrowed及服务端核定ConnectionRef。ConnectionRef含已配对device_ref/adapter_id/version、获准浏览器实例、目标标签集合、站点/动作/用途范围、permission_generation与真实capabilities；是现Browser会话的连接元数据，不另建权限系统。浏览器原生权限和产品授权都必须成立，不能客户端自报任意tab_id便取得访问。建立配对时给用户可辨设备/浏览器/账户与范围、短期一次nonce及受众；复连核原身份和当前权限，失联不自动改用其他浏览器或账户。
