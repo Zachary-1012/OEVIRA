@@ -37,7 +37,8 @@ Windows命令显式以主路径工作，使用当前已核解释器并明确UTF-
 Set-Location -LiteralPath 'D:\寰意'
 $entry = & '.\.codex\launch.ps1' -CheckOnly | ConvertFrom-Json
 & $entry.Executable --version
-& $entry.Executable mcp list --json
+$servers = & $entry.Executable mcp list --json | ConvertFrom-Json
+$servers | Select-Object name, enabled
 ```
 
 MCP配置列表可能含私有命令/环境参数，不将原输出贴到报告或Git；只保名称、enabled、进程/协议版本和必要去敏状态。`-CheckOnly`只解析入口，既不启动Codex也不证明插件/登录/模型可用。具体CLI子命令按该版本help运行；已核CLI的`mcp`管理命令不接受`--strict-config`，因此直接调用解析出的exe，不经交互启动器附加该参数。
