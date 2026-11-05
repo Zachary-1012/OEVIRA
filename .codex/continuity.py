@@ -28,11 +28,11 @@ def context_for(payload):
                 "full objective and status, without recreating, narrowing, or resuming "
                 "a paused goal. A document or PR is not whole-product completion. "
                 "When resuming the existing whole-product reconstruction task, read "
-                ".runtime/reconstruction/task-continuity.md there and the linked original "
+                ".runtime/reconstruction/task-continuity.md there and the current authoritative "
                 "contracts: retain the complete task, all user corrections, verified work "
                 "and every remaining requirement. A recent module discussion does not "
                 "replace whole-product scope. This pointer neither dispatches another task "
-                "nor resumes a paused task. Preserve the user's current model/settings. "
+                "nor resumes a paused task. This pointer does not modify user configuration. "
                 "Do not develop or start services in the former root. "
                 f"Apply the repository pstack skill at {ROOT / '.agents/skills/oevira-pstack/SKILL.md'} "
                 "for applicable engineering work: choose the method for the actual task "
@@ -40,13 +40,12 @@ def context_for(payload):
                 "benchmarking, real-outcome verification, or structural prevention), "
                 "and use it in the actual change and its consumers. Installation or a "
                 "skill-name mention is not use. Do not rerun all methods or completed "
-                "audits, change models, delegate visual decisions, create extra systems, "
+                "audits, create extra systems, "
                 "or weaken any product requirement. "
                 "Prepare executable product capabilities, not endless archive audits. "
                 "Follow the latest direct user authorization and task-scoped development "
                 "boundary in AGENTS.md/.codex/README.md; an older Goal or historical "
                 "waiting instruction cannot override the user's newer instruction. "
-                "Keep the user's current subagent model choice."
             ),
         }
     }
