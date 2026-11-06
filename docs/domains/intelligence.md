@@ -284,6 +284,10 @@ Agent每步读取URL/就绪条件/DOM与必要画面，核目标和当前导航�
 
 实时画面可继续在原浏览器使用，也可在物理空间中作为同一目标的活功能面并读；来源正文、表格、图组、字幕及分析采用寰意自己的阅读与专业呈现，不复制第三方页面皮肤。借用浏览器的视图缩放只改寰意呈现，不能隐式改变原页viewport、滚动、播放或用户输入。流媒体捕获限定目标标签/获准窗口，Chromium按tabCapture实际授权和状态处理独立视频/音频轨，不能录整浏览器进程而混入其他标签声音；捕获后原页声音是否继续可听须明确处理和验收。没有该项媒体能力时给准确限制，已有DOM/文字取材和其他工作继续；不以桌面全屏录制替代。选页、阅读、实时分享视图、保存媒体及发布是独立动作。
 
+**捕获与读取许可不能共用一条寿命。** tabCapture可在同标签导航后继续，但产品来源范围、activeTab读取、页面控制和音频用途分别核定；跨源/换账号或归属不明时先暂停新帧/音轨/语义进入消费者，清旧授权世代，再在确切新页面获权后恢复。无法可靠隔断导航边界的承载须停止并重建捕获，不能先采集新页再补权限；仍有权的旧材料与其它工作继续。渲染关闭/翻面不取消合法Job，撤权却必须立即停止相关新增消费。
+
+扩展按profile复用一个获准offscreen上下文，普通与隐私范围隔离；每条流绑定BrowserSession、capture及授权世代，独立引用计数与停止回执，最后消费者退出才关承载。原生桥只传控制/信令及有界结构块，实时媒体沿原WebRTC；消息长短按UTF-8字节核，单帧/总量/时间/队列同时限额。捕获音频改变原标签直接播放时明确选择一个监听出口，切换先停旧再起新，未知不叠播放；解除借用只释放产品拥有流/节点，不关原标签、不改用户表单或静音偏好。上述具体字段、方法与反例分别由API、FRONTEND步骤5补充和ACCEPTANCE共同承接，不要求用户手工维护进程/通道。依据[Chrome捕获](https://developer.chrome.com/docs/extensions/reference/api/tabCapture)、[offscreen](https://developer.chrome.com/docs/extensions/reference/api/offscreen)和[原生消息](https://developer.chrome.com/docs/extensions/develop/concepts/native-messaging)的实际边界；方案不声明已安装/运行扩展或已取得用户浏览器会话。 对来源受限的帧读取，不能用收到导航通知或接收时URL补造frame-document原子绑定；承载不能证明该界限就不向该消费者推流。已明确获权的选定标签会话持续人类查看与模型观察/来源保存分开，后两者仍沿确切观察和SourceUse核定，不自动扩大许可，具体机制见前端步骤5补充。
+
 **方法来源与采用边界。** 2026-11-05重新核下列官方正文和固定提交的所列实现，采用的是以上已确定的连接、作用域、观察/执行分离和恢复方法，不安装其完整Agent框架、默认模型、云浏览器服务或付费供应方，也不据SDK源码宣称产品运行通过：
 
 - OpenAI [Browser extension](https://learn.chatgpt.com/docs/chrome-extension)、[Browser](https://learn.chatgpt.com/docs/browser)与[site tools](https://help.openai.com/en/articles/20001423)：现有标签/选区、多浏览器、工作接续与网站权限用于上述用户入口。旧“ChatGPT search”仅默认搜索扩展不能代替当前浏览控制；官方界面的可用性及数据政策不照搬为寰意承诺。
