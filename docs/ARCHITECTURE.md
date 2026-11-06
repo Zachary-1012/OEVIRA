@@ -338,6 +338,14 @@ Web工作区由该权威端的既有Web host提供完整同版Flutter构建与�
 
 物理层是可控空间状态计算，不决定业务：固定步积分、抓取约束、阻尼、接触、吸附、组合与暂停恢复由客户端处理；每帧不写数据库/触发业务任务。长失焦不补演抛掷，取消恢复安全姿态；减少动态直接改变目标姿态，完整功能不变。必要的文本选择/IME/数值/时码在局部功能面精确操作，不因物理更新重建内容或丢稿。
 
+### 分片合成与浏览资源仍归同一拥有者
+
+场景面片的BSP/裁剪结果只产生render fragments，原Widget/RenderObject布局、控制器、内容版本与Semantics节点保持唯一。按FRONTEND步骤2补充，把当前绘制Picture/类型化合成描述及实际媒体资源加入每片独立clip/transform层；同一EngineLayer不能在同帧重复使用，片缓存各有独立引擎层及代次。依赖邻域或组透明的效果先守原作用域再裁片，不能破坏混合语义；实际纹理、平台view和Web帧适配独立验证，不以截图重建表单。焦点可见性与命中来自同一已呈现几何，用户主动揭示沿原InspectionState恢复，不新建编辑器或空间数据库。
+
+Browser Owner持有每条获准捕获及监听/订阅身份；第一方扩展/profile内复用实际允许的offscreen承载，创建串行化、流独立、引用计数清理，隐私profile另隔离。Native Messaging用于控制/配对/有界来源块和媒体协商，WebRTC用于媒体，不通过JSON消息不断搬原始视频帧，也不另起浏览服务。host与扩展worker恢复先核真实资源和授权，不能照旧内存记录重复启动。
+
+来源导航的读取许可与浏览器捕获API寿命分开。跨源、账号或目标变化时先阻止旧消费者获得新画面/声音/语义并重核范围，无法保证该切换边界则停捕获再授权建立；用户原标签不因此被关闭。监听按同一源唯一出口和实际停止/开始回执切换，断开释放本产品资源而不改原网页用户偏好。配对、流、视图及授权世代贯穿原Client/Browser/Source/Job，各层成功不替其他层可用或用户结果。 源受限的帧消费者还须有可验证的document关联，不能把异步导航通知当原子屏障；未具该界限不推流。用户已明确授权的标签会话人类查看不自动授权模型/来源保存，按API用途及前端具体通路分别执行。Web真实视频帧使用锁版支持的ui_web图像转换和有界新帧回调，Windows使用原生Texture；不增加第二媒体产品或依赖未经批准服务。
+
 ### 活网页的辅助语义与同一输入链
 
 实时画面不包含可用的辅助语义。现Browser职责在获准且支持的Chromium通道取得浏览器计算的可访问树；其他扩展、Firefox/BiDi或Safari通道按实际能力取得DOM/语义投影，声明coverage，不冒完整AX树。投影作为同会话的有界快照和增量交给客户端；Flutter Experience把角色、名称、状态、值的安全表示和可执行动作映射到同一功能面的Semantics树，Web由该树形成可访问DOM，Windows由平台辅助技术桥接。不是把网页另做一份可编辑副本，也不让模型猜控件。方法依据为[CDP Accessibility](https://chromedevtools.github.io/devtools-protocol/tot/Accessibility/)的节点/树与更新机制及[Flutter可访问性](https://docs.flutter.dev/ui/accessibility/web-accessibility)；实验性CDP方法与版本限定Flutter属性按最终锁定版本核验，不因最新网页示例升级依赖。
