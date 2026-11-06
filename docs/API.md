@@ -63,6 +63,12 @@
 
 `SceneState`的可选`regions`保存导航/内容/工具的停靠槽、成员instance、顺序、宽度偏好及可见性，`SpatialInstance.presentation`持久保存docked/free及可恢复free_pose；focused是InspectionState覆盖后的临时有效呈现，不作为独立focus命令写scene版；`revision_mode`区分follow_current/pinned，后者保存确切pinned_revision，用于历史并读/审阅，不复制另一作品。三者共享同一instance_id、ObjectRef、ToolBinding和内容控制器；dock/undock只改变scene版。设备临时折叠与专注沿InspectionState，不改内容版、不覆盖别的屏宽偏好。分隔线拖动、键盘或菜单设宽归同一个resize_region操作，宽屏停靠最小宽度、余量分配及失焦恢复按DESIGN；窄屏正文/对话/表单按可用宽重排，不以560宽屏初值拒绝320宽或文字缩放；场景结构升级保旧实例和未知兼容信息，不能以新字段为由清空既有布局。
 
+### 合成片、焦点揭示与运行资源的边界
+
+`SpatialInput`增补本次实际呈现的geometry_revision、face_content_revision及可见片映射；render片仅为同一face的局部裁剪和世界变换，不能成为新的ObjectRef、语义节点或业务动作ID。runtime texture/picture/EngineLayer句柄只在对应视图与资源世代内使用，不持久化进SceneState、来源或业务API；缓存命中仍重核对象/用途。分片后的同一原始事件只向原功能面投递一次，场景/内容新版使旧输入失效而非猜坐标继续。
+
+焦点揭示沿现InspectionState保存临时调整集合及原focus_anchor/view_edit_generation，返回仍为原语义节点和内容选区；系统默认布局的焦点可见性由客户端主动保证。用户明确保留揭示后的摆放才提交Scene operation；取消/退出不倒转期间内容修改、用户改宽或新的协作位置，失权引用不恢复。该类型只解决呈现，不增加通用窗口控制或替浏览器发起动作。
+
 ### 临时查看与继续工作的明确类型
 
 `InspectionState`是客户端临时视图，字段为`inspection_id/parent_inspection_id/scene_ref/base_scene_revision/selected_instance_ids/original_view/transient_view/focus_anchor`。original_view逐成员保存pose/parent_group/active_face/presentation/dock_region/slot/order/free_pose，逐受影响region保存宽度与可见性，同时保存camera及焦点；每项带本次进入时的view_edit_generation。嵌套检查沿父检查逐层退出，只恢复本层仍受临时状态控制且未被人工/协作新改的字段，不覆盖期间有效宽度/位置/焦点变更。已删除或失权实例跳过并给准确状态；内容版、未Apply草稿和媒体状态不随临时视图回滚。结束检查恢复未改字段，不调用内容restore；明确保存排列时转成原Scene operation，不能把临时位置悄悄写成共享布局。目录与搜索返回合法成员ID、名称和真实分页状态，不要求全部几何实例先渲染后才能查到。
@@ -97,6 +103,10 @@
 任务补问使用`RequiredInput`明确影响对象、原因、已有值/候选及最小解决方式；已确认上下文继续复用。用户改输入生成新要求版，旧运行可保其真实结果但不得写入新稿；晚到回执不覆盖当前草稿或工具绑定。暂停/取消/重开沿现Job及ResumeContext，查询丢失回执不再产生业务效果。用户后续精调、改变要求或明确“另做一版”均建立新的独立意图；只有同一已提交动作的查询和内部重试沿原意图及受控attempt，不能按参数永久去重。
 
 自然语言修改从v1提交得到v2，直接精调须基于读回的v2提交得到v3，再从对话核差异、撤销与继续导出，须读到同一版本链；并发仍持v1的动作返回冲突或待审差异，不静默覆盖v3；反向操作也相同。Undo分别选择内容操作、空间操作或明确的任务取消，历史恢复新建修订，外部已有效果只做实际支持的补救，不把删除对话当撤销业务。
+
+### 等待表达属于本地呈现，不改变任务状态
+
+既有本地偏好增加独立waiting_motion、work_humor及concise/light表达选项，使用同一偏好读写与失败回执；系统减少动态/低功耗对装饰有效，关闭work_humor不关闭必要状态。映射仅消费真实ResultEnvelope/Job阶段和当前语言，不额外读取客户正文或私人会话；十六语义动效仍由具体对象状态触发。表达资源、显示完成和用户已读均不得回写为Job完成/批准/发布。该本地偏好不要求云账号、不进入客户交付，也不自动变成模型训练偏好。
 
 ### 实时语音沿同一工作与命令
 
@@ -661,6 +671,16 @@ Web 的有序 `input` 通道绑定 `sequence / page_id / page_revision`；鼠标
 公开 URL 读取继续使用 `acquire_url` 和原共享 Worker。HTML 原始响应与主内容投影分开；RSS/Atom 保逐条来源、作者、原生时间及实际观察到的分页，`entries_truncated / links_truncated` 明示范围。`text_sha256` 是文本投影身份，不是原站原件证明。现有本机代理使用合格数值地址建立隧道；遇网络客户端的合成地址时只向当前系统配置的 DNS 重新核公网地址，仍禁止私网/保留地址和重绑定，不新增 DNS 服务或修改系统配置。HTTPS 沿系统信任链验证，不能关闭证书核验。
 
 监测 `work_id` 与 `follow_source_links` 是不同输入，后者默认关闭。`GET /api/works/{id}/monitor-source-candidates` 仅提供该工作已有资料的可选来源、去重、排除原因与分页；用户选定的 URL 才进入规则。启用后续发现时，仅沿已选来源同站的获准链接/Feed 条目进入同一采集队列，保父资料、来源、规则版与发现时刻；跨站链接不自动扩大范围，预算和截断不冒全站覆盖。来源读取水位与规则评价水位分别持久化，旧规则迟到结果不能吞掉新规则下应复核的变化。变化证据区分新增、删除和改写，保确切前后文本；HTML 字节/空白变化不能单独冒内容变化。`Retry-After` 与实际失败原因沿原 Job 记录保存，下一次允许检查时间可读回；重开后先收取已完成结果再安排新检查，避免重复效果。
+
+### 捕获资源、监听出口与桥消息
+
+捕获消费者同时记录既有授权对应的scope_kind（source_bound或explicit_tab_session）及human_view/model_observation/source_save用途，字段只是原许可的投影，不产生新grant。源受限消费者还需真实frame_document_binding资格；缺该资格不以当前URL或active状态补成功。explicit_tab_session只在用户已经明确选定相应持续查看范围时成立，不能从扩展安装、一次取材或DOM许可推导；人类显示、模型观察与正式资料保存仍分别核权。
+
+在既有ConnectionRef/BrowserSession下记录`capture_id/capture_generation`、设备/profile的非秘密引用、确切tab/window及document/navigation、当前SourceUse/授权世代、video/audio/semantics/control各自能力与状态；active流不代表新页面已获权。普通与隐私profile不得共用流或配对上下文。消费者订阅引用当前capture及用途，停止只释放该订阅，真实资源终态由Browser Owner回读；借用目标的浏览器进程/标签不随订阅清理关闭。
+
+音频回执保源、`monitoring_sink=origin_device|oevira|none`、monitoring_generation、请求/实际开始/停止及错误；每一捕获源默认一个监听出口，切换失败/未知不得叠新播放。该字段与网页本身静音、录音、制作Job取消分开；未获声音捕获时保真实video/text能力，不补无声音轨冒支持。断开和导航后的资源状态可查询，重连不以旧客户端记录自签已恢复。
+
+Native Messaging控制信封含协议版、会话/目标/授权世代、operation_id、kind、seq、payload字节数、deadline及回执；大合法语义块另含总长度、chunk身份和摘要，重组在总预算内，重复/漏块/旧世代明确处理。单帧产品预算256KiB（UTF-8 JSON总字节，不含4字节前缀），总预算按当前操作预先确定并可报告超限；媒体信令不夹连续帧，真实媒体走同一获准WebRTC通路。所有字段仅表达实际状态，客户端不能以自报grant或scope扩大产品权限；原始stream ID、配对密钥和设备私密路径不进入普通结果/日志/Material。
 
 ### 页面辅助语义的目标协议
 
