@@ -1,6 +1,6 @@
 # 系统与智能能力：可执行产品合同
 
-2026-10-30。本文件是[全产品重构方案](../PRODUCT-SPEC.md)的系统与智能领域附件，作为现行领域合同，按完整用户工作实施；需求定义不等于已经实现或通过验收。依据本轮已读原需求、源码与研究。新根为 `D:\寰意`，旧根 `D:\LUMENIS_REBUILD\序\序境` 仅作有效能力与研究参考。现状均指已注明范围的静态证据，不把源码存在、历史研究或局部测试说成用户可用；没有新增服务、模型、依赖或实际运行。
+本文件是[完整产品规格](../PRODUCT-SPEC.md)的唯一系统与智能专业方法定义。通用检索、双浏览器、采集监测、行业AI、数学、记忆、扩展、权限和恢复的输入、步骤、结果及验法均在本文件给出；历史源码只作为可选复用锚点，不是产品范围、当前运行证据或必须恢复的依赖。
 
 ## 共同落地边界
 
@@ -442,7 +442,7 @@ Agent每步读取URL/就绪条件/DOM与必要画面，核目标和当前导航�
 
 ### 九组数学义务的确定实施输入、算法分解与专业结果
 
-本段把§4.2已有义务细化到可实施的范围，不新增算法产品，不将原完整主算法降为可选，也不把理论声明升级为已被独立证明。固定原件与逐段方法见[intelligence-review](../reference/reconstruction/intelligence-review.md)的相应论文全文记录和[math-supplement-review](../reference/reconstruction/math-supplement-review.md)；原采用合同与论文快照版本分别保存，不能因编号相同当成同一版本。下列现行正文负责输入、路线、范围、专业结果及验法；固定原构造负责算法/命题的精确推导身份，历史阅读记录只作证据，不要求实现者返回旧规划重新判断产品能力。
+本节给出数学方法的确定输入、构造步骤、适用条件、实际消费者和独立验法；其后的固定构造细则同属本节，不另设研究附件。不同版本的命题、算法和参数不能因同编号混用；完整算法编码、形式核验和实际业务收益分别验，不把理论参考声明提升为已经独立证明或实测加速。
 
 同一Analysis职责持有`MathematicalProblem`：实际问题类别、变量/单位、完整输入及来源版、硬软约束、适用性依据、精确/近似模式、误差与失败预算、随机源/种子、原算法/命题身份及资源上限。工程复现使用已批准固定Lean/Mathlib/比较器及允许公理，独立于产品运行时；不得给生产安装证明器、凭历史PASS签当前，也不能以证明器不兼容取消其他专业分析。用户只给业务目标和真实条件，不填写论文编号或内部证明参数。
 
@@ -461,6 +461,92 @@ Agent每步读取URL/就绪条件/DOM与必要画面，核目标和当前导航�
 | 140：均匀球面信号先验、鲜新独立标准Gaussian设计、精确无噪线性标签、固定期限与有限bit单遍状态 | 终端仅使用保留状态/停止索引，过去信息不能在状态外偷存或重读；cube/其他先验和有限纤维数值路线各保自己的条件，不混成一个Gaussian先验。保实际联合law、矩阵秩和精确有理投影/核，条件sphere采样与数值平方根另报近似；条件于完整数据的replica独立，不推广到被有限状态选择后的posterior。原下界/precision重放保终端索引/时钟、参数量词、有限状态和误差模型；不能将弱收敛或边缘相同代同一联合分布 | 给明确模型的假设分析和原Agent记忆研究；实际长期工作仍用I5可纠正外部记忆及独立任务评价，不套KV/RAG通用内存公式。小维精确A·lift=y/A·kernel=0、退化秩、负半径、近似分布和取消单独验；理论重放不恢复缺失事实、不证明用户记忆收益 |
 
 所有路线返回四部分：适用性及不成立原因；实际算法/模式与精度/资源；专业可用结果及不确定性；未完成/可恢复范围。规范的“不适用”只拒绝不成立的数学保证，不取消用户的业务问题，仍由已定业务方法交可成立的分析/方案。完整算法、形式重放与实际工程优化分别有交付项，不能只留“以后研究数学”的一句话，也不能在本次文档任务假填已实现、已证明或已加速。
+
+### 固定构造的实现细则
+
+以下细则与前表是同一数学合同：前表规定业务输入、输出及保证边界，本段给出不能省略的构造条件、参数顺序和反例。按§4.2给定的固定算法身份实现，不能将推导摘要当独立证明；也不得只实现一个有限样例便签一般算法。复杂性结论不授业务求解准确率或有限规模加速，已有合法业务计算路径不因理论构造未验而停用。文中代数符号仅在所属构造内使用，不跨组混用。
+
+#### 107：复数乘法9/4构造
+
+逐段证据：p1–3定义复数域算术指数，每个epsilon固定算法/常数，n趋无穷；张量角色需加法/乘法/限制单调与归一，nu为exact rank指数；dot-product三个方向的幂指数pX/pY/pZ形成lambda(Tn)=n^(pX+pY+pZ)。p4 Lemma2.3每次退化固定degree L，再tensor j、插值jL+1次，不能把复杂退化当单次无成本运算。p4–6 Proposition3.1要求两腿互不共享且标签匹配、只一腿共享，5M份输入经L=5M根式Fourier过滤u-v+2(g-h)=0，再权重(g-h)^2筛g=h，输出M个完全独立块各带BX(M)，两种M不可重复计数；Corollary3.2依固定频率word的multinomial/Stirling取极限，并非有限M立刻无损。
+
+p6–8对C(a,b)普通多项式乘法，R=a+b-1；六排列几何平均P及t>0用于平衡。Lemma4.1以D=uw-vs的exact sequence构造同一组基底、所有first-input slice保相同块三角关系，kernel/quotient权重消掉星号块，再共同概率q优化得到离散凹性；不同slice不能各自选基冒同一张量退化。Lemma4.2三扇区的中间块交换第二/第三腿并反转第一腿，整体六排列才能合法得到P(a,3h+a-1)>=3P(a,h)。p9以增量单调推Ha的乘积增长、Da>=a^(4/3)，对照P(a,a)<=(2a-1)^(1/t)得t<=3/4；从所有character上界还须Detecting Lemma2.2，不能省掉附录。
+
+p10–12附录：compact convex normalized states，经连续Pz lambda=lambda(zx)/lambda(z)、Schauder–Tychonoff与有限交性质取共同固定点；非空性用有限不一致子系统、有理锥分离、Grothendieck群和固定催化D推出D+ks>=D+m+Tds，迭代保留单个s而非取消s；先j趋无穷、再delta趋0、最后n趋无穷，固定成本消失次序关键。p9递归实际选择某固定u及存在的exact-rank分解、padding到u的幂，常数依epsilon；没有给可竞争有限u、CPU实测、内存、数值误差或实用代码。p12–13参考条目全文读，未递归下载引用。
+
+#### 102：Max-Cut归约
+
+输入是明确有限图、非负有理权重（边权概率总和1）；最大化问题alpha近似定义为可行cut至少alpha×最优。G-W有限精度SDP+随机超平面通常给期望alphaGW−eta。文中Theorem1.2按有理t、epsilon<(t-B(t))/4构造YES/NO gap；B(t)=2arcsin(t)/pi。关键外部输入为仿射2-to-1 games，量词顺序是对soundness b先定alphabet n，然后才任意缩小completeness error a；不可只拿一般2-to-1数值gap代替该加强输入。Boolean table-entry Fourier与affine-row Fourier不同，概率归一/未归一和标签q(1)=1分别保留。
+完整2s树depth m，k=(2s)^m,d=s^m；monomial每对取一子，slice每节点取一对子，两遍历每层恰交一个点，根相关tr^(2d)。MaxCut图的查询只给最终word、不泄漏rows/tables/slice/incidentedge。任意cut拆odd/even；正噪声stability非负去掉even才得上界。row symmetries约束每pair sum=qv；unsplit只在一个选中gate做，不要求全树unsplit；随机slice平均损失s/(2em mu)。自由shift坐标是线性双射，保固定context上的正交投影。
+vector-valued hash先保持total mass M，再两次truncate（过大mp和Ap点值），fourth moment用三独立变量/第四xor得到共同q，不能在distinct条件下假称独立。估计(6.3)各常数随zeta控制，不依源alphabet维度。Majority Is Stablest需balanced且[-1,1]、低degree influence；先用它发现entry influence，再投影/去even（K/2^s界）/hash推出heavy label。投影Hv不保证逐点bounded，证明只用integrated influence。p21的theta,p*依目标gap而非alphabet，但极小参数不能当实用计算成本。
+去smoothing用Hilbert范数凸性；plant一个slot使context和latent新rows线性系数全0（常数项不归零），p0=2^(-n(2k−2s))，忘mark后density Z/(Tp0)、TV<=1/(2sqrt(Tp0))；q*定义不能看mark/额外edge。跨codimension1仿射restriction只有2s自由rows，Fourier质量损失2^(2s)，不能随手用同样损失到任意维数/投影。两端labeler只用自己的endpoint与共享随机，证明不要求labeler高效。参数必须(t,epsilon,mu)→(s,m,p*,theta)→b→n→T→a，打断此顺序会循环。图大小|X|^T·2^(2^((n+1)T))仍对固定gap叫多项式，但固定常数异常巨大，不是可用优化器。
+- p27–35 Appendix A不能略掉：从regular3Lin构造legitimate disjoint tuple，folding标签空间仿射，valid-subspace conditioning有明确丢失mass；q_all与q_edge不相混。补全无效表项为0、保持FU/FV一致，invariant list需Q∩H=0、阈值tau/ambient维数条件；第二玩家对每个Q restriction标签gamma分quotient list且其size不依k0，第一list不需要这样的界。先soundness定ell/k0/beta，以k0=j^4,beta=j^-3同时满足beta k0→∞与smoothness→0，再取原3Lin epsilon<=a/(2k0)。这些依赖[6]及Grassmann/扩展定理的具体引理；本次未独立全文重验证这些外部证明，不能把阅读等同新定理公认有效。
+- p35–38 Appendix B：删loops不重归一；每顶点替F_p^6 cluster，edge条件x·y落指定residue，Q=p^12；rectangle误差及任意split-cluster cut都核，非只cluster同号cut。这是hardness reduction所需确定性无权转换，不是产品graph压缩或推荐采样算法。
+
+#### 102：Vertex Cover归约
+
+YES cover<(1/2+1/m)n，NO>(1−1/m)n，ratio=2−6/(m+2)趋2；每固定m才多项式，不能把m当自由规模输入。外部唯一hardness输入为perfect-completeness Label Cover，固定soundness决定constant alphabets；未依旧UGC为假设，但本次未重验证引用PCP/repetition原证明。问题不要求源约束图regular或expansion。
+query只包含位置类型与自身端点问题，不携edge occurrence、opposite endpoint或projection map；valid local label须满足scope内所有源约束，compatible selection不只重叠一致，还满足scope union内所有cross-scope约束。norm为compatible选择有符号绝对线性和最大值，hereditary且singletons使其为norm；每query增量Linf界。图顶点是所有indexed seeds×grid weights，即使向量相同也不去重；邻接为norm(Sv+Sw)<=2t。局部norm枚举最多(1+r)^(2d)在固定参数下才可称多项式。完成性用midpoint-grid对连续uniform的误差与反集中界获得约半独立集；无模拟样本替代保证。
+从大独立集删至多一个低norm点后固定集合A*、odd 1-Lipschitz距离半差F；F在fresh种子/权重之前固定，不能每样本重新选函数。continuous weight cube保原jointlaw且rounding d/p<t/2，方差nu d。restriction lemma在16h+32h²<=nu d/2、三个oscillation 2/4/2条件下保own-question variance>=nu h/4。按独立seeds/weights Efron–Stein分解，不能按相关endpoint questions假设独立；同seed两endpoint projections不必commute。star Dk只保相反端点问题，令incident invisible能量O(d)而非O(d²)，随机batch保留条件S∩J={j},N∩J空,T无非incidenthiddenpair。固定冻住数据后剩余抽样仍原productlaw，不以成功事件condition。
+gradient在有限分片affine hyperplanes外等实际梯度，exceptional点明确0，始终在signed compatible incidence convex hull；block L1<=1，无效slots为0。own conditional均值导数=条件平均gradient仅almost everywhere，cube variance<=2 E L2²，不能当每个固定点均成立。用beta/2阈值得长度<=ell的local list；必须先conditional Jensen把list能量传回同一个full gradient，再用hull的compatible hit界，不能把不同conditional gradients拼成同一compatible选择。故EZ>=2。
+pair解码固定其他weights/seeds后list函数本身不能重算，也不能看到被隐藏occurrence。枚举ell² rank pairs得到每pair成功<=ell²sigma，Z<=1+sum(pair events)给EZ<3/2，与原restrictedlaw的下界矛盾。p23关键常数已原图核：nu=1/(2^7 m³)、beta=1/(2^10 m³)、ell=2^11 m³、h=2^12 m³、d=2^38 m^10、sigma=1/(2^46 m^12)，不是文本提取可能误读的1/(27m³)。所有constants先于源alphabet选择；如此巨大d决定reduction polynomial degree，绝不构成可运行优化方案。最终阈值用整数m|cover|与(m−1)n比较。最大匹配端点的2-approx只对本文unweighted vertex cover。
+
+#### 102：有向反馈顶点集归约
+
+唯一外部hardness输入为imperfect-completeness 2-to-1约束、fiber恰2、任意constant θ的YES≥1−θ/NO≤θ，无需UGC、perfect completeness或regularity。中间构造protected rank vertices/deletable tests，正有理cost；YES≤4/NO>D=10A。dyadic-biased junta由uniform Friedgut经k-bit AND提升，I_half(F)=2kp I_p(f)≤kb，按触及blocks条件预测后junta大小独立于alphabet；近似junta不必monotone。
+M=128(D+1)、p_i=2^(−i−1)、q_i=2p_i、γ=p_M/1000；T由Chernoff界、K≥M·2^T D/γ、B0=(D+1)/γ、junta J先选，再取θ使Kθ≤1且J²θ≤γ，最后alphabet m与kmax=2^T m、L=10kmax+30、ρ=min(γ,1/m)、η使3ηL³2^(m^T)≤ρ。固定A常数极大；多项式只对源instance规模，不保证可用运行时。rank profile有prefix identification且class cost D+1；global labeling的evaluation在rank arcs严格增加。wildcard ordered cells保空cell，重复vertex各slot仍独立抽样。X/Y coupling对每fiber保持R_u⊆π^-1R_v，Y marginal q=2p：无X命中时额外概率p²/(1−p)²。complete删除fullprefix≤1、两singlelabel各1、comparison Kθ≤1合≤4；所有随机结果枚举为理性权重，不以随机运行结果代reduction。
+先固定假设cost≤D的删除集和完整topological order，再由finite Ramsey/minimax取同一随机递增ψ令任意triple分布TV≤η。TV期望差不能直接当同ψ事件一致；证明用pointwise intermediate ordering再union bound 3ηL³2^|Λ|。good tuples导出monotone g、empty=0/full=1和prefix兼容，wildcard test若跨0→1必须删除，否则出现order矛盾。good bound只对抽样tuple，不是所有tuple同时成立。
+shared data D=(ψ,t,prefix vertices,bias indices,subsets)必须在fresh edge/scale之前固定，且所有bias共用这个分布；bad tuple用固定dictator fallback。fullstar强制删除推E h_u(p_i)≥p_i/4，不能条件化在成功事件上再跨尺度累加。B(f)对每坐标只按“某个随机排列prefix使其pivotal”的事件收费一次，不是总influence/把所有prefix重复收费。arrival-time证明I_p(f)≤B(f)、h(p)≤pB(f)，使用潜在见证事件与本坐标arrival独立，实际switching coordinate不独立。singlelabel删除cost推出同分布E B_u,E B_v≤D+1。
+comparison删除界≤2ρ+M·2^T D/K；短lists在fresh edge前选，projection命中概率≤θJ²。坏budget用Markov≤2γ；不交list在fiber coupling下independent，再以junta替换误差4γ得E[h_u(p_i)(1−h_v(q_i))]≤10γ≤p_i/16。H_i={h_v(q_i)≥1/2}推出Pr(H_i)≥p_i/8与B_v≥1/(4p_i)，对同一个B_v的dyadic tail求和得E B_v≥M/64=2(D+1)矛盾；不能把不同随机函数的tails相加。
+正权上界C、S个vertex，clone count c_v=ceil(Sw_v)，每cluster独立，原arc转全部intercluster arcs；任何原剩余cycle可lift，因此partial clone删除不会优于对应full-cluster方案。总≤CS²+S，rounding每删除集增≤1，YES≤5S/NO>DS；无需大公分母。相反arc需用private protected subdivision后再unweight，不可直接删边。DFAS扩展把vertex分裂key arc与n+1 private connector paths；若删除数≥n输出全vertex，否则每connector至少一条存活，可恢复解，保opt和近似；不是业务依赖删除授权。
+
+#### 102：Min-UnCut归约
+
+Håstad near-satisfiable parity gap＋ordinary parallel repetition是外部hardness输入，无UGC；原权重按最大余数转uniform equation list并对全assignment保TV误差。folded proof认Boolean query真值表本身，重复描述不能生不同变量。face array m轴，每row affine function独立，truth-table重复codeword须一起翻；T1 Gaussian、T2 rowresampling、T3指定tablebit三种cost分别正规化，budget未必是概率。任意加权proof family只获平均fail界，不能提升每instance界。
+Gaussian smoothing→mean-zero能量≥3/4；row degree计非零row而非alphabetbits，Hermite cutoff因微分shift用s+2。第三test给gradient signed-codeword凸包权重期望≤2J/η，再先截高权重取得product-of-faces相关。gauge invariance强制localrow equal odd frequencies，选择pair仅看mask/Hermite支持，不枚举频率。randomsubbox去其他row/support；projection传递常数C0=4^M binom(N+s,s)（不是4M），slices的discard依背景/整函数，不可依实际自由localrow值。clip后boxCS先消掉任意facesigns，再在背景下用四独立row但四和仅parity约束的square；不同square用不交rows。参数J→σ/δ/η/R/s/T→m→H/γ/A0→ell→n→p/θ，全在alphabet前，有限不代表低成本。
+outer game重复变量仍freshanswer slots，仅单equation内重复变量要求一致；secondvariable question不带原equation/position。hints仅canonical truth tables，不夹带pullback原式/隐藏metadata。零hint系数active slots在固定背景后仍原独立抽样，soundness≤(1−2^(−q)(1−c))^t0。joint smoothness是conditional U的整组forms TV≤0.5√((2^(4dt0)−1)t0²/t)，不是固定已见hint后新row uniform。diffuse Fourier transfer需把q背景＋3fresh forms一起替换，再用fourthmoment；frequency collisions允许相加，不要求pullbackinjective。内常数→b4/u/Delta/s*→t0→t→ζ，completeness ζ最后取，不偷换quantifier。
+完整joint Gaussian sign tables以截尾、grid、正偶阶Taylor density、精确rational归一化同时近似所有proof cost<1/2；相依阈值无须协方差可逆。midpoints的a+b√N用rational square compare，ties明确定义。integer multiplicity总数D0 W=O_K(M0^t)，不是只数bitlength。folding complementary pair统一变量；equality四边path/inequality三边path、每次freshinternalvertices使violation准确一条uncut，无加性baseline；selfequality成4cycle、自不等成triangle，保simplegraph。k=5D0，YES<4.5D0，NO>(10K−0.5)D0。deterministicalgorithm后果P=NP，随机固定成功率后果NP⊆RP，二者不能混写。2CNF每edge两clause精确保opt和可恢复assignment。
+
+#### 107：全域精确乘法构造
+
+CW5 strand8→4→2→1，zero-coordinate终止matrix tensor。以整数Laurent恒等式常数项消去负幂，R(CW_q^m)≤(q+2)^m binom(3m+2,2)，无field division/interpolation，故finitefield可用。rank到arithmeticalgorithm使用固定d decomposition递归，常数依field/构造；identical-summand sum inequality要求每输出同一个oriented(a,b,c)，相同volume不够。
+跨depth pooling仅同一physicalpriorityorder，population/ancestry/placement保持分开；p须在其marginals下entropymax（productweights或唯一coupling）。childwindows/inheritedpairmixture必须一致且positivegap；Y仅Zzero指定groups，Z仅X/Yzero指定groups，residual即单shape也不能新增individualtest。commonhash模37^k，coarse差≤16为unit，survival条件只Se不夹后续eligibility；先freezeXeligible再Y再Z保证每实际monomial归一输出。变量为completeword非localfactor。修复须每full-variable orbit缺失≤C/N，不是平均全局缺失率；independenthalfpermutation pairvariance≤n/8，Chebyshev保每orbit。presence masks L=O(N/logN)，≤2^(3L)copies每矩形选一次，使各coefficient准确一次，不能直接相加shiftedcopies重计。允许改变旧holepattern，group只需保ideal tensor；replications按操作不按summand重复倍增。固定finitepopulation/subdivision/tolerances先于N→∞。
+tiedshape先均分labelplacements，descendant不resort，相同u来自不同t保各自d_t,u。StageB代表(3,2,3)故weight2是middlepriority；StageC四shape由marginals唯一coupling，包括d=0/1。A→B用同一V mixture，Brepair后不再留A旧holes；λ按capacitybalance拆每history，不改law。K个lot共K+2ticks，K−2full＋4boundary；β为LA/LC range和非0损失。6physicalorders乘输出counts，每history恰1/6。terminaldimension由exacthistorycounts＋commonterminaltypes定同orientedtriple，zero-axis matchedpairs计完整weight1labels；orderedpair z的offdiagonal出现两次仅概率normalization，DiDj另计multiplicity。先固定K、rationalconsistentlaws/tolerances，再N→∞，loss→0，K→∞最后，不能同时增K声称uniform。
+五精确arrays17/118/54/75/36和lextraversal均读，(6,1,1)及zeroamountparents也必须consumeentries；二进制d=n/10^6，不套F(n)。F为16阶Taylor后64次幂的正rational，223不同arguments。entropycert有rational-logseries31项和明确tail，directednative-log仅crosscheck；严区间比率(2.371054886006745684,2.371054886006745685)，圆整表只够2.371056。整数与代码映射及verify_parameters的实际运行属于实现验收，不能以固定声明代独立核验。
+
+#### 139：条件均值电路与采样
+
+nearquadratic F仅C²且gradient Lipschitz≤δ=d^−e，不必convex，但fullquadratic Hessian(1±l)I；center任意无gradientbound，D(x)=sqrt(d)+|g(x)|。noisynearquadratic theorem先产ν*N(I)，pre保独立1/2Gaussianreserve以W2→TV，还不是原目标采样。Poincare/conditionalcumulants通过S=(z,f/L)只用Df，所有非平凡tensor split控制，不只方向derivative。conditionalmean Mρ center x+rρy/scale r√a仍是待实现oracle；transport dY/dρ=−rMρ，rho<1。
+materialderivative由adjointdivergence表达，singlecontraction双方各保free slot，不允许selftrace随意套norm。divergence高tracemoment展开只一个closingtrace d^b，取s≥(j+C)log(d+1)吸收；最后vectordivergence才支付一次sqrt(d)。不把fixed-timeRMS换成path-sup。K^T=∫BρU1，B′0=0保证kernelendpoint正则，transpose不可漏。stationaryskewflow product ξ*×Gaussian invariant，G1独立Y1但不独立initialanchors，mean u仍在velocity，idealξ*sample尚未实现，不可称实际routine。
+globalPicard每layer全mesh并行依赖，不按cell增depth；logtimegrid cell长度配endpoint导数奇异性，quadrature仅nodewiseRMS。kernelaction直接用短harmonictrajectory和forward correction，不先近似K再乘任意G；保forwardintegral抵消1/r。首cellHermite插值强制B′0=0再积1/rho，approxvalues亦无端点奇异。approxcenteringvelocityglobalLipschitz可做Picard，truejointflow不globalLipschitz。先固定J→PicardN≤ceil10(J+2)→dependencydepthO(N²)，再w再interpolationm；提高m不增加依赖depth。31–55后续核读结论如下。
+
+
+exactmean circuits的所有scalarcoefficients、nodes/scales/queryshape先于oracle值，finalmean尺度恰rR，中心expression仍rτ≥rR/√5。Gaussianabsorption的pathwisetranslation须同时保持querypoint；噪声center x+nZ配seed P G，P=(I−vvᵀ/(4D_s²))^1/2，PPᵀ+vvᵀ/(4D_s²)=I，直接用新independentseeds不成立。routineheight和expressiondepth不同：同一个parent的center-supplying和目标mean各是directchild，label误差p−1/4只扣一次；重复mean必须uncached复制整subtree，不能为省查询复用随机值破坏独立。finalMchild(b+t,p)、finalSchild(b,p)、其余(b−10t,p−1/4)确保boundedheight与b>1/2；terminal一次query，σ/η附加noise按3/4+1/4合方差。先Picarddepth/H→w→interpolationm→bottom-upshift，与oracle值无关，everyexecution cap polylog δ^−t。accuracy先fixed-seed稳定替换inaccuratecenter，再absorb恢复standaloneseedlaw，再用child分布保证；不声称真实intermediate全有idealinputlaw。
+proximalconditional κ_y加√hGaussian的chain保π_V*N(h)，W2contraction1/(1+h)，局部误差依|y|但actualmomentrecurrence控，额外一次smoothingtransition才到TV。之后variancehalving条件式Z=Y/2+Znew/√2、x/r递推，J=O(logd)；逐次替换用idealprefixmoment与data-processing而非actualhistory假设。base固定O(logd)modeiteration，Gaussian近似TV≤C l sqrt(d)，最终已移除auxiliaryconvolution。ε先取2e<ε、K0>2+1/e、t受40(K0+2)t<1/4，oraclecap d^{e(1+t)+o(1)}；有限小d采用cappedGaussianrejection，至多ceil(4·2^{d/2})，全失败回0导致TV≤e^-4，不是exactlaw。故常数可极大且realcompute无上界。
+lowerGaussianA=OΛOᵀ，queries=value已被gradientAx确定；deferredrotation给任意adaptiveoutput落(q+1)GaussianblockKrylovspan，但g_i仅相互独立、不独立A/O。output自身作为额外direction保unrestrictedrandomoutputs；cosinefrequency2q+1高于degree2q，Gram/Frobenius界对整个span统一，coefficients可依transcript。targetquadraticstatisticbias d·(3−√8)^(2q+1)/√2与alg≤160(q+1)^2√d分离；用joint(A,x)event证明某固定input失败，不要求算法能计算该test。下界Ω(logd)与upper d^ε不合并成polylogexactrate。
+
+#### 107：复数及矩形乘法构造
+
+平方omega<1129/500、dual alpha>.465、w(.709)<2.092为复数/特征零算术操作指数，任意epsilon固定常数、输入规模趋无穷；不含bit复杂度/浮点稳定性。rank与给定Laurent多项式border-cost witness不混；fixed witness degree先定，tensor N后插值O(N+1)R^N。GROUP两个reader不共享本地变量、第三side可共享，完整群tensor rank成本必计。sphere tags同半径，slice displacement正交，模数4Q无wrap才推出匹配；保相关未解决fiber是locality而非nonvanishing证明。
+逐层label必须真实被双方各自读取、原support/word retained、canonical labels与物理six permutations分开。COMPLETE/PARITY与binary是有限退化，child在parent确定后处理；所有basefactor和aux成本计入。score gamma(D−A)+M无payload偷计。finite recipe closure不等无限算法；严格超额才抽出某个有限recipe。law/utility修正用singleton稀释而非默认为相同分布。重复旧GROUP不消除每份rankexcess，须重编整个固定conditional transcript。matching boundary需各bank确切类型、tightness和APhash后的isolated edges，不能只按总直方图。
+comparison用full covariance C:D²，无1/2。有限AP目标窗中每条允许路径均到窗，非概率大即算成功。shrinking corridor soft clipped drift、hard singleton inward、三段Taylor代价共同证明；选择次序local constants→finite targetL→finiten/tree→finite approximating recipes→outerBankB，未把无限depth用到finite tensor。supportcovector误差含max |Lalpha_i|/alpha_i，需positive inset。
+W gamma0=300000/225925；shell degree112整数recurrence/residual、2161端点及曲率插值/精确lawcorrection，不能仅采样判边界。finite library候选优化器不算utility证明，后用精确law/entropy重算。六分量chart P780,500/Pref420,224有限有理递推而非假设无限series；operator36非18；whole-disc residual<3.329e−22和一二阶导数误差均需保留。
+480²几何中心需tail/Lipschitz/Hessian补齐全域；E1低位严格径向下降、clipped face/cap角处不假称二阶光滑。52 exactdecimal barrier；128²sector boxes14阶Taylor、128bit范围和floor/截断语义、最大depth28未解决即拒绝，非samplepass。65536boundarycells及6×8192transition subcells，用face/cap不同attainability来源、concavity chord+singleton correction、root误差和derivative界；实际face gap28.49e−6而非弱checker阈值12e−6。continuous margin5.5e−6，inset eta2e−9转移损失<1.3e−6；support误差<1e−12与interior strict9.8e−8才导矛盾。
+strict score抽取有限L,R,v，整数L^1500 v^1129>(3^n R)^1500，全部参数先定；不提供有用finite implementation尺度。readable label tree每个prefix三side可识别，节点aux只计一次、不同prefix共享固定size；各pair conditional entropies相加Hπ。F7是两个base、最多7次size2/3completion、各termination/side之有限族，supportfunction最优只对族，不是所有算法全局最优。dual要求nonincident choices与X条件独立确保精确S=H(X)，不能近似相等认证exponent2；七步law288basefactor，.465以有理界证。rectangular75support curve t2/3推出.709/2.092；另72factor平方2.267独立于更强2.258。
+比较只针对注明版本published tablebaseline及其ordinaryconvex/block/subdivision组合，separator是记录上界成本的约束，非未知真实exponent下界，也不覆盖全部未列参数。追加baseline需单独通过13.5。finiteexception跨域以两个fixedexactscheme共同numberfield/cleardenominatorD，排除D素因子集合S但未算S；有限extension全电路constant模拟，不每tensor层乘成本。dual只characteristiczero，不对positive characteristic断言统一有限exception。附录52系数与certificate身份/环境全文读；纸上作者reproduced日志是历史记录，实际运行须另核。final-summary把analytic margins当输入，未证明它们；hash一致也不证明chartrecurrence，certificate非proofassistant。
+
+#### 103：有限资源去随机化构造
+
+模型为finitecontrol/endmarkedreadonlyinput、fresh independent fairbits、所有随机带上polynomial worstcase time、O(log(n+2))workbits（含空白visitedcell、所有livecounter、suspendedcall）；outputwriteonly不能偷作workspace。概率近似输出a/2^(q+2)，误差≤2^−q，spaceO(logn+q)、time(n+2)^O(1)2^O(q)，q为unary，通用精度非poly(q)。time-layered完整配置不合并halted tapes，strictforward substochastic S使finiteinverse和所有配置p∈[0,1]。rankchannels有framecondition、retentionπ≈f、conditionalpairbound，不是所有ID独立；fixedpadding需injectiveaffine且fieldradix可逆。
+E recurrence的fixedpoint只作comparison，不是无限迭代实现；同一row严格forward路径有限support≤1/(theta1 f)产生factorial truncation。pilot先用trueexpectations固定detector multiplier，actual全程用final同一g，不能用估计值定义自身truth。D=C−E+EC非负substochastic且支配unsignedterms，估计数组仍可负。copyrouting含weightedprojection C+Pr=PrD；D0与detectorK/J/R*/Kc顺序固定避免循环。activevertex最多2倍而density2^−H降；reward全primary error≤|V0|2^−(H−1)l。
+densebin/normalizing preparation分开，broadYa与narrowusageYt不可互换；denominatorclip[1/2,1]即使mean0也total，只有truepositiveQ且g>0需≥3/4，g=0不要求假下界。computedtables需同一finalrawarray/tuple/repeatabletest，不假设unbiased。ranks带无限defaultdummy但dummy不是realport；supportmargin3g<e与fixedfiniteaccuracyexposedclass适用于任意错误/负raw。incomingcap是overfullcolumn全部移除而非任取Kc，zero-weightports也计；actualdistinctpair去重与inversepairing必须实现。assemblyerror释放旧source付f/u，不能把不同source误差当同一child。
+propertyT外部输入明确Shalomlinear/relative，deriveaffinefiniteactiongap；conditionedchannel(F,w)按不同modP/modL作用，freebits合一torus，fixednumbercomponents保证gap不随bits增。guessedwrapvariantfullenvironmentmeasurepreserving，在指定ID每word恰一validwrap，权重不可再除variant数。trueatomsproduct可条件独立，estimatederror不用独立假设。additiveschedule对同endpoint先合并budgetm−(m−1)，同word/wrap保持cancellation；coarse b/a和fine(b/a)^(s−1)、sourcef/u入norm，精度M/Kprec−.5log1/a−.5log1/u−A*rank支付。omittedbins必须证明fine；meanbias与absolutenoise分开，walk先整体spectral估计再crudevariantcount。
+compressionexceptionlist+commondefault，不是把所有小数无条件丢弃。update有floor/rankcap、有限support、全arrayLipschitz≤28；firstoverflow分trueheavy与errorfake，conditionalrarity仅能乘deterministicmeanmagnitude，不能对依赖event的noise同做。stationaryreference/two-large-entrycases与sentinel是证明device非可免费识别storedvalue。clamp同increments保relevantfunctions，但不保证accessdescriptors相同；actual/clean都clamped直接比较。
+shortfingerprintfixedpaircollisionO(1/B)不足处理adaptivecandidates。预算block h*=floor(epsilonlogB)，salt独立；actual只能读current及earlier有效salt，walk冻结currentlater。clean同block全部value/structure改exactequality，lowerblockactual不变；cleanenvelope由witnesssupport构成与currentsalt独立。escapedpath用unitwitness差异包括zero-weightports，右factor借actualincomingcap消除旧source；不在saltdependent stayinside事件上condition。bucket只aliasincrements，不搬/合并旧storedvalues，保distinctrealIDs；coupling误差以childbudgetdrop关闭，epsilon最后选。catalyticfourvisitsXOR恢复任意原内容，Bbitvector仍算ordinaryspace。
+每fixedtuple有一个exactvalue，数字clock提高不能改变结构/port/list。signeddigit alphabet−6..6，Nt scaleerror<2，differenceNt−2Nt−1定义stream；有限approx可以不同截断，不能依无穷exactreal比较。乘法按minindexband，负floor residue兼容，晚operandquery需早释放coefficientword；reciprocal仅positivecompactinterval，earlyword保存只在j≤t/2+O(1)付clockgap。semanticrankdomain/validity固定、clockdependent仅finiteapprox，invalidslot先branch不访问未定义值。publiccoefficients可scratch，operanddependentword不可伪装public。
+singlecursor，leftcorrectionpairedmove/boundedinversetoken，righttuple不保oldsource。terminalprogram区分opaque lowerquery（内部工作态不入uppergraph）与explicitterminalchain；guard不能代替指定执行已有rawrecordproof。syntheticpredecessor也freshpresencecheck，旧validflag不可信；holezero与rankdefault不同。sinkcomponenttreecontour枚举canonicalinitiations，无secondaddress；incomingcapcount全列，incomingrank量化scoreword是state非rootparameter，先least-significant suffixassembly，完整score只跨structuralcall。exact/clean长counter不要求同physicalbound；实际端点salt由outeractionownertag取得，不影响lowerpath。rawcoeffa0,b0不递归替换成expandedphysicalA,D，copy只localrawchain，pendinglowerphysicalappend，Phi差望远镜合O(B)。parameterreplay只scratchscanactivechain无丢弃地址，guards/syntheticstates遵effective盐权限。
+integratedmoment→specifiedstart损失N明确支付；式12.5原图为p≥r+3+(CNB+ceil(log2Ctail)+3)/8，不是把CNB放括号外。枚举原fairbitstrings保hashreductionmultiplicity，不能只枚举distinctreducedkeys；conditionalframe/hit筛选等权，中位数重扫不存multiset。每坏environment也须total才由O(B)completeconfigurations推polytime。promiseoutside仅total不保证分类；q变化用virtualpadding固定accuracytheorem，单改digitclock不改statisticalerror。acceptingwitness需p≥inversepoly且writeonlyoutput，先silentverify终态再secondpassstream，低于promise只给validaccepting或failure。
+compiler接suppliedtime/spacebounds为hypotheses，不判断任意程序是否满足。fixedresourcecappedU/固定separatorA先于source，virtualpadding N=2^(P Bn), P=1000(dcode+2)^4(a+b+2)可能极大；程序grammar是actualfinitefields非递归可执行描述。输入callback扫描真实endmarkers、librarytapes同时计存储，所有finitealphabet转bitactions。式13.11 H=2^((u+100)^2)(qD+1)不是2乘平方；polynomial常数/exponent巨大，不是效率承诺。可选onewayrandomheadstay用finitecache保源步数，与一般two-way随机带不同。compiler有限可终止不等实用、形式化或现成软件。
 
 ### 数值方法的可执行结果及独立核对
 
@@ -526,7 +612,7 @@ Agent每步读取URL/就绪条件/DOM与必要画面，核目标和当前导航�
 
 标签优先来自可核的官方身份关系、原生父子关系、明确修订和能够指向原句的支持/反证；主观严重性、创意质量、讽刺或立场另需独立审定。规则生成、模型建议、合成与改写标明弱标签/合成来源，不能独自证明行业泛化。研发负责资料整理、补证、标签规则和适任独立核验，不把开发数据标注作为用户完成日常业务的门槛。独立核验未具备时保明确未就绪，不让生成者自批。
 
-已读历史资产的准确资格、位置与限制见[智能保全矩阵§14](../reference/reconstruction/intelligence-preservation-matrix.md#cpu-preparation-evidence)。88条材料含8条基础合成及来自40个课程案例的80条记录，不能按88个独立真实案例计；旧CTH/BMP类别也不直接变成新动作标签。带`auto-recommended`的记录不冒独立人工金标；14请求/5来源的旧语义包未完成权利与审定则只为候选评价材料，不能因存在文件签收。只在符合原用途及当前数据资格时采用，不以这些数量宣称训练已充分。
+历史训练资产必须逐项保来源、用途、独立样本组和标签依据。原88条材料中8条是基础合成，80条来自40个课程案例，不能称88个独立真实案例；原领域标签不自动变新动作标签。auto-recommended不冒人工金标，14请求/5来源的语义包未获用途及标签审定时仅作候选。既有数据数量不证明训练充分，缺旧包按本节已定原生配方处理。
 
 缺原模型包时保原能力合同和历史记录，准备明确新身份的替代版本；不能伪称旧参数已迁入。缺旧题集定义时按原专业义务新建可复核评价规格和独立案例，标明新建替代及原挑战对应关系，不编旧量表公式。Jev历史低质量合成原型不能作为当前重跑基线；现有adapter配置不证明权重/基座完整或可重载。用户已放弃追索的四份业务DOCX与两份声音原报告不再作为材料缺口、寻找任务或训练阻塞，其专业义务由现有研究和新评价合同承接。
 
@@ -537,7 +623,7 @@ Agent每步读取URL/就绪条件/DOM与必要画面，核目标和当前导航�
 | 旧`lumenis/system/ai_gateway/owned_inference.py` | 模型/数据/参数身份、真实设备路径、重载与失败读回用于统一推理边界 | 原包/权重/adapter/基座、特征与消费者兼容；大型模型加载器不直接等于轻量任务实现 |
 | 新根`server/oevira/store.py`、`auth.py`及现有Work/Material/Artifact/Job | 继续拥有存储、成员权限、来源、任务与版本；业务/Office/媒体消费者通过统一合同接结果 | 必要模式迁移、撤权与并发提交、旧父版本、恢复；不新建账号、数据库或独立模型产品 |
 
-上述旧路径均为只读旧根中的相对源码定位，属于复用候选，不证明数据迁移或运行已验收；本轮实际读过的方法和调用者见保全矩阵§15。旧`owned_training.py`的执行入口仍明确拒绝GPU训练，并非可直接调用的CPU训练器；其同一JSONL校验还将留出集限定为可训练材料。复用权利与完整性不变量，同时分开训练、开发校准、最终评价和回归用途，不能为通过旧接口把eval-only改成可训练。旧路径保护同样不能照搬成只能输出到新根之外：沿现有Artifact根保存模型版本，禁止覆盖源码、原始材料、旧模型和业务数据。模型与算法按真实消费者选择；优化移入后台，用户仍控制目标、业务约束、作品与修改范围。
+上述旧路径均为只读旧根中的相对源码定位，属于复用候选，不证明数据迁移或运行已验收；具体输入、消费者、训练配方及回退由本节定义，旧代码是否可复用只影响实现选择。旧`owned_training.py`的执行入口仍明确拒绝GPU训练，并非可直接调用的CPU训练器；其同一JSONL校验还将留出集限定为可训练材料。复用权利与完整性不变量，同时分开训练、开发校准、最终评价和回归用途，不能为通过旧接口把eval-only改成可训练。旧路径保护同样不能照搬成只能输出到新根之外：沿现有Artifact根保存模型版本，禁止覆盖源码、原始材料、旧模型和业务数据。模型与算法按真实消费者选择；优化移入后台，用户仍控制目标、业务约束、作品与修改范围。
 
 <a id="training-splits"></a>
 
@@ -651,7 +737,7 @@ Agent每步读取URL/就绪条件/DOM与必要画面，核目标和当前导航�
 
 ### 4.10 从旧材料到可执行的数据、评价与模型合同
 
-**旧训练材料的采用决定。** 原件保留，新用途通过有父版本的新记录表达，不能原位改成“已审定”。完整原文及生成链核对见[矩阵§18](../reference/reconstruction/intelligence-preservation-matrix.md#training-data-semantic-audit)。历史文件名带APPROVED、记录自称PO_APPROVED、课程自动评分或CSV中的APPROVE，均不能替代其所指真实授权及专业审定；有旧授权证据时只按其精确用途继承，不无故否认，也不扩大。
+**旧训练材料的采用决定。** 原件保留，新用途通过有父版本的新记录表达，不能原位改成“已审定”。原材料与新用途记录保持独立身份和父版本。历史文件名带APPROVED、记录自称PO_APPROVED、课程自动评分或CSV中的APPROVE，均不能替代其所指真实授权及专业审定；有旧授权证据时只按其精确用途继承，不无故否认，也不扩大。
 
 | 现有材料 | 可采用内容与具体用途 | 不直接采用的部分及替代准备 |
 |---|---|---|
@@ -852,7 +938,7 @@ Task/run/attempt/lease、能力descriptor/schema/运行版、输入与效果dige
 
 服务端从实际会话认actor，每一资料行、关系、Evidence、Canonical、成果、文件、线程/任务、导出、学习资产核客户/Subject/BrandFocus/来源用途；GLOBAL仍逐源限制。数据库GET不能顺便建表、跑迁移或启动采集；聚合必须先过滤合法范围再统计/limit。身份不可用、会话过期、动作拒绝和服务失败分开，拒绝后保合法未发草稿但不展示撤权资料。
 
-原54字段底稿仍以`contracts/experience/BACKEND_GAP.json`001–054逐项绑定，详细去向见同目录`intelligence-preservation-matrix.md`。001–004账号/上下文恢复；005–017经营指标/事件/场内关系/原文/图/日历/风险/Case/决策/报告；018–028品牌/市场/传播/创作者/资料/Campaign/播客/评价/风险/比较；029–035AI意图/Provider/编排/持久线程/证据/Skills/可用性；036–043服务/采集/DB/权限/偏好/浏览/安全/日志；044–054创作工作、模式检索、主张核验、真实外发、共享线程、能力状态、资料、Canonical、导出、学习、队列。共同权限修复不能把这些领域对象互相改名：quota不是Campaign、note不是Case、CTH风险不是品牌风险、目录不是品牌健康、登记Skill不是可用创作。历史PARTIAL/ABSENT/PENDING是该底稿当时观察，当前需真实代码/运行读回，不是今天全缺或已完成。
+原54项消费职责由当前合同直接承接：账号、主体选择、开始/续接和授权返回；经营指标/事件/洞察/场内档案/来源/关系图/日历/笔记/趋势/案例/风险/决定/报告；品牌/市场/渠道/创作者/资产/Campaign/播客/评价/品牌风险/对标；智能输入/模型/任务/持久会话/证据跳转/技能/真实就绪；服务/采集/存储/权限/偏好/浏览/安全/诊断；完整创作、方法检索、逐主张核验、真实外发、创作会话、能力状态、资料、规范事实、导出、学习和任务续接。每项读取在服务端先核范围再排序/汇总；GET不作schema初始化或暗执行。quota不是Campaign，note不是Case，经营风险不冒品牌风险；方法检索按platform/format/audience/objective与当前权限取得真实候选进入Brief，逐Claim核支持/反证/未知，execution_id与Evidence建立真实关联。通用会话与创作会话共用Owner但保各自作品/选区/人工版；目录、注册、批准和回执分别不能冒创建、可用、发表或交付。
 
 原RealDelivery九故障分别验：Product Core崩溃、Worker崩溃、Queue backlog、DLQ、Browser失联、Collector失败、AI provider offline、DB temporary failure、Session expired。每项执行发现→诚实状态→定位受影响工作→合法恢复→返回原任务，不能显示0/ready/healthy/empty success。八权限场景分别验authorized read、unauthorized read、cross-scope read、missing actor、missing scope、permission backend failure、Evidence lookup、action denial；用户A可读Subject A不可读B、用户B不同权限，Subject/BrandFocus选择、客户端Header和平台Cookie都不授予产品actor权限。
 
@@ -949,7 +1035,7 @@ API只校验与提交短事务，独立重任务Worker从同Store原子领取，
 
 Skill从发现/inspect来源信任许可→精确批准→隔离安装与依赖检查→self-test→启用→真实任务执行及Evidence→历史→更新/回滚→禁用/卸载完整保留。声明式技能读取其格式规定的SKILL.md及适用manifest；skill.json属于既有自有/兼容格式，不能强加给只要求SKILL.md的标准包，也不能省略产品自己的类型化操作与权限校验。本地目录、ZIP、GitHub固定revision各自校验，不因MIT、名字出现或包下载就自动安装启用。批准和自测回执绑定完整工具schema、实际包内容、launcher与依赖锁身份；展示截断副本不可作批准schema，同名同版本换内容须重核，文件齐备不等健康或已验证。卸载不删合法成果，版本改变重核schema/权限及在途任务。历史实现记录（2026-11-03所列范围，不作当前运行声明）包含不可信声明式Skill和用户明确批准的公网HTTPS只读MCP工具；每个MCP调用先重核精确tool schema并把结果作为不可信Material接回检索/引用/成果Owner。该历史实现当时拒绝包内脚本/二进制或运行时依赖，不把此限制固化成最终产品范围；本地stdio MCP和脚本执行按下文真实OS隔离方案实现，未取得当次隔离与运行证据不能签可用，也不能以Markdown提示或裸Popen代签。
 
-原已登记9项定位为shared.union_search、video_shotcraft、cangjie、huashu、social_card、last30days及zbc.subject_authority_read、zbc.skill_registry_snapshot、zbc.agent_boundary_audit三项SYSTEM只读审阅（保留历史ID，不新增用户入口）；已登记不等已实现或运行通过。AEMethod的AI产品/业务/数据/工程QA/治理/运营/研究/源工程8组保原采用映射，不把包名当能力。原S01–S72名称已在旧保全原件`work/local-materials-20261019/legacy-repository-material/lumenis-pure/00-GOVERNANCE/LUMENIS-INTELLIGENCE-OS-DUAL-CORE-ARCHITECTURE-v1.0.md:157–181`逐项读回，逐S落点见[智能保全矩阵§12](../reference/reconstruction/intelligence-preservation-matrix.md)；G130引用的独立`序/序境skill/SKILL-LIST.md`及完整72包材料尚未全部取得。2026-11-05重新读回12份S01–S12 manifest，原固定snapshot与新根归档逐字节相同；新归档、旧固定snapshot及旧intelligence_library三处已知Skill体系目录均只有s01–s12。各声明1.0.0但inputs/outputs/execution为空，不能据文件存在签可执行；历史chain另记0.1.0且model/result空，二者不冒同版调用。本轮7个确切解析路径、研究资料及legacy provenance索引中未取得独立SKILL-LIST或S13–S72完整包，结论只限已核范围，不称全盘不存在。其余旧包逐包原方法、schema、实际版本、依赖/许可与复用仍NOT VERIFIED；已知名称及现行能力完整保留，不补造原件或删除要求。过时原件的双仓、页面及自动模型选择不能覆盖现产品。下表限定候选怎样服务现有工作，不新增72项独立产品入口或引入授权：
+九项兼容能力别名保为shared.union_search、video_shotcraft、cangjie、huashu、social_card、last30days及zbc.subject_authority_read、zbc.skill_registry_snapshot、zbc.agent_boundary_audit；别名不增加用户入口或授予权限。S01–S72按下表职责及本节原生方法直接实施，不依赖旧SKILL-LIST、缺失安装包或空manifest。AEMethod的AI产品、业务、数据、工程QA、治理、运营、研究与源工程职责归对应现有Owner，不能按包名制造另一系统。外部包只有在确切版本、schema、依赖、许可和隔离成立时采用；登记、安装、执行与专业结果分别核验。
 
 | 原候选及确切名称 | 既有消费者、具体输入到结果与限制 |
 |---|---|
@@ -1006,9 +1092,9 @@ HTTP请求保目标/IP/TLS、逐请求身份、凭据受众、Origin及重定向
 
 ## 来源与适用边界
 
-原要求锚点：旧主规划J05 1464–1562、J06 1563–1638、J27完整3170–3434、J28/J29及UX100–169/180–204、§10 6404–6509/6654–6669/6959–7094/7424–7609/10645–10697。精确阅读范围与原件证据见[intelligence-review.md](../reference/reconstruction/intelligence-review.md)及[保全矩阵](../reference/reconstruction/intelligence-preservation-matrix.md)；各记录仅证明所列原件与源码的实际审阅范围。原已批准数学九族完整义务、方法、消费者与验法直接由本合同§4.2拥有；历史逐篇审读用于追溯和精确实现参考，不替代现行定义，也不要求开发者另从旧总稿决定范围。
+本文件各条直接拥有系统与智能行为。专业业务归business，作品方法归creative，共同接口归API；不得重新从旧J/G/UX总稿决定范围。数学九族由§4.2完整持有，旧编号仅保兼容血缘，不是历史阅读任务。
 
-现行专业验收对照见 [intelligence-acceptance-reference.md](../reference/reconstruction/intelligence-acceptance-reference.md)：8个一手依据只覆盖各自有界维度；时间/客户/事件隔离、独立专业人工复核、失败分母及误差、负例和真实结果必须保留。本文不新造一套管理状态、测试计数目标或验收徽章，不采用agent自评分/hash作为业务质量。
+专业验收采用时间/客户/事件隔离、独立适任复核、完整失败分母、误差区间、权限负例和实际结果，执行步骤统一见[验收合同](../ACCEPTANCE.md)。不新增管理状态、测试数量目标或验收徽章，不用agent自评分和哈希代业务质量。
 
 以上7域沿同一产品的对应能力、接口、消费者和完成条件实施。开发按实际依赖交付完整用户任务，依赖顺序不能成为删能力、永久后置AI或只做通用骨架的理由。研究、代码存在、运行观察与专业验收分别成立；缺少实际运行或专业质量证据的行为不得声称已通过。合同本身不授权新增服务、个人会话访问、数据用途、付费资源或外部业务效果。
 

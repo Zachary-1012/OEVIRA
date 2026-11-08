@@ -1,22 +1,7 @@
-# 历史来源，非现行指令
+# 历史署名与许可
 
-旧产品最后核对基线：
-[`2a8b9cefe3571039e04db00e863a6fc4b5dce4bc`](https://github.com/Zachary-1012/OEVIRA/tree/2a8b9cefe3571039e04db00e863a6fc4b5dce4bc)。
+本目录仅保留原始的[NOTICE](NOTICE)、[LICENSING](LICENSING.md)和[THIRD_PARTY_NOTICES](THIRD_PARTY_NOTICES.md)，三份文件字节不改。其旧名称及相对链接只适用于对应历史树，不能作为现行产品功能、开发规则或运行配置。
 
-该提交保存旧源码、研究原件、资产、许可、审批、测试及失败记录。重构不改写历史，
-不重置旧记录为通过；新目录不再加载旧启动器、规则、运行数据或源码。
+历史归属基线为提交`2a8b9cefe3571039e04db00e863a6fc4b5dce4bc`；保留Git历史用于追溯，不要求开发者查旧规划、研究矩阵或Review补产品定义。当前许可登记由根THIRD_PARTY_NOTICES.md承担，当前产品行为、方法、设计、协议与验收分别由根入口列明的唯一职责文件承担。
 
-## 原件访问
-
-- [原规划与治理资料](https://github.com/Zachary-1012/OEVIRA/tree/2a8b9cefe3571039e04db00e863a6fc4b5dce4bc/00-GOVERNANCE)
-- [研究资料](https://github.com/Zachary-1012/OEVIRA/tree/2a8b9cefe3571039e04db00e863a6fc4b5dce4bc/research)
-- [字体及原资产](https://github.com/Zachary-1012/OEVIRA/tree/2a8b9cefe3571039e04db00e863a6fc4b5dce4bc/app/assets)
-- [旧验证及失败上下文](https://github.com/Zachary-1012/OEVIRA/tree/2a8b9cefe3571039e04db00e863a6fc4b5dce4bc/tests)
-
-本目录的 NOTICE、LICENSING.md、THIRD_PARTY_NOTICES.md 是逐字保留的历史文件。
-其中旧名称、相对路径和权威陈述只对上述历史树有意义，不构成新产品的第二套规则。
-需要研究旧实现时按精确对象读取；任何采用重新核对新规格、来源、许可和真实效果。
-
-旧本地目录仍须按保全、迁移及新根运行验证条件退役；Git历史不涵盖全部未提交文件。研究原件集中归档于新根 `研究资料/`，未恢复项和映射在该目录中明确；不得访问个人会话。
-
-[全产品重构研究与逐条对照](reconstruction/README.md)记录完整旧要求的保全与采用依据。现行要求只归正式产品规格和领域合同。
+研究原件、用户资料、未发布源码和合法资产受保护，不能把删除重复规划解释为删除它们。独立历史根不是本目录的执行或安装依赖。
