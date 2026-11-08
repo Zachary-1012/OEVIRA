@@ -20,8 +20,7 @@ class RepositoryAdmissionTests(unittest.TestCase):
         for name in validator.DIRECTORIES | validator.ROOT_FILES:
             source = ROOT / name
             if source.is_dir():
-                shutil.copytree(source, self.root / name, ignore=shutil.ignore_patterns(
-                    "__pycache__", ".dart_tool", "build", ".plugin_symlinks", "ephemeral", "*.ttf", "*.woff2"))
+                shutil.copytree(source, self.root / name, ignore=shutil.ignore_patterns(*sorted(validator.IGNORED), "*.ttf", "*.woff2", ".plugin_symlinks"))
             elif source.is_file():
                 shutil.copy2(source, self.root / name)
         self.tracked_paths = [
@@ -173,6 +172,46 @@ class ContinuityContextTests(unittest.TestCase):
         self.assertEqual({}, continuity.context_for({"hook_event_name": "SessionStart", "cwd": "relative"}))
         self.assertEqual({}, continuity.context_for({
             "hook_event_name": "SessionStart", "cwd": str(ROOT.parent / "unrelated-context-test")}))
+
+
+
+
+class CanonicalPlanningTests(unittest.TestCase):
+    def setUp(self):
+        self.directory = tempfile.TemporaryDirectory(prefix="oevira-canonical-")
+        self.addCleanup(self.directory.cleanup)
+        self.root = Path(self.directory.name)
+        for name in validator.CANONICAL_PLANNING_FILES:
+            path = self.root / name
+            path.parent.mkdir(parents=True, exist_ok=True)
+            path.write_text("Current method, input, result and recovery.\n", encoding="utf-8")
+
+    def test_current_owners_and_preserved_originals_are_allowed(self):
+        for name in ("data/original.txt", ".runtime/recovery-before.txt", "docs/reference/NOTICE"):
+            path = self.root / name
+            path.parent.mkdir(parents=True, exist_ok=True)
+            path.write_text("preserved non-planning original", encoding="utf-8")
+        self.assertEqual(validator._canonical_planning_errors(self.root), [])
+
+    def test_missing_authoritative_method_fails(self):
+        (self.root / "docs/domains/creative.md").unlink()
+        self.assertTrue(any("unavailable" in x for x in validator._canonical_planning_errors(self.root)))
+
+    def test_superseded_review_cannot_be_reintroduced(self):
+        for folder in validator.RETIRED_PLANNING_ROOTS:
+            path = self.root / folder / "old-plan.md"
+            path.parent.mkdir(parents=True, exist_ok=True)
+            path.write_text("old competing definition", encoding="utf-8")
+            self.assertTrue(any("Retired planning copy" in x for x in validator._canonical_planning_errors(self.root)))
+            path.unlink()
+
+    def test_dangling_history_dependency_fails_without_source_folder(self):
+        path = self.root / "docs/PRODUCT-SPEC.md"
+        for target in ("reference/reconstruction/method.md", "decisions/old-plan.md"):
+            path.write_text("[required definition](" + target + ")\n", encoding="utf-8")
+            self.assertTrue(any("depends on retired" in x for x in validator._canonical_planning_errors(self.root)))
+        path.write_text("[current method](domains/creative.md)\n", encoding="utf-8")
+        self.assertEqual(validator._canonical_planning_errors(self.root), [])
 
 
 if __name__ == "__main__":

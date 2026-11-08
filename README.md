@@ -24,7 +24,7 @@
 | [验收](docs/ACCEPTANCE.md) | 真实成果、异常恢复、质量与发布要求 |
 
 [AGENTS.md](AGENTS.md) 只负责工程执行，[CONTRIBUTING.md](CONTRIBUTING.md) 说明协作流程。
-完整专业行为见[26领域合同](docs/domains/README.md)。历史资料不是现行规划，检索入口见 [来源与逐条对照](docs/reference/README.md)。研究原件集中在新根 `研究资料/`，不与正式规划混用。
+完整专业行为见[领域合同](docs/domains/README.md)，前端实施见[FRONTEND-EXECUTION](docs/FRONTEND-EXECUTION.md)。各文件按职责提供完整执行定义；不需回旧规划、矩阵或研究附件拼接做法。[历史署名与许可](docs/reference/README.md)只处理来源权利，原始资料受保护且不参与规则加载。
 
 ## 新目录
 

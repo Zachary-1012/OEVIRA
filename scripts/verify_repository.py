@@ -144,6 +144,48 @@ def _workflow_errors(root: Path) -> list[str]:
     return errors
 
 
+
+CANONICAL_PLANNING_FILES = (
+    "PRODUCT.md", "DESIGN.md", "AGENTS.md", "CONTRIBUTING.md",
+    "docs/PRODUCT-SPEC.md", "docs/FRONTEND-EXECUTION.md",
+    "docs/ARCHITECTURE.md", "docs/API.md", "docs/ACCEPTANCE.md",
+    "docs/domains/business.md", "docs/domains/creative.md", "docs/domains/intelligence.md",
+)
+RETIRED_PLANNING_ROOTS = ("docs/reference/reconstruction", "docs/decisions")
+
+
+def _canonical_planning_errors(root: Path) -> list[str]:
+    """Check current-file ownership and retired links, not product completeness."""
+    errors: list[str] = []
+    for name in CANONICAL_PLANNING_FILES:
+        path = root / name
+        try:
+            if not path.read_text(encoding="utf-8").strip():
+                errors.append(f"Canonical planning file is empty: {name}")
+        except (OSError, UnicodeError):
+            errors.append(f"Canonical planning file is unavailable: {name}")
+    for name in RETIRED_PLANNING_ROOTS:
+        directory = root / name
+        if directory.exists() and any(p.is_file() for p in directory.rglob("*")):
+            errors.append(f"Retired planning copy is active: {name}")
+    candidates = [root / name for name in CANONICAL_PLANNING_FILES]
+    candidates += [root / "README.md", root / "docs/domains/README.md",
+                   root / ".agents/skills/oevira-pstack/SKILL.md", root / ".codex/README.md"]
+    retired = [(root / name).resolve() for name in RETIRED_PLANNING_ROOTS]
+    for path in candidates:
+        if not path.is_file():
+            continue
+        body = path.read_text(encoding="utf-8")
+        for target in re.findall(r"\]\(([^)]+)\)", body):
+            url = urlsplit(target.strip("<>"))
+            if url.scheme or url.netloc or target.startswith("#"):
+                continue
+            destination = (path.parent / unquote(url.path)).resolve()
+            if any(destination == old or destination.is_relative_to(old) for old in retired):
+                errors.append(f"Active contract depends on retired planning: {path.relative_to(root).as_posix()}: {target}")
+    return errors
+
+
 def validate(
     root: Path, *, require_product: bool = False, tracked_paths: list[str] | None = None,
 ) -> list[str]:
@@ -225,6 +267,7 @@ def validate(
                             errors.append(f"Active document link leaves repository in {name}: {target}; use a repository reference and record the historical source as text")
                         elif not destination.exists():
                             errors.append(f"Broken local link in {name}: {target}")
+    errors.extend(_canonical_planning_errors(root))
     errors.extend(_workflow_errors(root))
     return sorted(set(errors))
 
