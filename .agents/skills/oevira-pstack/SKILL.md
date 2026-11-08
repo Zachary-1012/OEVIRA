@@ -7,7 +7,7 @@ description: Apply Lauren Tan's pstack engineering methods to OEVIRA architectur
 
 This is an OEVIRA adaptation of Lauren Tan's [pstack 0.15.36](https://github.com/cursor/plugins/blob/1ba91fc25c0977741dd0e267849e6234b037ed0a/pstack/plugin.json), pinned to commit `1ba91fc25c0977741dd0e267849e6234b037ed0a`. The upstream [MIT license](LICENSE) is retained. This skill supplies engineering methods; the current repository `AGENTS.md` and direct user instructions retain product and execution authority.
 
-Read the source skill linked for the task when its detailed method is needed. Apply the method to the actual change and its consumers; do not substitute another audit report for a repair. Routine changes do not need every mode.
+This file contains the adopted engineering method in full. Upstream links identify attribution, not a required second reading path. Apply the appropriate method below to the actual change and its consumers; do not substitute another audit report for a repair. Routine changes do not need every mode.
 
 ## Repeated corrections: correct and encode lessons
 
@@ -35,7 +35,7 @@ Read the actual implementation, consumers and constraints. Write the caller's re
 
 Repeated workarounds, escape casts, multiple writers or callers coordinating internals are evidence to revisit the boundary. Do not publish a sketch, placeholder or partial migration as a working capability. This adaptation uses the existing product root; upstream optional automation and candidate worktrees are not part of this repository workflow.
 
-Keep a complete operation under its domain owner. A caller should not coordinate storage-shaped records, repeated validation and internal load/save stages to perform one professional action. An abstraction must remove such work, not merely wrap another call. Read the architect references when this boundary is the actual design problem.
+Keep a complete operation under its domain owner. A caller should not coordinate storage-shaped records, repeated validation and internal load/save stages to perform one professional action. An abstraction must remove such work, not merely wrap another call. Determine ownership from the current product contracts, write the caller and failure result, then implement the smallest boundary that eliminates the repeated coordination; do not reopen settled product decisions.
 
 ## Changes across boundaries: blast radius
 
@@ -53,7 +53,7 @@ Read the actual resulting value/artifact and operate the changed behavior. For u
 
 Check both counterfactuals: incorrect behavior must fail, while an internal refactor preserving the required behavior should still pass. Derive expected results independently from the requirement, not from the implementation under test. Test-first work is useful when a suitable, proportionate verification path exists; it is not a requirement to add tests that merely mirror an edit.
 
-Use the upstream [create verification](https://github.com/cursor/plugins/blob/1ba91fc25c0977741dd0e267849e6234b037ed0a/pstack/skills/create-verification-skill/SKILL.md) and [maintain verification](https://github.com/cursor/plugins/blob/1ba91fc25c0977741dd0e267849e6234b037ed0a/pstack/skills/maintain-verification-skill/SKILL.md) methods inside the existing [acceptance contract](../../../docs/ACCEPTANCE.md), rather than creating a competing feature map. For the affected capability, preserve its distinct entry points and state the prerequisites, action, observable result and persistent side effects. Check the actual instance, version, data root, port ownership and applicable authorization before driving it; recheck after a failure that invalidates these assumptions. Keep captured evidence through cleanup, clean only resources the verification owns, and leave real user work intact. A substitute environment does not prove the real target's setup or operation. Missing product behavior is a defect, not permission to weaken the map. During preparation, define the runnable path without claiming it has already run.
+Use the following verification method inside the existing [acceptance contract](../../../docs/ACCEPTANCE.md), not a competing feature map. For the affected capability, preserve its distinct entry points and state the prerequisites, action, observable result and persistent side effects. Check the actual instance, version, data root, port ownership and applicable authorization before driving it; recheck after a failure that invalidates these assumptions. Keep captured evidence through cleanup, clean only resources the verification owns, and leave real user work intact. A substitute environment does not prove the real target's setup or operation. Missing product behavior is a defect, not permission to weaken the map. During preparation, define the runnable path without claiming it has already run.
 
 ## High-impact state promises: bounded verification
 
@@ -75,7 +75,7 @@ Before measuring, state what difference would change the decision and the expect
 
 The methods improve implementation and reduce redundant work; they do not reduce approved capability. They do not grant autonomous schedules, external communication, account access, collection, training, spending or deployment, or restore specifically rejected UI. Visual quality follows the approved design and actual user outcomes. No upstream installer, hook, automation or model runner is bundled or executed by this skill. Apply task-appropriate validation rather than running an entire checklist for every edit.
 
-Preserve license notices, real constraints and useful design reasons when simplifying comments. Handle unknown protocol fields according to the actual compatibility and security contract. Do not import upstream cloud/worktree defaults, private-conversation inspection, bot hosting or service installation instructions as project authorization. The full method-body review and source-specific corrections are recorded in [the adoption review](../../../docs/reference/reconstruction/pstack-review.md).
+Preserve license notices, real constraints and useful design reasons when simplifying comments. Handle unknown protocol fields according to the actual compatibility and security contract. Do not import upstream cloud/worktree defaults, private-conversation inspection, bot hosting or service installation instructions as project authorization. The adopted method and its corrections are the paragraphs in this file; no historical adoption report is required for execution.
 
 ## Flutter delivery and focused developer tools
 
