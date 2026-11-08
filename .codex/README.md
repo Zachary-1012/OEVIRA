@@ -41,7 +41,7 @@ $servers = & $entry.Executable mcp list --json | ConvertFrom-Json
 $servers | Select-Object name, enabled
 ```
 
-MCP配置列表可能含私有命令/环境参数，不将原输出贴到报告或Git；只保名称、enabled、进程/协议版本和必要去敏状态。`-CheckOnly`只解析入口，既不启动Codex也不证明插件/登录/模型可用。具体CLI子命令按该版本help运行；已核CLI的`mcp`管理命令不接受`--strict-config`，因此直接调用解析出的exe，不经交互启动器附加该参数。
+MCP配置列表可能含私有命令/环境参数，不将原输出贴到报告或Git；只保名称、enabled、进程/协议版本和必要去敏状态。`-CheckOnly`只解析入口，既不启动Codex也不证明插件/登录/模型可用。具体CLI子命令按该版本help运行；已核CLI的`mcp`管理命令不接受`--strict-config`，因此直接调用解析出的exe，不经交互启动器附加该参数。workspace-write与实际写权限分别核：部分宿主仍保护.git、.agents和.codex，提交或配置修改需要该会话明确批准，不能用设置管理员、关闭沙箱或直接改信任记录代替。仅在项目已获信任时加载项目配置/钩子；同层hooks.json和TOML hooks只选一种表示，避免双执行。提供者凭据、用户模型偏好及机器通知配置留用户作用域，不写项目层。
 
 Codex配置按官方层级与实际读取结果核，项目配置只有受信目录才生效；不通过直接写信任回执来绕审核。仅为这个项目需要的可移植设置才进入项目层，机器路径、密钥和用户模型偏好仍留机器作用域。普通项目写入可使用`workspace-write`与`on-request`，实际权限以当前会话读回为准；不主动扩大为无沙箱/全盘访问，也不因推荐值静默覆盖用户全局设置。其它执行者只把本根AGENTS和原技能接入其支持入口，不复制一套竞争规格或强制切换工具品牌。
 
