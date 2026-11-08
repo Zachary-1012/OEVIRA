@@ -179,6 +179,10 @@
 
 排期ChangePlan的impact_set每条边声明precedence、resource_competition、shared_budget、delivery_commitment或确切既有依赖，包含生成闭包所用时间域/资源版及边界固定项。锁定不因被纳入影响集自动解除；采用时核全部相关父版及资源世代。对实验另保assignment_unit、planned_probabilities、assigned/exposed/recorded/analyzed计数、成熟期、SRM方法/适用性/结果、固定期或预定K时点的序贯停止设计、总α/检查分配及M个主比较的检验族；诊断不通过仍可返回描述统计，但effect_qualification须明确不能支持何种判断。后续补证生成新分析版，不更改原分配和原交付。
 
+### 预算诊断与条件收益的回执
+
+沿原AnalysisResult增加constraint_refs（id/source/base_version/unit/bounds/adjustability）、conflict_set、conflict_qualification=solver_irreducible|solver_infeasible_superset|not_established、diagnostic_trials及budget_exhausted。每个trial记录临时排除集、完整固定条件摘要、solver_status与独立可行性；unknown不得变infeasible；另保solver_version、scaling、feasibility_tolerance、proof_kind=numerical_solver|independent_exact_certificate及确有的certificate_ref，数值status不冒精确证明。诊断不调用采用/付款/删除动作，建议变更仍绑定原预算及资源父版。情景返回response_kind=incremental|total|cost、support_ranges/extrapolation_flags、paired_draw_revision、delta_quantiles和probability_available；未校准情景不返回概率，模型分布不冒实际ROI。
+
 ### 选品组合与生成性质的精确引用
 
 原Business方案/选品项保存`product_ref/variant_ref`、门店/渠道/市场、原生URL、实际已核属性、价格/库存观察版及`selection_reason`，未知按Quantity/Coverage处理。组合保存`relation_kind=official_look|editorial_styling|recommendation|sale_bundle`、成员引用/数量及来源或编辑决定；销售组合另需真实组合ID/条件，推荐不能填成商售。图片沿FileRef/MaterialRef保已取得范围、variant映射和本次SourceUse，URL不是媒体字节或商用权；更新组合只触发真实依赖的方案/文件/预算，不改变商品原观察。
@@ -260,6 +264,10 @@ Observation响应分别表达取得状态、source_validity、SourceUse、identi
 
 `ExportRef`区分源Artifact版本/hash、生成配方/用途、文件身份和实际输出bytes hash；服务端回执和客户端核验对应同一下载对象。验证后的字节到交付阶段保不可变副本或受控独占，客户端选择/权限/格式改变使迟到结果不能冒新导出。响应hash自洽不代独立语义验证，下载请求发出不代磁盘读回或接收方已收到。
 
+### 扩展连接的协议与发现回执
+
+原ConnectionRef/Extension记录protocol_family=legacy|modern、protocol_version、transport、endpoint_or_process_digest、auth_generation、capabilities_digest、schema_digest、discovered_at/expires_at及discovery_coverage。发现响应、实际允许调用和专业结果分开；serverInfo不进入授权条件。显式pin不降级，无公共版本返回PROTOCOL_INCOMPATIBLE；认证失败、限流、部分工具发现和业务效果待核沿既有错误信封分型。工具执行绑定精确schema及同一OperationIntent，协议重连不能创建第二次外部动作。请求级元数据、旧初始化及兼容探测的具体规则由智能领域§7唯一持有。
+
 ### 取得验证、页面读集与原生方法描述
 
 来源回执将checked_at与published/event/observed时点分开；条件取得含representation_key、validator和所复用完整Source版，304不返回伪正文，字段覆盖仍逐数据面保留。Browser动作除现有page/frame/navigation及控制世代，增加只含必要非秘密信息的read_set与expected_postcondition；quote/position锚绑定source_representation和offset_unit。重定位产生新锚与映射状态，多个匹配不能自动取第一个；历史引用继续指原版。
@@ -277,6 +285,12 @@ Observation响应分别表达取得状态、source_validity、SourceUse、identi
 现有Observation/Material投影的`subject_associations`逐项复用SubjectRef与关联版，保role（publisher/about/mention/account_owner/location）、evidence_anchor、有效期间/未知、observed_at、relation_revision及resolution_state；内容可关联多个有据主体，未知关联不必丢弃合法观察。角色可按现有业务关系schema扩展，不能通过更改字符串自动授已核身份。关联/纠错沿Business既有命令，带base_version、精确来源版、理由和影响；不得重写原取得时间、原作者或原字节。
 
 Analysis input_snapshot冻结本次纳入/排除ObjectRef集合或可独立重建的不可变集合引用、纳排理由、采样单位、去重规则及query/source/relation/MetricDefinition/method版本。结果返回实际支持的指标、单位/分母/覆盖与资格、支持/反证、可修改锚、准确依赖和下游Artifact/Work引用；展示游标只决定显示子集。原生内容→主体档案/关系→经营/传播/合作/事件/预算等专业结果→原生文件与作品均用这条依赖，不让前端/模型另算另一真值。更正或撤权按同一影响集返回需要重核/可继续/失权部分，保合法历史及人工锁定。
+
+### 检索字符投影与引用候选的精确字段
+
+原search结果新增lexical_route、tokenization_revision、projection_revision/digest及match_ranges。范围声明coordinate_unit，允许unicode_code_point、utf8_byte、utf16_code_unit或grapheme_index，但服务端Anchor唯一规范单位为unicode_code_point；转换同时带原串摘要与Unicode规则版。搜索投影使用token map定位回不可变原文；不能把FTS预编码串的offset直接返回为正文坐标。排序含实际合格corpus_revision与rank_method_revision，BM25原生负rank与本产品作用域内正相关分分别命名，不混升降序。
+
+Anchor保source_revision、projection_revision/digest、[start,end)、exact/prefix/suffix与原生block/page/media位置。重定位返回resolved|ambiguous|unresolved以及具权限的候选新Anchor和差异，禁止多个候选时自动选第一项或执行全局替换。解析/源版/选区变化使旧修订预览失效；用户选择或已核唯一映射通过原ChangeSet提交，不设第二批注系统。规范化映射包含source_ranges、target_range、transform_kind及lossy标记；无可靠映射的匹配只给候选，不授权直接改原文。
 
 ### 多路径检索与既有成果复用的目标字段
 
@@ -643,24 +657,34 @@ corresponding implementations are connected. No empty endpoint represents them.
 
 官方平台的投稿、转发、好友分享及各应用资格分别校通道能力；一个外部通道不支持商业内容不变成寰意内部创作/发布的禁止范围，也不能换账号/伪装应用绕过条件。没有该通道时保合法链接、文件交付和已成立的内部发布，准确显示不可用项；发布环境、供应商和付费仍遵实际授权。网页分享使用真实平台可用性及用户触发，规范依据为[Web Share](https://www.w3.org/TR/web-share/)与[抖音当前发布/分享规范](https://developer.open-douyin.com/docs/resource/zh-CN/dop/operation-standard/platform-capabilities/useclue)，不是承诺已获得其接入资格。
 
+### 发现快照、上传提交与播放资源协议
+
+GET /api/discovery扩展order=recommended，必须存在该用户明确启用的推荐用途；latest/following/featured保持原语义。响应包含feed_snapshot_id、query/filter/ranking_revision、截止时点、preference_generation及稳定release引用/cursor，各项explanation只列实际候选来源和适用过滤。重置推荐沿原账号偏好及派生索引Owner写新代次，旧cursor返回CURSOR_STALE及合法返回锚，不清收藏或私人作品；每页和逐项媒体再次核当前权限。
+
+沿既有POST /api/uploads、HEAD/PATCH /api/uploads/{id}、complete/cancel使用Upload的expected_size、committed_offset、chunk_length/digest、full_digest、lease/cancel_generation及expires_at。JSON中的超出安全整数范围的字节计数使用十进制字符串并在两端校验；HTTP偏移头为十进制整数。HEAD no-store；offset/CAS冲突409不写，摘要错误不推进；complete以所有已提交连续块及全件摘要形成唯一Material与原操作回执，未完全校验仅返回真实处理阶段。
+
+播放请求返回同一PlaybackGrant及RenditionManifest：release/member、rendition_revision、content_digest、delivery=local_review_only|hosted、transport=hls_vod|range、实际codecs/size/duration/time_base、quality列表、字幕/章节成员、expiry/revocation_generation和当前允许动作。目标路由GET/HEAD /api/releases/{id}/media/{member}/renditions/{rendition}/manifest、.../segments/{segment}及.../file只接受服务端登记成员；manifest子URI使用同源鉴权路线，禁止直接挂载私有存储目录。分片、init、字幕和Range均核同一当前权限；Range合法请求206、不可满足416，读取回执不计观看。旧streams/{token}兼容适配到同一grant，不并行维护第二权限表。
+
+内部计量经同一发布Owner接收POST /api/releases/{id}/playback-events，包含event_id、session/sequence、member、metric_definition_revision、单调播放增量、源覆盖区间、速率、可见/收听状态及适用许可。拒重复/非法范围，缺测单列；公开响应只给当前允许的聚合，不回观看者身份。业务消费用同一Observation/MetricDefinition，用户拒绝该用途时不为补计数绕许可。
+
 ## 作品发布、模板与经验协议
 
-本节列历史Server社区/发布/media路径及其当时边界；不是本轮注册或运行证明，沿现有Store、身份、Artifact、Material、Media工程和Job工作；不建立第二账户、项目、媒体存储或审核应用。除本节列明的公开读取与公开媒体grant外，接口要求有效产品session并按Workspace/Work/Material当前成员权限授权；任何公开路由仍验证所带Cookie/Bearer，防止过期令牌被降级成公开匿名访问。撤回/过期许可使release及其媒体取用失败。正式公网托管/CDN未配置，release响应固定`delivery=local_review_only`；配置一个URL本身不改变此状态。
+本节是既有社区、发布和media路由的现行目标合同；下面条目与上文的完整作品模型、发现快照、上传和播放协议共同实施。原字段与旧客户端通过同一Owner作兼容转换，不保两套发布流程。除明确公开读取外，要求有效会话及Workspace/Work/Material当前权限；携带过期或无效身份不能悄悄降级匿名。delivery由实际托管能力、当前可见范围及可读回回执决定，本机未托管时准确local_review_only，托管成立才为hosted。
 
 | 当前路由 | 输入与实际结果 | 关键失败与边界 |
 |---|---|---|
-| `GET /api/community/capabilities`；`GET /api/community/media/sources` | capability报告审核/精选角色及`delivery=local_review_only`、ffprobe状态；媒体来源返回当前session可读的Material、Media工程、已完成render和可读字幕/章节sidecar，不返回服务端文件路径 | capability不是托管/审核质量证明；源权限在创建、读/写、审核、range读取时再次核对；不可读原件/旧工程源明确返回不可用 |
+| `GET /api/community/capabilities`；`GET /api/community/media/sources` | capability报告当前审核/精选角色、实际`delivery=local_review_only\|hosted`及ffprobe状态；hosted必须具备实际托管、当前可见范围与可读回证据，不由配置URL推定；媒体来源返回当前session可读的Material、Media工程、已完成render和可读字幕/章节sidecar，不返回服务端文件路径 | capability不是托管/审核质量证明；源权限在创建、读/写、审核、range读取时再次核对；不可读原件/旧工程源明确返回不可用 |
 | `GET /api/publications`、`GET /api/publications/{id}`；`POST /api/publications`；`PATCH /api/publications/{id}` | 私有列表/精确草稿版本。创建支持`artifact_id/artifact_version`，或`source_kind=media_material|media_render|media_project`及精确`source_id/source_version/media_selection`。种类为`work/template/experience`，范围为`private/team/unlisted/public`；媒体manifest只从已保存原件/完成render/工程版生成 | 客户端不能设置official、review或approved；私有输入快照不复制到release；本机路径、原Material/Artifact ID只在获准私有响应中存在；可见范围改变不自行发布 |
 | `POST /api/publications/{id}/media-source-revisions` | 只允许Media template草稿/驳回稿使用更高的同项目确切Media版；提交`base_version/source_version/media_selection/content`，由服务端重建槽、依赖和媒体manifest，重新检查精确权利 | 并发修改返回版冲突；不接受客户端伪造的`media/template`快照；提交或已审核版本须先按正常状态流程重开草稿，不沿用旧审核 |
 | `POST /api/publications/{id}/submit`、`GET /api/moderation/submissions`、`GET /api/moderation/submissions/{id}/media/{member}`、`POST /api/publications/{id}/review` | submit带精确`base_version`和`preview_acknowledged=true`；审核队列只给服务端审核角色已提交快照/媒体成员；结论`approved/rejected`加理由和确切版；媒体预览只读提交版中的所选成员 | 上传不等已审核或公开；作者不能审核自身提交；修改内容、媒体、依赖或权利后旧审核无效；队列不暴露源Material ID、文件路径及私有输入 |
-| `POST /api/publications/{id}/publish`；`POST /api/publications/{id}/withdraw`；`POST /api/publications/{id}/appeals` | publish带已批准精确`base_version/review_id`和`Idempotency-Key`；发布新不可变release并撤回同一publication旧release；withdraw立即撤销新取用；appeal关联具体review及理由 | 同键异输入冲突；下架停止Discovery/新媒体grant；SMTP/公开托管未配置不产生虚构外部效果 |
-| `GET /api/discovery?q=&kind=&order=&before=`；`GET /api/creators/{id}`；`GET /api/community/follows`；`POST /api/creators/{id}/follow` | Discovery支持`latest/following/featured`，limit为1–100，返回`next_cursor/order/explanation`；featured须有明确审核角色/原因/排序窗口。创作者名来自公开署名而非账户邮箱/姓名；follow输入`{follow: bool}` | following需登录；featured不是热度或成效统计；release需当前public、许可有效且未撤回；无发布的创作者页不可枚举 |
+| `POST /api/publications/{id}/publish`；`POST /api/publications/{id}/withdraw`；`POST /api/publications/{id}/appeals` | publish带确切base_version、content/rights摘要、visibility、OperationIntent和幂等键；按当前review_policy判自动检查或适用人审，人审路径才要求匹配review_id。完成检查后仅在原意图、版本、权利和取消世代仍有效时提交不可变release；withdraw使后续取用失效；appeal绑定确切决定及理由 | 不强制普通短文先人工审核、再点第二次发布；修改只生成新发布版，旧分享/评论仍绑定旧版并按当前允许留存和访问规则返回，不静默换正文。新版本发布与撤回旧版是不同用户意图，不自动全部下架；无实际托管/外站回执不得报对应成功 |
+| `GET /api/discovery?q=&kind=&order=&before=`；`GET /api/creators/{id}`；`GET /api/community/follows`；`POST /api/creators/{id}/follow` | latest/following/featured及显式启用的recommended，使用上文稳定快照/cursor；分页limit为资源参数而非完整集合上限，返回实际explanation。创作者名来自公开署名，非账户邮箱；follow保持幂等布尔选择 | 未登录不伪造关注/兴趣，精选来自真实角色与有效期；排序后及取媒体时再核当前public/许可/撤回，不得将private/team/unlisted纳入推荐 |
 | `POST /api/releases/{id}/items`；`GET /api/community/items` | `kind=collection|queue`、非负`position`、可选有限`progress_seconds`；续播位置仅适用于有确切时长的媒体并须在programme duration内；返回当前可访问release或`availability=unavailable` | 非媒体/时长未知不得伪造进度；撤回后保存项保留为不可用，不绕过release权限 |
-| `GET/POST /api/releases/{id}/comments`；`POST /api/releases/{id}/reports`；`GET /api/moderation/reports`；`POST /api/moderation/reports/{id}/resolve` | 文本评论可锚精确UTF-8正文区间；媒体评论锚`member_id/start_ms/end_ms`。举报需`Idempotency-Key`及用户理由；审核报告仅能dismiss或withdraw_release并写理由 | 评论/举报身份为不含联系信息的内部UUID；举报不自动证明或删除内容；每用户每日20条限频，report state冲突需刷新审核队列 |
+| `GET/POST /api/releases/{id}/comments`；`POST /api/releases/{id}/reports`；`GET /api/moderation/reports`；`POST /api/moderation/reports/{id}/resolve` | 文本评论锚定同版正文投影的Unicode码点半开区间；旧UTF-8字节坐标只由兼容适配器在原串摘要匹配、边界合法后转换，不得把字节数直接当码点序号；媒体评论锚`member_id/start_ms/end_ms`。举报需`Idempotency-Key`及用户理由；审核报告仅能dismiss或withdraw_release并写理由 | 评论/举报身份为不含联系信息的内部UUID；举报不自动证明或删除内容；每用户每日20条限频，report state冲突需刷新审核队列 |
 | `POST /api/moderation/releases/{id}/feature`；`DELETE /api/moderation/releases/{id}/feature` | 审核角色按理由、rank 1–10000、时区明确的`starts_at/expires_at`作手工精选；可撤销 | 仅当前有效public release可精选；精选排序不使用伪造播放/收藏/效果数 |
 | `POST /api/templates/{release}/instantiate` | 文档模板接受工作、用途及slot参数，生成新私有Artifact；`oevira-media-template/1`接受用途和每个公开slot ID到授权Material ID的替换映射，可选Work/title，生成真实MediaProject初版 | 源发布必须当前可取用且适用许可允许改作/用途；替换媒体须匹配kind、流数和工程实际使用时长；精确幂等重放返回同一私有副本；撤回后不创建新副本 |
 | `POST /api/media/projects/{id}/template-updates/preview`；`POST /api/media/projects/{id}/template-updates/apply` | preview带私有项目`base_version`和同一Publication lineage的更新release；返回`preview_hash/changes/conflicts/required_source_replacements`。apply带同hash、逐冲突`keep_current/take_template`、可选新slot映射及幂等键 | 更新release与Media源版本都须高于现有血缘；base/hash过期或有未解决冲突拒绝；CAS失败不写入；按稳定对象键三方合并并保留用户手改 |
-| `POST /api/releases/{id}/media/{member}/playback`；`GET/HEAD /api/community/media/streams/{token}` | grant指定`purpose=view|download`和可选share token；返回仅用10分钟的内部stream URL；文件流支持HTTP Range/HEAD、正确MIME、ETag、Content-Range、`Accept-Ranges`及`no-store`。字幕/章节也是各自有权利检查的release成员 | private/team流每个Range请求重核当前session/成员；过期/撤回/许可失效令牌404/拒绝；当前没有HLS分片、CDN或正式公网托管，接口返回local_review_only，不等于长时、多码率、并发/外网分发已验收 |
+| `POST /api/releases/{id}/media/{member}/playback`；`GET/HEAD /api/community/media/streams/{token}` | 当前grant绑定view/download、release/member、当前访问世代和短期到期；同一Rendition支持经核的HLS VOD或Range文件，返回真实transport/quality/subtitles/chapters和delivery | 每个清单/init/分片/Range/字幕请求同样鉴权；撤回停新签发并拒旧世代，播放器按实际生命周期停网络和已缓冲播放；未部署仍local_review_only，不将既有Range接口当自适应播放已实现 |
 | `POST /api/uploads`；`HEAD/PATCH /api/uploads/{id}`；complete/cancel | kind、目标空间、expected_size/hash、upload_id、offset、块摘要；成员来自服务端 | 持久偏移和同一上传身份；并发/摘要/长度冲突不推进；续传先读偏移；正式采用tus时按其全部适用协议实现，当前自有合同不冒tus兼容（规划合同；以代码核实为准，未实现前不冒已交付） |
 | experiences创建/修订/提交 | problem、method、steps、conditions、pitfalls、results、evidence、所关联release与父版 | 带出处的可编辑经验和版本；作者陈述/实测/推断/未知分开，不自动入训练（规划合同；以代码核实为准，未实现前不冒已交付） |
 
@@ -668,7 +692,7 @@ corresponding implementations are connected. No empty endpoint represents them.
 
 每个发布依赖以精确ID/version/SHA、included与单独view/download/adapt/commercial/redistribute/training/attribution/expiry记录权利；媒体真实流探测/章节/字幕边界复核，依赖必须与分发成员用途相符。公开视频API匿名响应把依赖ID映射为`dependency-N`，去除服务端路径、Work/Material ID、原稿输入快照和工程原manifest。Media-template公开graph仅含槽ID、需求约束、时间线结构、可编辑章节/字幕/效果和替换说明，不携带原始媒体字节/源ID；私有原manifest仅为准确审查保留，账号删除时擦除源信息并保留收件人的合法Media副本、许可快照和更新时间记录。
 
-上传仍使用现有`/api/uploads`分块偏移/摘要/完成协议，不声称tus互通。历史本地测试记录声称已验证有界WAV上传；本轮未重跑、未核其完整源码pins。该记录涉及、许可检查、Range 206、VTT/章节读取、Source-version CAS、模板复制、用户冲突保留、源撤回后精确重放及账号删除后合法副本/许可保全；这不能代替正式公开托管、HLS/自适应码率/长媒体压力、多浏览器解码或独立内容审核质量验收。HTTP范围读取遵[ RFC 9110](https://www.rfc-editor.org/rfc/rfc9110.html)。
+上传和媒体分发使用本文件的确定协议及同一Material/Release/Job；旧有界WAV或Range观察不构成新功能当前通过。实现后按ACCEPTANCE检查长媒体、多码率、解码、上传中断和撤回，历史范围限制不成为目标能力上限。自有上传不冒tus互通；HTTP Range按RFC 9110的206/416、实体校验及实际内容范围处理。
 
 ## 浏览承载、来源读取与监测的统一协议
 
