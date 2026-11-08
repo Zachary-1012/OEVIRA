@@ -120,6 +120,14 @@
 
 增量块绑定同一run/输入版和递增revision；同块重复幂等、旧版拒绝、缺块保持partial，终态需要真实任务结束及结果核对。用户编辑后保新的人工代次，拒绝提案不回退seen_revision；重连读取已确认位置。呈现已采用、专业内容已保存、空间姿态已保存、动作已执行各有独立回执，重开旧提案不会重新执行动作。模型缺失仍可使用相同注册面和确定性对象操作，但不宣称产生了真实智能表现选择。
 
+### 官网公开投影与进入产品的合同
+
+官网内容沿既有公开发布/运行信息责任提供`PublicPage`（稳定content_id、family、slug、locale、revision、title、结构化正文、适用产品版、公开依据/资产和翻译对应），只含已批准公开字段。它不是用户Artifact副本；Publication详情引用准确release并每次核当前受众/撤回与媒体资格。`PublicCapability`的available/planned/unavailable、适用端、核验版与时点取实际发布记录，不从代码分支、截图或文案推断。
+
+`ReleaseDownload`含product/platform/architecture/version、真实制品ID、文件名/MIME/大小、独立签名或摘要、最低环境、兼容/升级说明、发布/撤回状态和核验时点；下载URL只来自已核制品记录及批准域。没有已发布制品返回明确不可用，不生成示例URL；公开读取不暴露构建机路径或内部日志。`ProductEntry`只接注册目标kind/id及必要语言/返回锚，目标URL由配置产生；任意URL、token或客户端自报scope均不能成为回跳授权。
+
+联系沿现支持/联系责任接`ContactIntent`：本次请求ID、locale、问题、用户主动给出的回复渠道和用途确认；返回持久受理ID/时点或准确拒绝/未配置/失败。受理不等客服已答复或已建付费承诺，网络不明先查原请求、不可查询时保待核而不重发。未配置通道不接受正文假成功，普通官网浏览不创建用户业务对象。帮助搜索只返回公开同语种content_id/revision/命中定位，拒绝索引客户素材或从URL采集私人问题。具体实现仍使用现有Owner，以上不是宣称本轮已有运行路由。
+
 ## 九个业务领域的操作合同
 
 编号对应[业务合同](domains/business.md)的同号章节，各操作保其专业对象，不压成一次“生成报告”。
@@ -171,6 +179,12 @@
 
 排期ChangePlan的impact_set每条边声明precedence、resource_competition、shared_budget、delivery_commitment或确切既有依赖，包含生成闭包所用时间域/资源版及边界固定项。锁定不因被纳入影响集自动解除；采用时核全部相关父版及资源世代。对实验另保assignment_unit、planned_probabilities、assigned/exposed/recorded/analyzed计数、成熟期、SRM方法/适用性/结果、固定期或预定K时点的序贯停止设计、总α/检查分配及M个主比较的检验族；诊断不通过仍可返回描述统计，但effect_qualification须明确不能支持何种判断。后续补证生成新分析版，不更改原分配和原交付。
 
+### 选品组合与生成性质的精确引用
+
+原Business方案/选品项保存`product_ref/variant_ref`、门店/渠道/市场、原生URL、实际已核属性、价格/库存观察版及`selection_reason`，未知按Quantity/Coverage处理。组合保存`relation_kind=official_look|editorial_styling|recommendation|sale_bundle`、成员引用/数量及来源或编辑决定；销售组合另需真实组合ID/条件，推荐不能填成商售。图片沿FileRef/MaterialRef保已取得范围、variant映射和本次SourceUse，URL不是媒体字节或商用权；更新组合只触发真实依赖的方案/文件/预算，不改变商品原观察。
+
+Artifact与Publication现有来源/派生记录补`generation_provenance`：实际处理类型（人工、确定性转换、AI生成或AI辅助）、输入/输出版本、实际方法/模型调用引用、适用Anchor范围和人工修订关系；没有真实调用回执不可生成“AI已完成”的出处。`disclosure`关联已核生成范围、语言、提示内容版和实际展示/导出位置，不是事实审核状态、公开许可或客户品牌覆盖指令。导出和公开release引用同版说明；原件、只读材料、纯人工区段保原身份，客户端不自报生成/审核通过绕Owner。
+
 ## 十个研究与创作领域的操作合同
 
 文档类操作由后台按目标、材料和明确修改意见执行；客户端提供文件预览、来源核对、业务参数、意见、版本与下载，不以本合同对象字段要求建设完整Office手动编辑器。DOCX/PPTX/XLSX/PDF保持各自原生结构、公式、母版、备注和未选内容；动态HTML交付须有真实数据交互与隔离预览。视频/播客继续由完整媒体编辑消费者操作。以下目标合同不因此升级为当前已实现/运行接口。
@@ -207,6 +221,10 @@
 三方合并绑定base/current/incoming三份确切版本及object_id/field；冲突保两边值、删除/修改和顺序关系，不能仅行号匹配。跨文件RevisionBatch引用对应ChangePlan及真实依赖，新版本不覆盖锁定稿。模板实例化复用同一copy_map和SourceUse检查，不新增模板专属权限或成果状态机。
 
 媒体交换响应沿原Artifact输出target_profile/adapter_revision、完整输入依赖、逐对象loss_items（exact/approximate/bake_required/unsupported）、时间/声音/效果比较项及实际验证范围。bake_required须绑定用户选择的范围，不自动变成已渲染。分段Job记录owned_output_range、source_required_ranges和全局时基；重叠计算区不在多个成品片段重复输出。Podcast成员附episode_ref、audio_revision、transcript_revision、chapter_revision及对应媒体hash/时长，格式、媒体类型及时间映射保准确；附件版与音频版允许独立变化但必须声明兼容的成品版本。导出包、内发布和外部订阅状态分别返回。
+
+### 媒体编辑的语境与关系引用
+
+现有clip/take及ChangePlan保`context_basis`，引用确切源版/源区间、说话者、必要相邻语境和已知录制/事件时间；`editorial_relation`区分有据连续关系、蒙太奇、重现/示意及生成片段，并保关系依据/限定和确认状态。字段描述原编辑决定，不创建第二时间线或给素材授使用权；缺失录制时间不补为同时。对一次剪辑返回可能改变否定/条件、人物归属或互动关系的具体差异与源Anchor，普通无冲突操作仍走原命令。人工纠正创建后继工程版，相关字幕/章节/切片沿原依赖更新；来源被撤权与用户选择表达风格是不同的限制。
 
 ## 七个系统与智能领域的操作合同
 
