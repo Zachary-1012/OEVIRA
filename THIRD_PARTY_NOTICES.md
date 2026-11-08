@@ -218,3 +218,25 @@ The selected local website preparation uses Astro 7.3.3 (MIT) with the actual lo
 The installed `@img/sharp-win32-x64` 0.35.5 distribution declares Apache-2.0 AND LGPL-3.0-or-later and includes its own complete LICENSE; the wrapper's Apache label does not relicense libvips or its bundled dependencies. Preserve their original license texts, notices and applicable binary/source/relinking obligations when redistributing the build toolchain. A deployed static website does not automatically distribute every developer dependency; inspect the actual emitted JavaScript, images, fonts and other shipped assets separately.
 
 Upstream identities are https://github.com/withastro/astro (Astro), https://github.com/lovell/sharp (sharp), https://github.com/squirrelchat/smol-toml (smol-toml), https://github.com/7rulnik/source-map-js (source-map-js), https://github.com/nodejs/undici (undici), https://github.com/vitejs/vite (Vite), https://github.com/colinhacks/zod (Zod), https://github.com/rolldown/rolldown (Rolldown) and https://github.com/evanw/esbuild (esbuild). Exact resolved artifacts and integrity values remain in the lock; the installed distributions' notices must be retained rather than replaced by this short register. An advisory query with no returned matches is a dated observation, not a future guarantee of security or permission to ignore newly applicable advisories.
+
+## Self-hosted browser HLS playback dependency
+
+The selected dependency is **hls.js 1.7.4**, from video-dev/hls.js tag v1.7.4,
+commit `142fcab1fd0de99beafb0e1b07102ec674a9ddf9`. The official npm tarball
+was matched to that gitHead and verified against its published SHA-512 integrity.
+The prepared local files are under `app/web/vendor/hlsjs/1.7.4/`; `source.json`
+records the exact artifact identity and per-file SHA-256 values. This notice does
+not imply those unpublished development files exist in the specification main
+tree or that product playback has been implemented.
+
+The original package LICENSE is Apache-2.0 with Dailymotion's 2017 attribution
+and the derived video.js HLS code's 2013–2015 Brightcove attribution. Preserve the
+unchanged original LICENSE, complete Apache-2.0 text, bundle copyright comments
+and applicable source attribution with distributions. OEVIRA does not relicense
+the player or its dependencies. Upstream identity:
+https://github.com/video-dev/hls.js/tree/142fcab1fd0de99beafb0e1b07102ec674a9ddf9
+
+The browser bundle is self-hosted, not loaded from an external runtime CDN. No
+upstream lifecycle scripts or development dependencies were executed or installed.
+JavaScript syntax validation and artifact identity do not establish browser
+codec support, permission revocation, playback quality or product acceptance.
