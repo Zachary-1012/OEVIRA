@@ -84,7 +84,7 @@
 | `WorkContext` | 当前Work/Workspace、适用委托、object_ref/anchor、requirements_revision、已确认输入及原出处、未确认候选、选用材料/输出要求；服务端解析实际权限 | 传了客户ID不授权限；继承上下文不代表继承另一客户数据或平台身份 |
 | `ToolBinding` | 工具实例明确绑定target_ref、anchor、content_revision、当前操作及未应用参数；用户切换目标有显式动作，父版变化重新核；视图跟随当前稿或钉住历史版的模式与SpatialInstance一致，不能因更新另一视图而改历史Anchor | 移动物件、改变焦点或最近对象不触发重新绑定，不把摆放版本当内容版 |
 | `ActionAvailability` | 由相应Owner根据当前合法状态返回动作、所需输入、可逆性、可能效果及具体不可用原因；仅核该任务需要的条件 | 能力列表是当前可操作提示，不是授权令牌；模型不能自填allowed=true，调用/提交仍重核 |
-| `RequiredInput` | 字段名、影响的动作/结果、缺失或歧义原因、已有候选与允许解决方式；已确认字段不重复请求 | 不把全部专业字段当必填，不编未知，不能要求普通用户填内部ID/算法JSON |
+| `RequiredInput` | 真正需要人的字段/决定、影响的动作/结果、缺失或歧义原因、已有候选与最小解决方式；先复用已确认上下文并尝试获准的系统取得，已确认字段不重复请求 | 不把内部技术参数、后台检查、可自动取得的数据或系统故障伪装成用户必填；不编未知，不要求用户填内部ID/算法JSON |
 | `ChangeSet` | 冻结输入/目标基线、已确定与疑似影响对象、逐处差异、保留项、锁定冲突、预览资格和请求身份；应用时复核范围、父版和当前权利 | 预览不写最终作品，不证明之后仍有权；新来源/参数/范围变化使旧预览不能直接采用 |
 | `ResultEnvelope` | 确切对象/版本、已提交部分、未完成单元/原因、实际Coverage、可恢复请求/Job、后续可用动作；文件名/MIME/范围来自真实结果 | accepted/processing/partial与completed不互换；下载、对外发送、对方收到和业务Outcome另有回执 |
 | `ReturnAnchor` | work/scene/instance/face、内容版、局部页/选区/播放头及仍合法的视点，重新打开先核权限与对象存在 | 锚不是访问权，删除/撤权时不能用旧缩略图或布局正文复活私料 |
@@ -92,6 +92,8 @@
 一个明确直接操作在允许范围内可以直接提交，不人为强制每步preview/approve；大范围重算、涉及锁定或目标歧义时必须返回相应差异/缺口，外部效果沿既有精确授权。请求身份按用户意图生成而非按参数永久去重；超时查询同一已提交结果，用户明确“另做一次”允许同参数新意图。
 
 修改共同事实/预算/素材后，返回实际受影响成员与当前计算/制作版，客户端只刷新这些对象，保未发送草稿代次与其他任务。不可唯一映射的客户意见返回待定位原意见，不以相似文本自动应用；读到旧回执也不能把它写进当前新版。
+
+RequiredInput沿现有请求补充`resolution_owner`（user|authorized_reviewer|identity_provider）、`reason_code`、`affected_refs`、`blocking_scope`和`context_revision`；原因只表达真实歧义、业务取舍、不可替代用户材料、本人认证、锁定冲突或外部效果许可。服务端保存已复用来源/检查依据，不向前端泄露其他客户或秘密。可由系统解决的内部前置仍在原Job/领域处理器推进，不新建第四类用户表单；`waiting_for_auth`与`waiting_for_input`按真实缺口使用，客户端不能仅因JSON字段为空切入等待用户。问题回复绑定原意图和上下文版，过期或已解决回复不重复建任务；后台补齐后无需用户再点一次相同“继续”，但不解除明确暂停/取消。无外发变化、无锁定冲突且原指令已清楚的局改按原OperationIntent直接形成新版本，ChangeSet同时保留实际差异供查看，不要求每次先preview再approve。
 
 ### 两种入口执行同一动作的往返约定
 
@@ -103,6 +105,8 @@
 任务补问使用`RequiredInput`明确影响对象、原因、已有值/候选及最小解决方式；已确认上下文继续复用。用户改输入生成新要求版，旧运行可保其真实结果但不得写入新稿；晚到回执不覆盖当前草稿或工具绑定。暂停/取消/重开沿现Job及ResumeContext，查询丢失回执不再产生业务效果。用户后续精调、改变要求或明确“另做一版”均建立新的独立意图；只有同一已提交动作的查询和内部重试沿原意图及受控attempt，不能按参数永久去重。
 
 自然语言修改从v1提交得到v2，直接精调须基于读回的v2提交得到v3，再从对话核差异、撤销与继续导出，须读到同一版本链；并发仍持v1的动作返回冲突或待审差异，不静默覆盖v3；反向操作也相同。Undo分别选择内容操作、空间操作或明确的任务取消，历史恢复新建修订，外部已有效果只做实际支持的补救，不把删除对话当撤销业务。
+
+跨任务引用沿已有`WorkContext`的材料与对象引用携带来源工作、来源对象/版、当前工作及拟用范围。服务端分别核来源读取和当前用途，查无权时不回传该源正文；撤销授权仅使受影响的当前引用待复核，独立工作不共用草稿代次。复盘用已有Analysis输入绑定实际行动/发布回执、观察版和原方案版；准备稿、内部发表、外部分享、实际结果分别有可回读状态。
 
 ### 等待表达属于本地呈现，不改变任务状态
 
@@ -141,7 +145,7 @@
 | 5 创作者与KOS合作 | 创作者/账号身份与归属证据、采集批次质量及判断资格、品牌适配、分平台期间指标、报价/权益/交付约定及授权 | 候选比较、合作方案、履约/素材检查、分阶段漏斗与结算依据；受质量缺口影响的决定范围及补证方式；外部请求单独返回状态和回执 | 合作计划、内容排期、授权素材、复盘；未核/异常批次不冒正式分层或效果排名，单次手工快照不冒日/周/月原生指标，未知外部结果先查回执 |
 | 6 活动、系列与排期 | 活动/系列/Post及变体、资源容量、工作日历/时区、依赖、承诺及锁定项 | 创建/调整排期、冲突解释、局部重排、任务交接及执行记录；保未调整承诺 | 日历、媒体生产、预算、合作与发布；不能把旧单容量固定时长求解限制变成产品范围 |
 | 7 实验与归因 | 假设、处理/对照、指标及分母、分配方式、观察期、缺失/退出、样本和渠道 | 建立/修订实验、质量诊断、估计与区间、适用因果或描述结论、复盘 | 内容选择、渠道/预算和学习评价；事后相关不宣称增量，分析更改与原计划可区分 |
-| 8 事件、服务与风险 | 原帖/回复/更正、主体/活动关系、Target/Claim、证据、内部事实和处置权限 | 聚合与拆并事件、观点/诉求/传播/严重性分别分析、回应候选、行动/反馈；输出期间简报/事件专报，保事件演化链和ToC/ToB分层影响依据 | 舆情/话题/活动监测、客户工作、服务交接；报告完成、已读、已回复、已解决不是同一状态，无出处案例不进事实或训练金标 |
+| 8 事件、服务与风险 | 原帖/回复/更正、主体/活动关系、Target/Claim、证据、内部事实和处置权限 | 聚合与拆并事件、观点/诉求/传播/严重性分别分析、回应候选、行动/反馈；输出期间简报/事件专报，保事件演化链和ToC/ToB分层影响依据；B8的参与者角色、内容类型与媒介、经营身份及带证据的事件关系分别返回，营销/传播/舆情与服务视图引用同一事件版 | 舆情/话题/活动监测、客户工作、服务交接；报告完成、已读、已回复、已解决不是同一状态，无出处案例不进事实或训练金标 |
 | 9 决定、行动与结果 | 决策问题、备选、证据/反证、约束、风险、批准范围和观察计划 | 保存选择及理由、形成具体行动、核真实回执、观察结果和修订经验 | 全部业务/创作的后续工作与可纠正记忆；行动申请、获批、执行、效果未知分别成立 |
 
 费用冲正/退款必须引用原费用或实际支出、业务动作、币种、种类与理由；退款累计不能超更正后的可退实付，重复通知按独立退款身份处理。跨平台订单保各自命名域及同源映射，触点按事件时间进入约定窗口，总分配守恒于本次可归因量，退款前后历史均可重开。公开互动份额不转为订单归因或佣金结算。
@@ -179,9 +183,33 @@
 
 排期ChangePlan的impact_set每条边声明precedence、resource_competition、shared_budget、delivery_commitment或确切既有依赖，包含生成闭包所用时间域/资源版及边界固定项。锁定不因被纳入影响集自动解除；采用时核全部相关父版及资源世代。对实验另保assignment_unit、planned_probabilities、assigned/exposed/recorded/analyzed计数、成熟期、SRM方法/适用性/结果、固定期或预定K时点的序贯停止设计、总α/检查分配及M个主比较的检验族；诊断不通过仍可返回描述统计，但effect_qualification须明确不能支持何种判断。后续补证生成新分析版，不更改原分配和原交付。
 
+### 数学请求、构造证书与正常业务结果
+
+数学工作仍通过现有Analysis的MethodInvocation与持久Job，不新增算法服务或权限系统。MathematicalProblem声明family/algorithm_id/revision、problem_kind、完整输入及来源版、scalar_domain、integer/rational/algebraic/finite_field/float/interval表示、准确形状/图类/概率/变量域、误差/失败预算及计算资源边界。整数与有理分子分母在JSON用十进制字符串；有理分母为正，代数商环另保单首多项式与定长系数向量，有限域保特征及确切表示，不能把浮点容差当精确等式。
+
+构造参数归同一Invocation的parameter_recipe、parameter_witness、identity_checks和compile_status；矩阵见证含a/b/c/r、系数域与alpha/beta/gamma及逐系数核验范围，博弈输入保MAX/MIN/CHANCE及有理概率，输出分别含winning_vertices、value_enclosures、精确值及两方策略的实际完成状态。方法详情仅由intelligence§4.2定义；API不复制公式。参数生成、见证恒等成立、主算法运行、原定复杂度/误差保证、独立形式重放与业务收益分别记录，任何一项成功不自动推进其他项。
+
+stop_reason沿原错误信封分清INPUT_INVALID、ASSUMPTION_NOT_ESTABLISHED、PARAMETER_SEARCH_INCOMPLETE、NUMERICAL_UNCERTIFIED、CANCELLED、RESOURCE_EXHAUSTED和完成；已有合法确定性业务结果仍可交付。暂停/重开固定输入摘要、方法版、已核参数、当前阶段及确定/随机状态；随机恢复不能丢掉失败样本或改停止律。通用公开参数可以按方法/域/精度复用，含客户输入的见证不得跨客户泄露。数学方案被采用与用户实际采购、付款、发布或修改作品仍是不同命令。
+
+数学返回沿同一AnalysisResult声明target_law、count_semantics（显式对象/带标签选择/整数占用向量等）、feasibility_status、estimate/interval、relative_error_budget、failure_probability_budget、total_variation_budget、exactness、runtime_bound_kind=worst_case|expected、completed_trials/failed_trials/unfinished_trials及实际停止策略。exact_uniform与TV近似不同，确定性512^n计数界与(1±ε)FPRAS不同；近似试验0不是输入不可行证明。目标分布和分母不得在结果显示时根据“只保成功/按时输出”改写。暂停恢复绑定已消费随机状态、当前阶段、合法结果与参数，改变预算/停止律生成新的方法执行资格，不沿用旧保证。
+
+114整数多拟阵的oracle请求绑定秩来源/修订、稳定元素顺序、总秩和答案位长；输入改版中止原执行。回传整数向量目标、精确可行性和估计的保证分账；分离器返回违反集合、0/1法向、右边及有理违反量。块体积阶段另保内外球、分离/精度预算、已完成次数及是否满足预定保证。140返回原命题身份、观测/先验/持久状态/停止规则的资格和保证量词；有限纤维返回rank、中心、投影、半径平方及精确性，只有适用条件独立核实才输出对应统计解释。
+
+### 合规预审与具体修订的结果协议
+
+合规分析复用AnalysisResult/Claim/SourceUse：被审对象及版、jurisdiction/market、actor/role、intended_action、product_category、audience、渠道、事件与计划发布日期组成适用事实；RuleAssessment含确切规则Source版/锚、rule_kind、published/effective/retired/checked_at、事实条件、例外、版本替代关系、支持与反证。fact_sufficiency、rule_applicability、claim_support与effect_authorization分别返回，不用一个risk_score或ok代替。未核/冲突/不适用与明确不支持分型。
+
+每项finding必须定位实际文案/画面/音轨/价格或活动规则，给有据理由、可采用replacement_candidates、必要补证或适任复核条件。修改沿现有ChangeSet/OperationIntent的base_version与影响集，返回新作品版、未改内容及受影响批准；检查通过不代客户承诺、外发权限或实际发布。不同法域、不同有效日期和不同媒介的结论不得直接复制；来源更正/撤权只重核实际依赖，保合法原稿和历史判断。
+
 ### 预算诊断与条件收益的回执
 
 沿原AnalysisResult增加constraint_refs（id/source/base_version/unit/bounds/adjustability）、conflict_set、conflict_qualification=solver_irreducible|solver_infeasible_superset|not_established、diagnostic_trials及budget_exhausted。每个trial记录临时排除集、完整固定条件摘要、solver_status与独立可行性；unknown不得变infeasible；另保solver_version、scaling、feasibility_tolerance、proof_kind=numerical_solver|independent_exact_certificate及确有的certificate_ref，数值status不冒精确证明。诊断不调用采用/付款/删除动作，建议变更仍绑定原预算及资源父版。情景返回response_kind=incremental|total|cost、support_ranges/extrapolation_flags、paired_draw_revision、delta_quantiles和probability_available；未校准情景不返回概率，模型分布不冒实际ROI。
+
+### 行业机制与框架分析的同一成果协议
+
+现有ContentLearningAsset/方案候选补充mechanism_id/version、prerequisites、supported_facts、counterexamples、resource_constraints、rights_constraints、causal_hypotheses、proposed_actions、measurement_plan_ref、stop_conditions及实际采用范围。编号表示本产品方法身份，不等原案例身份或用户已同意执行。实例化返回既有Artifact/Brief/Business方案引用及准确依赖；不生成另一知识/策略/实验数据库。
+
+框架结果仍是AnalysisResult内的观察集合：analysis_unit_ref、source_revision/anchors、speaker_role、issue_salience_fields、problem_definition、attribution、evaluation_basis、proposed_remedy、supported|mixed|unknown状态、method_revision、reviewed_by及实际分母/覆盖。不存在的框架维度为unknown/absent并保原因，不补空字符串冒已核。更正使用同一ChangeSet和父版CAS，返回受影响分析/Case/作品，不更改原Source；用该结果生成回应与实际发布仍使用各自OperationIntent。
 
 ### 选品组合与生成性质的精确引用
 
@@ -228,6 +256,8 @@ Artifact与Publication现有来源/派生记录补`generation_provenance`：实�
 
 ### 媒体编辑的语境与关系引用
 
+视频的Shot/Beat在现有工程保存叙事节点、情绪节点与母题的可选引用，以及creative§7的镜头、声音、时长和出处字段。原Media `EditDecisionList`按同一候选身份返回有序`EditDecision`。决策引用源片段和流、原时基的半开入出点、确切父版、当前适用许可、拟改操作和受影响的画面/字幕/声音及理由。旧秒值仅作兼容投影。应用前由既有权限与Artifact写入端核真实Evidence与适用批准，预览的返回值或调用者自填审核字段不改变工程。提议与实际Media命令有明确状态，预览不写已确认版。明确获准成片委托直接回同一工程的私有草稿和决策差异。局改按已有OperationIntent、锁定与版本冲突规则提交，未经授权的应用或失效提议返回具体原因和补救。
+
 现有clip/take及ChangePlan保`context_basis`，引用确切源版/源区间、说话者、必要相邻语境和已知录制/事件时间；`editorial_relation`区分有据连续关系、蒙太奇、重现/示意及生成片段，并保关系依据/限定和确认状态。字段描述原编辑决定，不创建第二时间线或给素材授使用权；缺失录制时间不补为同时。对一次剪辑返回可能改变否定/条件、人物归属或互动关系的具体差异与源Anchor，普通无冲突操作仍走原命令。人工纠正创建后继工程版，相关字幕/章节/切片沿原依赖更新；来源被撤权与用户选择表达风格是不同的限制。
 
 ## 七个系统与智能领域的操作合同
@@ -259,6 +289,8 @@ Observation响应分别表达取得状态、source_validity、SourceUse、identi
 ### 原文采用与交付的完整性细则
 
 引文采用请求同时绑定确切源/解析版、类型化Anchor/原句、目标稿父版、用途及操作意图，正文变更和来源采用关系由已有同一领域事务提交；不能有正文已存而来源ledger缺失仍放行的状态。恢复和导出逐所选版本重核依赖，缺关系或损坏关系返回准确待核，不假设无来源。只移除UI引用行不消除实际正文用途；明确去引用/改写沿新版本和相应影响处理。
+
+整版研究采用使用原Work/Artifact的采纳命令及原资料库Owner，输入确切研究Artifact版本、目标scope/用途和同一OperationIntent。事务提交的采用关系和Material/Source投影均须可读回，响应给两者的版本引用，原快照的读权限另核。中途失败保未采用且原保存版可继续，同键重试回原回执。撤回或版本变化保精确失效范围，未知作者旧资料不能自动确权。
 
 `Anchor.offset_unit`声明UTF-16码元、Unicode码点或UTF-8字节；规范服务端文本操作用码点，边界映射取同版原文及明确分段规则。界面字素保护不是自动转换授权，半个代理项/字素和未映射显示文本拒绝该范围操作，保原输入；不静默规范化。完整字段替换与局部范围操作分型，expected原文及父版同时核，不能靠可见diff猜底层提交位置。
 
@@ -361,6 +393,8 @@ Job同时返回control_revision、pause_requested/paused的真实状态、suspen
 既有Web host只把合法工作区入口与无扩展深链映射到同一构建入口；API/运行命名空间、真实资产和目录/穿越请求不能回退成HTML 200。构建不可用返回503及可理解的恢复状态，资产不存在返回404；无权业务资源仍沿当前权限合同处理。响应MIME、构建身份和资源版本必须匹配实际字节，深链只定位原工作，不授读取权或重放业务动作。
 
 入口HTML返回Cache-Control: no-store；未散列启动/runtime资源返回max-age=0, must-revalidate及对应表示ETag，If-None-Match匹配返回304，字节改变返回新200/ETag。内容散列命名的不可变公共构建资产可返回public, max-age=31536000, immutable；该规则不覆盖资料/成果/下载/会话的私有访问策略。缺资产、失效缓存及新旧客户端/API不兼容返回确切状态，不靠HTML回退、旧缓存或静默丢字段伪装可用。
+
+现有Job回执的受权诊断按attempt可返回stage_timings，记录阶段、同钟域单调开始/持续、观察UTC、实际完成/失败/中止、方法配置版、重试及缓存，计量未知为null。首实际模型输出、首个可用成果及最终提交各有真实事件，重叠阶段和排队分别计。ASR与声音回执另带实际源音频秒、适用处理秒、实时系数与倍速，分母为0或不可知时对应比例为null；不向普通读者暴露私有配置或素材。
 
 ### 成功、部分结果与错误的消费者规则
 
@@ -655,6 +689,8 @@ corresponding implementations are connected. No empty endpoint represents them.
 
 回执沿原OperationReceipt/Job，effect_type区分link_copy、file_export、share_handoff和platform_publish，effect_phase说明prepared/handed_off/confirmed/failed/cancelled/outcome_unknown并保实际证据；这些是既有外部动作结果，不是第二任务状态机。复制链接完成只证link_copy，Web Share resolve、二维码或拉起外部编辑页只证handoff；外平台成功需对应账号/内容的真实回执。`GET /api/releases/{id}/shares/{operation_id}`读原回执，重试先查结果；无可查询渠道的未知结果保持待核，由用户核实或明确处理，不盲目重复。取消分享不撤回内部作品，内部撤回不假称已经删除外平台副本。
 
+系统交接通道的POST先按release和精确成员生成prepared回执及受限payload；只准备不执行外部动作。准备项绑定短期到期、当前授权世代、原受众、成员摘要及一次客户端操作ID。客户端在用户实际触发前取得该payload并核能力，若过期、已知撤权或版变化立即失效；URL的每次访问仍核当前release资格，不能将链接当已分发事实。交接结束用`PATCH /api/releases/{id}/shares/{operation_id}`幂等回写该同一回执的客户端观测，携带操作ID、receipt revision、观测`handed_off|aborted_or_unavailable|failed`和实际原因；首项推进到handed_off，后两项保未交接并记失败原因；仅有可核用户明确取消的事件才写cancelled。不得以客户端事件晋升`confirmed`，无返回保持待核。回写只记录已发生的观测，即使授权世代已变化也不得重新签发、外发或更改发布版；权限不足时只保原合法观测待有权恢复对账。仅网页端AbortError无法区分用户取消与无目标时原样保合并语义，不虚构用户选择。依据[W3C Web Share](https://www.w3.org/TR/web-share/)。
+
 官方平台的投稿、转发、好友分享及各应用资格分别校通道能力；一个外部通道不支持商业内容不变成寰意内部创作/发布的禁止范围，也不能换账号/伪装应用绕过条件。没有该通道时保合法链接、文件交付和已成立的内部发布，准确显示不可用项；发布环境、供应商和付费仍遵实际授权。网页分享使用真实平台可用性及用户触发，规范依据为[Web Share](https://www.w3.org/TR/web-share/)与[抖音当前发布/分享规范](https://developer.open-douyin.com/docs/resource/zh-CN/dop/operation-standard/platform-capabilities/useclue)，不是承诺已获得其接入资格。
 
 ### 发现快照、上传提交与播放资源协议
@@ -676,14 +712,15 @@ GET /api/discovery扩展order=recommended，必须存在该用户明确启用的
 | `GET /api/community/capabilities`；`GET /api/community/media/sources` | capability报告当前审核/精选角色、实际`delivery=local_review_only\|hosted`及ffprobe状态；hosted必须具备实际托管、当前可见范围与可读回证据，不由配置URL推定；媒体来源返回当前session可读的Material、Media工程、已完成render和可读字幕/章节sidecar，不返回服务端文件路径 | capability不是托管/审核质量证明；源权限在创建、读/写、审核、range读取时再次核对；不可读原件/旧工程源明确返回不可用 |
 | `GET /api/publications`、`GET /api/publications/{id}`；`POST /api/publications`；`PATCH /api/publications/{id}` | 私有列表/精确草稿版本。创建支持`artifact_id/artifact_version`，或`source_kind=media_material|media_render|media_project`及精确`source_id/source_version/media_selection`。种类为`work/template/experience`，范围为`private/team/unlisted/public`；媒体manifest只从已保存原件/完成render/工程版生成 | 客户端不能设置official、review或approved；私有输入快照不复制到release；本机路径、原Material/Artifact ID只在获准私有响应中存在；可见范围改变不自行发布 |
 | `POST /api/publications/{id}/media-source-revisions` | 只允许Media template草稿/驳回稿使用更高的同项目确切Media版；提交`base_version/source_version/media_selection/content`，由服务端重建槽、依赖和媒体manifest，重新检查精确权利 | 并发修改返回版冲突；不接受客户端伪造的`media/template`快照；提交或已审核版本须先按正常状态流程重开草稿，不沿用旧审核 |
-| `POST /api/publications/{id}/submit`、`GET /api/moderation/submissions`、`GET /api/moderation/submissions/{id}/media/{member}`、`POST /api/publications/{id}/review` | submit带精确`base_version`和`preview_acknowledged=true`；审核队列只给服务端审核角色已提交快照/媒体成员；结论`approved/rejected`加理由和确切版；媒体预览只读提交版中的所选成员 | 上传不等已审核或公开；作者不能审核自身提交；修改内容、媒体、依赖或权利后旧审核无效；队列不暴露源Material ID、文件路径及私有输入 |
-| `POST /api/publications/{id}/publish`；`POST /api/publications/{id}/withdraw`；`POST /api/publications/{id}/appeals` | publish带确切base_version、content/rights摘要、visibility、OperationIntent和幂等键；按当前review_policy判自动检查或适用人审，人审路径才要求匹配review_id。完成检查后仅在原意图、版本、权利和取消世代仍有效时提交不可变release；withdraw使后续取用失效；appeal绑定确切决定及理由 | 不强制普通短文先人工审核、再点第二次发布；修改只生成新发布版，旧分享/评论仍绑定旧版并按当前允许留存和访问规则返回，不静默换正文。新版本发布与撤回旧版是不同用户意图，不自动全部下架；无实际托管/外站回执不得报对应成功 |
+| `POST /api/publications/{id}/submit`、`GET /api/moderation/submissions`、`GET /api/moderation/submissions/{id}/media/{member}`、`POST /api/publications/{id}/review` | 兼容调用者明确单独送审时submit带精确`base_version`和`preview_acknowledged=true`；正常发布由同一意图推进所需审核，不强制再次预览确认。审核队列只给服务端审核角色已提交快照/媒体成员；结论`approved/rejected`加理由和确切版；媒体预览只读提交版中的所选成员 | 上传不等已审核或公开；作者不能审核自身提交；修改内容、媒体、依赖或权利后旧审核无效；队列不暴露源Material ID、文件路径及私有输入 |
+| `POST /api/publications/{id}/publish`；`POST /api/publications/{id}/withdraw`；`POST /api/publications/{id}/appeals` | publish带确切base_version、content/rights摘要、visibility、OperationIntent和幂等键；按creative§11.2发布服务策略返回processing|blocked|auto_eligible|review_required、原因及策略版；仅人审分支需要绑定确切内容/受众的review_id，客户端不传免审。完成检查后仅在原意图、版本、权利和取消世代仍有效时提交不可变release；withdraw使后续取用失效；appeal绑定确切决定及理由 | 不强制普通短文先人工审核、再点第二次发布；修改只生成新发布版，旧分享/评论仍绑定旧版并按当前允许留存和访问规则返回，不静默换正文。新版本发布与撤回旧版是不同用户意图，不自动全部下架；无实际托管/外站回执不得报对应成功 |
 | `GET /api/discovery?q=&kind=&order=&before=`；`GET /api/creators/{id}`；`GET /api/community/follows`；`POST /api/creators/{id}/follow` | latest/following/featured及显式启用的recommended，使用上文稳定快照/cursor；分页limit为资源参数而非完整集合上限，返回实际explanation。创作者名来自公开署名，非账户邮箱；follow保持幂等布尔选择 | 未登录不伪造关注/兴趣，精选来自真实角色与有效期；排序后及取媒体时再核当前public/许可/撤回，不得将private/team/unlisted纳入推荐 |
 | `POST /api/releases/{id}/items`；`GET /api/community/items` | `kind=collection|queue`、非负`position`、可选有限`progress_seconds`；续播位置仅适用于有确切时长的媒体并须在programme duration内；返回当前可访问release或`availability=unavailable` | 非媒体/时长未知不得伪造进度；撤回后保存项保留为不可用，不绕过release权限 |
 | `GET/POST /api/releases/{id}/comments`；`POST /api/releases/{id}/reports`；`GET /api/moderation/reports`；`POST /api/moderation/reports/{id}/resolve` | 文本评论锚定同版正文投影的Unicode码点半开区间；旧UTF-8字节坐标只由兼容适配器在原串摘要匹配、边界合法后转换，不得把字节数直接当码点序号；媒体评论锚`member_id/start_ms/end_ms`。举报需`Idempotency-Key`及用户理由；审核报告仅能dismiss或withdraw_release并写理由 | 评论/举报身份为不含联系信息的内部UUID；举报不自动证明或删除内容；每用户每日20条限频，report state冲突需刷新审核队列 |
 | `POST /api/moderation/releases/{id}/feature`；`DELETE /api/moderation/releases/{id}/feature` | 审核角色按理由、rank 1–10000、时区明确的`starts_at/expires_at`作手工精选；可撤销 | 仅当前有效public release可精选；精选排序不使用伪造播放/收藏/效果数 |
 | `POST /api/templates/{release}/instantiate` | 文档模板接受工作、用途及slot参数，生成新私有Artifact；`oevira-media-template/1`接受用途和每个公开slot ID到授权Material ID的替换映射，可选Work/title，生成真实MediaProject初版 | 源发布必须当前可取用且适用许可允许改作/用途；替换媒体须匹配kind、流数和工程实际使用时长；精确幂等重放返回同一私有副本；撤回后不创建新副本 |
 | `POST /api/media/projects/{id}/template-updates/preview`；`POST /api/media/projects/{id}/template-updates/apply` | preview带私有项目`base_version`和同一Publication lineage的更新release；返回`preview_hash/changes/conflicts/required_source_replacements`。apply带同hash、逐冲突`keep_current/take_template`、可选新slot映射及幂等键 | 更新release与Media源版本都须高于现有血缘；base/hash过期或有未解决冲突拒绝；CAS失败不写入；按稳定对象键三方合并并保留用户手改 |
+| `POST /api/releases/{id}/shares`；`GET/PATCH /api/releases/{id}/shares/{operation_id}` | 按精确发布版与选择准备回链、授权文件或系统交接；已批准平台发送沿原Job。GET对账，PATCH仅回写一次客户端实际观测 | 不改内部作品/可见范围；回执幂等；原生交接不授平台确认；失权不重新签发 |
 | `POST /api/releases/{id}/media/{member}/playback`；`GET/HEAD /api/community/media/streams/{token}` | 当前grant绑定view/download、release/member、当前访问世代和短期到期；同一Rendition支持经核的HLS VOD或Range文件，返回真实transport/quality/subtitles/chapters和delivery | 每个清单/init/分片/Range/字幕请求同样鉴权；撤回停新签发并拒旧世代，播放器按实际生命周期停网络和已缓冲播放；未部署仍local_review_only，不将既有Range接口当自适应播放已实现 |
 | `POST /api/uploads`；`HEAD/PATCH /api/uploads/{id}`；complete/cancel | kind、目标空间、expected_size/hash、upload_id、offset、块摘要；成员来自服务端 | 持久偏移和同一上传身份；并发/摘要/长度冲突不推进；续传先读偏移；正式采用tus时按其全部适用协议实现，当前自有合同不冒tus兼容（规划合同；以代码核实为准，未实现前不冒已交付） |
 | experiences创建/修订/提交 | problem、method、steps、conditions、pitfalls、results、evidence、所关联release与父版 | 带出处的可编辑经验和版本；作者陈述/实测/推断/未知分开，不自动入训练（规划合同；以代码核实为准，未实现前不冒已交付） |
@@ -738,7 +775,7 @@ Native Messaging控制信封含协议版、会话/目标/授权世代、operatio
 
 `POST /api/works/{id}/business-jobs`将相同业务请求放入现有Job/Worker。操作返回202及持久Job；读取、取消、失败重试沿现`/api/jobs/{id}`。业务要求版、成员/客户/来源、租约世代及取消状态在提交前再次核对，已保存结果凭同键读回。取消、失租和失败不生成成功成果；数值计算不占数据库长写锁。
 
-`POST /api/business-results/{id}/revisions`使用`base_version`、命名的`input_changes`或`section_edits`。只采用实际变化段；碰到已确认或人工改写的段返回`CONFIRMED_SECTION_AFFECTED`及逐段前后差异，用户明确选择`accept_sections`后才能替换。`confirm_sections`由用户确认，模型不能代签或借采纳参数覆盖人工稿。重放返回原提交的确切版本，不能把历史请求落进后来的用户版本。`/restore`恢复方案内容为新版本，保当前实际行动、费用、退款、服务记录与观察，相关旧批准不自动恢复；普通通用文本保存/恢复不能绕过业务结构。
+`POST /api/business-results/{id}/revisions`使用`base_version`、命名的`input_changes`或`section_edits`。来源更正沿同一修订路由，input_changes中使用source_changes数组，每项含op=append|replace|exclude、稳定input_id、原input_snapshot_revision、相应old_ref/new_ref的Source/Material/Observation确切身份和版本，以及已有受影响的MetricDefinition或约束引用；append无old_ref，exclude无new_ref，replace两者都有。服务端按当前工作和权利重核每项、旧引用与原冻结快照的一致性和纠正关系，重算实际依赖，返回变更的输入、数值/分母、章节、预算约束及影响集，分开locked_sections和可改部分。缺少可合法读的新引用时保旧版，标该部分待补或失权，历史获准可见性按现行授权，不能以null替新事实。快照/父版本冲突返回409和可见影响，同键异输入按既有幂等规则。只采用实际变化段；碰到已确认或人工改写的段返回`CONFIRMED_SECTION_AFFECTED`及逐段前后差异，用户明确选择`accept_sections`后才能替换。`confirm_sections`由用户确认，模型不能代签或借采纳参数覆盖人工稿。重放返回原提交的确切版本，不能把历史请求落进后来的用户版本。`/restore`恢复方案内容为新版本，保当前实际行动、费用、退款、服务记录与观察，相关旧批准不自动恢复；普通通用文本保存/恢复不能绕过业务结构。
 
 `POST /api/business-results/{id}/commands`用`Idempotency-Key`接收`base_version`、命名`command`、对象型`payload`及可选精确引用/修订说明；事务内核当前成员、委托、版本与来源后追加同一Artifact的新版本。通用动作含记录选择、计划行动、内部行动决定/撤回、人工记录执行、费用及更正/退款、结果观察、服务履约事件。行动目标、负责人、交付物、前置项与结果依赖保持独立；人工记录明确不等平台回执或产品实际发出。效果未知必须指向原待核记录查回执，不自动重发。费用分原币种、估计/承诺/实支/退款；退款必须指原实支，向下更正实支也重核累计退款。服务回应、承诺、履约、关闭和重开分记录，履约引用真实已存承诺。
 
