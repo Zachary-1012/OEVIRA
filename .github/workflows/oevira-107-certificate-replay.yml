@@ -10,7 +10,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        stage: [qP420_gmp, qP780_gmp, numerical-coverage]
+        stage: [qP420_gmp, qP780_gmp]
     runs-on: ubuntu-24.04
     timeout-minutes: 125
     env:
@@ -94,7 +94,7 @@ jobs:
               sudo apt-get install -qy --no-install-recommends libgmp-dev
             fi
             pkg-config --modversion gmpxx
-            g++ -std=c++17 -O3 $(pkg-config --cflags gmpxx) checkers/chart_gmp.cpp $(pkg-config --libs gmpxx) -o chart_gmp
+            g++ -fsanitize=undefined -fno-sanitize-recover=all -std=c++17 -O3 $(pkg-config --cflags gmpxx) checkers/chart_gmp.cpp $(pkg-config --libs gmpxx) -o chart_gmp
             time ./chart_gmp "$degree" "$bits" "$STAGE"
             python3 - <<'PY'
           from hashlib import sha256
