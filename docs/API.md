@@ -348,6 +348,8 @@ document_revision随同URL正文、DOM及实际可读内容的更改推进，不
 
 连接策略由现Browser和权限责任共同持有：activeTab临时授权不能跨域延续；debugger不能作为optional_permissions；原生附着只用实际浏览器支持且用户允许的机制。扩展内容消息核sender/tab/frame/origin及schema，本机桥核已配对扩展身份、用户/工作/设备和nonce/序号，网页脚本不能变成受信指令。秘密值不进投影、日志或模型，第三方页面不能改变允许动作；文件只接当前chooser与用户选定对象，不枚举电脑文件。borrowed音频只能目标标签捕获，缺能力单项不可用；普通Web或手机缺配对桥时返回连接入口，不假装已读电脑标签。
 
+平台AI会话沿原QueryPath/BrowserSession/Job扩展data_surface=platform_ai_conversation。调用绑定operation_id、当前Work/context_revision、provider_surface、connection_revision、page_ref、conversation_ref、指定材料版与准许用途、问题摘要。消息提交回执独立于回答，保可核message_ref、submission_state、generation_state、原问题/回答及附件引用；未知发送回执先核同会话，禁止据超时新建重复发送。回答进入原Material/Observation并附可见原文链接、capture_time、coverage和限制，核实后的主张再按既有证据准入。登录、接管、额度、取消、页面改版和撤权沿原状态机返回真实原因，不另建平台专属权限。主聊天所选provider只承担推理/对话，工具动作仍返回同一领域OperationIntent/ResultEnvelope。
+
 ### 浏览快照与操作回执不可互相替代
 
 Open Original默认沿当前SourceRef及确切来源版进入真实受控原文；用户明确外开时，服务端从该引用投影并重核允许的URL scheme、目标/重定向与当前权限，不接受任意裸路径冒来源。缺URL、非法目标、拒绝、启动失败及`HANDOFF_ACCEPTED`分别返回；后者仅证外部浏览器接受启动，无法观察外部页时loaded/readable保持UNKNOWN。`RETURNED`仅证回到原任务，不签原文读取、采集或来源准入成功；返回仍恢复原对象与阅读锚。
