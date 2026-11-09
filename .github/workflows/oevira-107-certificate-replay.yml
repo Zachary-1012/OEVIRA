@@ -1,0 +1,111 @@
+name: OEVIRA 107 pinned square certificate replay
+on:
+  push:
+    branches:
+      - 'codex/verify-107-square-20261109'
+permissions: {}
+jobs:
+  replay:
+    name: Square certificate (${{ matrix.stage }})
+    strategy:
+      fail-fast: false
+      matrix:
+        stage: [qP420_gmp, qP780_gmp, numerical-coverage]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 125
+    env:
+      STAGE: ${{ matrix.stage }}
+      UPSTREAM: https://raw.githubusercontent.com/openai/math/1581d4cbdd69a0faf34b2089614fe2a814316a6a/preprints/Complex-Matrix-Multiplication-Below-2.258-and-Rectangular-Bounds-September-24-2026/verification/certificate
+      MANIFEST_SHA: ef08a2a1a513207b038fd436afb29a7fcdf0c6238ae0a7961a6ebfb1b10a11b5
+    steps:
+      - name: Acquire and verify the exact upstream package
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/certificate"
+          cd "$RUNNER_TEMP/certificate"
+          python3 - <<'PY'
+          from concurrent.futures import ThreadPoolExecutor
+          from hashlib import sha256
+          from pathlib import Path
+          from urllib.request import urlopen
+          import json, os, time
+
+          base = os.environ["UPSTREAM"]
+
+          def fetch(name, digest, size=None):
+              path = Path(name)
+              if path.is_absolute() or ".." in path.parts:
+                  raise ValueError("Unexpected manifest path")
+              for attempt in range(3):
+                  try:
+                      with urlopen(base + "/" + name, timeout=90) as stream:
+                          data = stream.read()
+                      if sha256(data).hexdigest() != digest or (size is not None and len(data) != size):
+                          raise ValueError("Upstream payload identity mismatch: " + name)
+                      path.parent.mkdir(parents=True, exist_ok=True)
+                      path.write_bytes(data)
+                      return
+                  except OSError:
+                      if attempt == 2:
+                          raise
+                      time.sleep(2**attempt)
+
+          fetch("package-manifest.json", os.environ["MANIFEST_SHA"])
+          manifest = json.loads(Path("package-manifest.json").read_bytes())["files"]
+          needed = [row for row in manifest if os.environ["STAGE"] == "numerical-coverage" or row["path"] == "checkers/chart_gmp.cpp"]
+          with ThreadPoolExecutor(max_workers=8) as pool:
+              list(pool.map(lambda row: fetch(row["path"], row["sha256"], row["bytes"]), needed))
+          print("Verified", len(needed), "manifest entries")
+          PY
+      - name: Run the original checker for this stage
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd "$RUNNER_TEMP/certificate"
+          g++ --version | head -n 1
+          python3 --version
+          if [[ "$STAGE" == numerical-coverage ]]; then
+            output="$RUNNER_TEMP/107-replay"
+            if ! python3 -B reproduce.py --reuse-charts --cxx g++ --work-dir "$output"; then
+              for file in "$output"/logs/*.log "$output"/local-check/*.log; do
+                if [[ -f "$file" ]]; then echo "== $file =="; tail -n 25 "$file"; fi
+              done
+              exit 1
+            fi
+            python3 -B verify_manuscript_bounds.py --work-dir "$output"
+            cat "$output/manuscript-bounds.json"
+            sha256sum "$output"/local-check/interior-final/results.json
+            python3 - "$output" <<'PY'
+          import json, sys
+          from pathlib import Path
+          p = Path(sys.argv[1])
+          rows = json.loads((p/"local-check/interior-final/results.json").read_bytes())
+          expected = json.loads(Path("certificates/interior-sectors.json").read_bytes())
+          assert len(rows) == 128 and {int(x["sector"]) for x in rows} == set(range(128))
+          assert all(x["exit_code"] == 0 for x in rows)
+          assert {x["sector"]: x["sha256"] for x in rows} == {x["sector"]: x["sha256"] for x in expected}
+          print("All 128 interior sector hashes and exits match the pinned inputs")
+          PY
+          else
+            if [[ "$STAGE" == qP420_gmp ]]; then degree=420; bits=224; else degree=780; bits=500; fi
+            if ! pkg-config --exists gmpxx; then
+              sudo apt-get update -q
+              sudo apt-get install -qy --no-install-recommends libgmp-dev
+            fi
+            pkg-config --modversion gmpxx
+            g++ -std=c++17 -O3 $(pkg-config --cflags gmpxx) checkers/chart_gmp.cpp $(pkg-config --libs gmpxx) -o chart_gmp
+            time ./chart_gmp "$degree" "$bits" "$STAGE"
+            python3 - <<'PY'
+          from hashlib import sha256
+          from pathlib import Path
+          import json, os
+          name = os.environ["STAGE"]
+          want = next(x for x in json.loads(Path("package-manifest.json").read_bytes())["files"] if x["path"] == "inputs/"+name)
+          data = Path(name).read_bytes()
+          got = sha256(data).hexdigest()
+          print(name, len(data), got)
+          assert len(data) == want["bytes"] and got == want["sha256"]
+          print("REGENERATED CHART MATCH:", name)
+          PY
+          fi
