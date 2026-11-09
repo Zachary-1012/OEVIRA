@@ -187,13 +187,13 @@ RequiredInput沿现有请求补充`resolution_owner`（user|authorized_reviewer|
 
 数学工作仍通过现有Analysis的MethodInvocation与持久Job，不新增算法服务或权限系统。MathematicalProblem声明family/algorithm_id/revision、problem_kind、完整输入及来源版、scalar_domain、integer/rational/algebraic/finite_field/float/interval表示、准确形状/图类/概率/变量域、误差/失败预算及计算资源边界。整数与有理分子分母在JSON用十进制字符串；有理分母为正，代数商环另保单首多项式与定长系数向量，有限域保特征及确切表示，不能把浮点容差当精确等式。
 
-构造参数归同一Invocation的parameter_recipe、parameter_witness、identity_checks和compile_status；矩阵见证含a/b/c/r、系数域与alpha/beta/gamma及逐系数核验范围，博弈输入保MAX/MIN/CHANCE及有理概率，输出分别含winning_vertices、value_enclosures、精确值及两方策略的实际完成状态。方法详情仅由intelligence§4.2定义；API不复制公式。参数生成、见证恒等成立、主算法运行、原定复杂度/误差保证、独立形式重放与业务收益分别记录，任何一项成功不自动推进其他项。
+构造参数归同一Invocation的parameter_recipe、parameter_witness、identity_checks和compile_status。103的编译输入绑定固定分离器有限表的身份、完整转移表示、源解释器版、实际分离及工作位/时界证书，数学类相等的证明不能代替表。表或资格缺失时明确缺哪项，有限参考的输出按其实际方法版返回；107分开记录两份系数再生、证书全覆盖和独立解析目标。139须区分原精确实数一阶oracle的primitive证明、维度分支及每次查询上限，与有限位格点的分箱误差和资源；小维全部拒绝回退的实际标记不冒接受样本。矩阵见证含a/b/c/r、系数域与alpha/beta/gamma及逐系数核验范围，博弈输入保MAX/MIN/CHANCE及有理概率，输出分别含winning_vertices、value_enclosures、精确值及两方策略的实际完成状态。方法详情仅由intelligence§4.2定义；API不复制公式。参数生成、见证恒等成立、主算法运行、原定复杂度/误差保证、独立形式重放与业务收益分别记录，任何一项成功不自动推进其他项。
 
 stop_reason沿原错误信封分清INPUT_INVALID、ASSUMPTION_NOT_ESTABLISHED、PARAMETER_SEARCH_INCOMPLETE、NUMERICAL_UNCERTIFIED、CANCELLED、RESOURCE_EXHAUSTED和完成；已有合法确定性业务结果仍可交付。暂停/重开固定输入摘要、方法版、已核参数、当前阶段及确定/随机状态；随机恢复不能丢掉失败样本或改停止律。通用公开参数可以按方法/域/精度复用，含客户输入的见证不得跨客户泄露。数学方案被采用与用户实际采购、付款、发布或修改作品仍是不同命令。
 
 数学返回沿同一AnalysisResult声明target_law、count_semantics（显式对象/带标签选择/整数占用向量等）、feasibility_status、estimate/interval、relative_error_budget、failure_probability_budget、total_variation_budget、exactness、runtime_bound_kind=worst_case|expected、completed_trials/failed_trials/unfinished_trials及实际停止策略。exact_uniform与TV近似不同，确定性512^n计数界与(1±ε)FPRAS不同；近似试验0不是输入不可行证明。目标分布和分母不得在结果显示时根据“只保成功/按时输出”改写。暂停恢复绑定已消费随机状态、当前阶段、合法结果与参数，改变预算/停止律生成新的方法执行资格，不沿用旧保证。
 
-114整数多拟阵的oracle请求绑定秩来源/修订、稳定元素顺序、总秩和答案位长；输入改版中止原执行。回传整数向量目标、精确可行性和估计的保证分账；分离器返回违反集合、0/1法向、右边及有理违反量。块体积阶段另保内外球、分离/精度预算、已完成次数及是否满足预定保证。140返回原命题身份、观测/先验/持久状态/停止规则的资格和保证量词；有限纤维返回rank、中心、投影、半径平方及精确性，只有适用条件独立核实才输出对应统计解释。
+114整数多拟阵的oracle请求绑定秩来源/修订、稳定元素顺序、总秩和答案位长；输入改版中止原执行。回传整数向量目标、精确可行性和估计的保证分账；分离器返回违反集合、0/1法向、右边及有理违反量。块体积阶段另保内外球、分离/精度预算、已完成次数及是否满足预定保证。140返回原命题身份、观测/先验/持久状态/停止规则的资格和保证量词。球面有限期限判据另保d/M/T、角误差、目标成功率、块长及块数、比较两侧和排除/未排除/预算未决；未排除不能显示为可行。有限纤维返回rank、中心、投影、半径平方及精确性，只有适用条件独立核实才输出对应统计解释。
 
 ### 合规预审与具体修订的结果协议
 
