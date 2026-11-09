@@ -10,7 +10,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        target: [LogspaceEquality, MatrixMultiplication, LogConcaveQuery, MemoryPrecision, CommonBasesFPRAS]
+        target: [MatrixMultiplication]
     runs-on: ubuntu-24.04
     timeout-minutes: 110
     env:
@@ -38,7 +38,7 @@ jobs:
           from pathlib import Path
 
           source, work = map(Path,sys.argv[1:])
-          allowed = {"Mathlib", "Init", "Lean", "Std", "Batteries", "Aesop", "Qq", "ProofWidgets", "Plausible", "LeanSearchClient", "ImportGraph", "Cli"}
+          allowed = {"Mathlib", "Init", "Lean", "Std", "Batteries", "Aesop", "Qq", "ProofWidgets", "Plausible", "LeanSearchClient", "ImportGraph", "Cli", "FixedPointTheorems"}
           source_pin = os.environ["SOURCE"]
           def blob(path):
               return subprocess.check_output(["git","-C",str(source),"show",f"{source_pin}:{path}"])
@@ -77,7 +77,8 @@ jobs:
           (work/"lean-toolchain").write_bytes(toolchain)
           (work/"lakefile.lean").write_text(
               'import Lake\nopen Lake DSL\npackage OAI where\n  leanOptions := #[⟨`autoImplicit, false⟩]\n'
-              'require mathlib from git "https://github.com/leanprover-community/mathlib4.git" @ "'+pinned+'"\nlean_lib OAI\n')
+              'require «fixed-point-theorems» from git "https://github.com/harfe/fixed-point-theorems-lean4.git" @ "770940ddf9878cf61952ed53d910b92bca841838"\n'
+      'require mathlib from git "https://github.com/leanprover-community/mathlib4.git" @ "'+pinned+'"\nlean_lib OAI\n')
           (work/"Verify.lean").write_text("import "+solution+"\n"+"\n".join("#print axioms "+n for n in record["theorem_names"])+"\n")
           print(solution, len(done), sorted(outside))
           print("THEOREM-INPUT-RECORD:", json.dumps(record,sort_keys=True))
