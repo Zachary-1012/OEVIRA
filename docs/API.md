@@ -44,6 +44,14 @@
 
 以上通过现Business/Work身份和关系用例实现，后文历史subject路由仍保其原观测范围；适配消费者、序列化、持久数据和回读须共同更新，不能只改前端名称。
 
+### 专业目的地与连续导航
+
+目的地由应用内受控注册表按SPEC§5标识，客户端取得当前用户可读的功能/对象投影；外部网页、模型输出和Skill文案不能注册任意路由或执行代码。既有路由状态携带destination_id、workspace_ref及适用的client_scope_ref、work_ref、object_ref、revision_mode、return_anchor、open_disposition；缺省客户或工作表示未绑定，不自动生成。open_disposition区分当前查看、新工作标签及并读；已打开同对象时默认召回原控制器，明确比较才建另一视图实例。
+
+导航、搜索选中、深链和浏览返回只做定位与当前权限读取；只读查询沿既有范围、权限与读取协议，不提交业务修改/执行意图或新Job。明确“新建并开始”“应用修改”“取材”“发布”等命令才调用相应领域执行用例。标签与导航偏好归原用户/Workspace的SceneState或既有偏好存储，内容、授权、任务与工具绑定沿原Owner。切目的地不改ToolBinding目标、草稿代次或当前版；显式切换操作目标更新对应绑定。
+
+响应区分已定位、尚待加载、未登录、失权/不可见、对象撤回及旧链接无法唯一解析。登录后恢复经核目的地和返回锚，不重执行历史动作；隐藏导航项不构成权限拒绝。旧资料/成果链接映射到同一资源视图及原对象/版本，旧工作与监测链接沿现工作面解析，不复制对象或恢复旧外壳。显示分组和服务端专业对象kind分别版本化，不能将目的地数量当接口能力集合。
+
 ### 物理空间视图与输入协议
 
 以下为同一API内需实现的目标协议，不是已有运行路由声明。`SceneState`包含scene_id、用户/Workspace、可选work_ref、personal/shared、scene_revision、coordinate_system_version、camera及instances；`SpatialInstance`包含稳定instance_id、ObjectRef、pose(position/quaternion/positive scale)、local bounds/thickness、active_face、parent_group、pinned/stowed及允许保存的局部视图锚。注册的face_kind决定功能面，客户端或模型不能提交任意脚本、文件路径或权限。一次创建/共享场景不自动授权里面的对象。
@@ -197,6 +205,8 @@ stop_reason沿原错误信封分清INPUT_INVALID、ASSUMPTION_NOT_ESTABLISHED、
 
 ### 合规预审与具体修订的结果协议
 
+同一预审可含多个actor/role引用与各自期间关系，每项义务绑定承担者、适用行为、规则版/条款及受影响成果。促销类型、奖品估值、币种和最高奖额分别保事实/规则来源，规则值不作全平台常量；直播的平台、运营者、营销人员、服务机构与实际卖方分别返回义务和缺口，合同关系不自动转移责任。官方原文的替代获取保存同一文本身份、公布/生效版、核验时刻与覆盖，重复转载不增加独立证据数；正文或适用版本仍缺时只阻相关结论，不用摘要签规则已核。记录保留要求绑定具体记录种类/责任主体/起算事件/期限与来源版，不扩成全产品统一永久留存。
+
 合规分析复用AnalysisResult/Claim/SourceUse：被审对象及版、jurisdiction/market、actor/role、intended_action、product_category、audience、渠道、事件与计划发布日期组成适用事实；RuleAssessment含确切规则Source版/锚、rule_kind、published/effective/retired/checked_at、事实条件、例外、版本替代关系、支持与反证。fact_sufficiency、rule_applicability、claim_support与effect_authorization分别返回，不用一个risk_score或ok代替。未核/冲突/不适用与明确不支持分型。
 
 每项finding必须定位实际文案/画面/音轨/价格或活动规则，给有据理由、可采用replacement_candidates、必要补证或适任复核条件。修改沿现有ChangeSet/OperationIntent的base_version与影响集，返回新作品版、未改内容及受影响批准；检查通过不代客户承诺、外发权限或实际发布。不同法域、不同有效日期和不同媒介的结论不得直接复制；来源更正/撤权只重核实际依赖，保合法原稿和历史判断。
@@ -325,6 +335,8 @@ Analysis input_snapshot冻结本次纳入/排除ObjectRef集合或可独立重�
 Anchor保source_revision、projection_revision/digest、[start,end)、exact/prefix/suffix与原生block/page/media位置。重定位返回resolved|ambiguous|unresolved以及具权限的候选新Anchor和差异，禁止多个候选时自动选第一项或执行全局替换。解析/源版/选区变化使旧修订预览失效；用户选择或已核唯一映射通过原ChangeSet提交，不设第二批注系统。规范化映射包含source_ranges、target_range、transform_kind及lossy标记；无可靠映射的匹配只给候选，不授权直接改原文。
 
 ### 多路径检索与既有成果复用的目标字段
+
+Dense索引和查询回执携带embedding_space_ref（模型/权重revision、预处理与归一化版、维度、距离度量）及index_generation；使用跨空间映射时另带经验证的mapping_revision与适用边界。空间合同不匹配逐路返回vector_space_mismatch并排除该分数，不能改成0或伪装未命中；其它合法路线继续。新代次记录已覆盖源/解析版、缺口和验证结果，完整读回且当前用途成立后才原子切换；失败可回退原有效代次，不混代或复活已撤权向量。
 
 同一`query_id/query_revision`在现有QueryPlan及取得回执中返回可按需展开的`query_paths`，逐路径含`path_id/parent_path_id`、起点SourceRef/Anchor、query/scope/data_surface、发现的原生对象引用、实际取得或未执行状态、coverage、checkpoint_ref和stop_reason。路径身份与内容身份分开：不同路径发现同一对象仅增加发现关系，返回同一获权ObjectRef及本次实际Observation；路径不能自行授SubjectRef或来源独立性。路径/父线索的返回同样按当前权限过滤，不通过数量或标题泄露其他客户；普通界面先显示结果和必要缺口，不要求用户操作内部路径ID。
 
