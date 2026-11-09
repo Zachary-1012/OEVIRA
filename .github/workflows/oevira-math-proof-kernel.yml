@@ -1,0 +1,116 @@
+name: OEVIRA pinned mathematical solution kernel checks
+on:
+  push:
+    branches:
+      - 'codex/verify-math-kernel-20261109'
+permissions: {}
+jobs:
+  proof:
+    name: Lean proof (${{ matrix.target }})
+    strategy:
+      fail-fast: false
+      matrix:
+        target: [LogspaceEquality, MatrixMultiplication, LogConcaveQuery, MemoryPrecision, CommonBasesFPRAS]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 110
+    env:
+      TARGET: ${{ matrix.target }}
+      SOURCE: 1581d4cbdd69a0faf34b2089614fe2a814316a6a
+      MATHLIB: d13f23b723b8a846827a245b89c10fc7d3f11612
+      LEAN_ARCHIVE_SHA256: 47bf4bbd78f70c2e9670598ab7124d92b6efb7330ff33e5fbb4030f6fd72e4e4
+    steps:
+      - name: Verify source and prepare only the selected proof imports
+        shell: bash
+        run: |
+          set -euo pipefail
+          src="$RUNNER_TEMP/math-source"
+          work="$RUNNER_TEMP/lean-proof"
+          git init -q "$src"
+          git -C "$src" remote add origin https://github.com/openai/math.git
+          git -C "$src" config remote.origin.promisor true
+          git -C "$src" config remote.origin.partialclonefilter blob:none
+          git -C "$src" fetch --depth=1 --filter=blob:none origin "$SOURCE"
+          test "$(git -C "$src" rev-parse FETCH_HEAD)" = "$SOURCE"
+          mkdir -p "$work"
+          python3 - "$src" "$work" <<'PY'
+          import json, os, re, subprocess, sys
+          from hashlib import sha256
+          from pathlib import Path
+
+          source, work = map(Path,sys.argv[1:])
+          allowed = {"Mathlib", "Init", "Lean", "Std", "Batteries", "Aesop", "Qq", "ProofWidgets", "Plausible", "LeanSearchClient", "ImportGraph", "Cli"}
+          source_pin = os.environ["SOURCE"]
+          def blob(path):
+              return subprocess.check_output(["git","-C",str(source),"show",f"{source_pin}:{path}"])
+          catalog = json.loads(blob("lean/lake-manifest.json"))
+          pinned = next(row["rev"] for row in catalog["packages"] if row["name"] == "mathlib")
+          assert pinned == os.environ["MATHLIB"]
+          toolchain = blob("lean/lean-toolchain")
+          assert toolchain.strip() == b"leanprover/lean4:v4.34.1"
+          challenge = f'lean/ComparatorChallenges/{os.environ["TARGET"]}.json'
+          record = json.loads(blob(challenge))
+          solution = record["solution_module"]
+          assert re.fullmatch(r"OAI(?:\.[A-Za-z0-9_]+)+",solution)
+          assert all(re.fullmatch(r"OAI(?:\.[A-Za-z0-9_]+)+",name) for name in record["theorem_names"])
+          pending = [solution]
+          done = set()
+          outside = set()
+          digests = {}
+          while pending:
+              module = pending.pop()
+              if module in done: continue
+              if not module.startswith("OAI."):
+                  outside.add(module.split(".")[0])
+                  continue
+              name = module.replace(".", "/") + ".lean"
+              data = blob("lean/"+name)
+              p = work/name
+              p.parent.mkdir(parents=True, exist_ok=True)
+              p.write_bytes(data)
+              digests[name] = sha256(data).hexdigest()
+              done.add(module)
+              for line in data.decode("utf-8").splitlines():
+                  match = re.match(r"^\s*(?:(?:public|private|meta)\s+)?import\s+([A-Za-z0-9_.]+)", line)
+                  if match: pending.append(match.group(1))
+          assert outside <= allowed, sorted(outside-allowed)
+          (work/"proof-inputs.json").write_text(json.dumps({"source":source_pin,"record":record,"mathlib":pinned,"source_sha256":digests},sort_keys=True))
+          (work/"lean-toolchain").write_bytes(toolchain)
+          (work/"lakefile.lean").write_text(
+              'import Lake\nopen Lake DSL\npackage OAI where\n  leanOptions := #[⟨`autoImplicit, false⟩]\n'
+              'require mathlib from git "https://github.com/leanprover-community/mathlib4.git" @ "'+pinned+'"\nlean_lib OAI\n')
+          (work/"Verify.lean").write_text("import "+solution+"\n"+"\n".join("#print axioms "+n for n in record["theorem_names"])+"\n")
+          print(solution, len(done), sorted(outside))
+          print("THEOREM-INPUT-RECORD:", json.dumps(record,sort_keys=True))
+          print("Selected source manifest:", sha256((work/"proof-inputs.json").read_bytes()).hexdigest())
+          PY
+      - name: Run the pinned Lean kernel and inspect transitive axioms
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd "$RUNNER_TEMP/lean-proof"
+          curl --fail --location --retry 3 --output "$RUNNER_TEMP/lean.tar.zst" https://github.com/leanprover/lean4/releases/download/v4.34.1/lean-4.34.1-linux.tar.zst
+          echo "$LEAN_ARCHIVE_SHA256  $RUNNER_TEMP/lean.tar.zst" | sha256sum -c -
+          tar --zstd -xf "$RUNNER_TEMP/lean.tar.zst" -C "$RUNNER_TEMP"
+          export PATH="$RUNNER_TEMP/lean-4.34.1-linux/bin:$PATH"
+          lean --version
+          lake update
+          lake exe cache get Mathlib
+          solution=$(python3 -c 'import json; print(json.load(open("proof-inputs.json"))["record"]["solution_module"])')
+          lake build "+$solution"
+          lake env lean Verify.lean | tee axioms.txt
+          python3 - <<'PY'
+          import json, re
+          from pathlib import Path
+          data=json.loads(Path("proof-inputs.json").read_bytes())["record"]
+          lines=Path("axioms.txt").read_text().splitlines()
+          for name in data["theorem_names"]:
+              matching=[line for line in lines if line.startswith("'"+name+"' ")]
+              assert len(matching)==1, (name,matching)
+              line=matching[0]
+              if "does not depend on any axioms" in line: continue
+              axioms=re.search(r"depends on axioms: \[(.*)\]$",line)
+              assert axioms is not None, line
+              actual=set(a.strip() for a in axioms[1].split(",") if a.strip())
+              assert actual <= set(data["permitted_axioms"]), (name,actual)
+          print("LEAN KERNEL AND AXIOM CHECK PASS:", ",".join(data["theorem_names"]))
+          PY
