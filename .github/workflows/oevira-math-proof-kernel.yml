@@ -79,7 +79,7 @@ jobs:
               'import Lake\nopen Lake DSL\npackage OAI where\n  leanOptions := #[⟨`autoImplicit, false⟩]\n'
               'require «fixed-point-theorems» from git "https://github.com/harfe/fixed-point-theorems-lean4.git" @ "770940ddf9878cf61952ed53d910b92bca841838"\n'
               'require mathlib from git "https://github.com/leanprover-community/mathlib4.git" @ "'+pinned+'"\nlean_lib OAI\n')
-          (work/"Verify.lean").write_text("import "+solution+"\n"+"\n".join("#print axioms "+n for n in record["theorem_names"])+"\n")
+          (work/"Verify.lean").write_text("import "+solution+"\nset_option pp.width 1000\n"+"\n".join("#print axioms "+n for n in record["theorem_names"])+"\n")
           print(solution, len(done), sorted(outside))
           print("THEOREM-INPUT-RECORD:", json.dumps(record,sort_keys=True))
           print("Selected source manifest:", sha256((work/"proof-inputs.json").read_bytes()).hexdigest())
@@ -95,6 +95,14 @@ jobs:
           export PATH="$RUNNER_TEMP/lean-4.34.1-linux/bin:$PATH"
           lean --version
           lake update
+          dep="$RUNNER_TEMP/lean-proof/.lake/packages/fixed-point-theorems"
+          test "$(git -C "$dep" rev-parse HEAD)" = 770940ddf9878cf61952ed53d910b92bca841838
+          patch="$RUNNER_TEMP/fixed-point-theorems-lean4341.patch"
+          git -C "$RUNNER_TEMP/math-source" show "$SOURCE:lean/patches/fixed-point-theorems-lean4341.patch" > "$patch"
+          echo "d70872e41e80b25191538d1659c4aa3a001349b5bd16f806c9e3833a502516e5  $patch" | sha256sum -c -
+          git -C "$dep" apply --check "$patch"
+          git -C "$dep" apply "$patch"
+          git -C "$dep" apply --check --reverse "$patch"
           lake exe cache get Mathlib
           solution=$(python3 -c 'import json; print(json.load(open("proof-inputs.json"))["record"]["solution_module"])')
           lake build "+$solution"
