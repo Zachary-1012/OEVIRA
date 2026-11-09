@@ -240,3 +240,33 @@ The browser bundle is self-hosted, not loaded from an external runtime CDN. No
 upstream lifecycle scripts or development dependencies were executed or installed.
 JavaScript syntax validation and artifact identity do not establish browser
 codec support, permission revocation, playback quality or product acceptance.
+
+## Mathematical method descriptions and fixed parameter data
+
+The mathematical implementation definitions in `docs/domains/intelligence.md`
+adapt methods and finite parameter data from OpenAI's `openai/math` repository,
+revision `1581d4cbdd69a0faf34b2089614fe2a814316a6a`, distributed under its
+Apache License 2.0. The retained upstream LICENSE Git blob is
+`261eeb9e9f8b2b4b0d119366dda99c6fd7d35c64`; the repository's unchanged root
+LICENSE contains the complete Apache-2.0 terms. Preserve this attribution and
+all applicable upstream notices when distributing adaptations. No ownership of
+the source manuscripts, their authorship, or independent mathematical results
+is claimed by OEVIRA.
+
+The Chinese operational descriptions are modified adaptations. In particular,
+the stochastic mean-payoff recurrence, the mean-payoff/parity reduction and the
+common-matroid-base counting recipe preserve their separately stated input and
+arithmetic conditions. The five integer arrays (17/118/54/75/36 entries) are
+unchanged data from the fixed staggered matrix multiplication parameter set;
+their finite decoding and interval checks are described in the same domain
+file. The exact-witness search and product-facing state/error/permission rules
+are OEVIRA adaptations, not verbatim claims that the upstream supplied a fast
+finite-size implementation. Paper claims, input assumptions, complete code,
+proof replay and measured product benefit must remain distinct.
+
+Sources identify provenance, not another required product-definition file:
+https://github.com/openai/math/tree/1581d4cbdd69a0faf34b2089614fe2a814316a6a
+The adopted definitions add no product runtime dependency. Pinned upstream
+verification programs used for isolated numerical replay do not ship as
+part of the product. Full certificate reproduction and formal proofs have
+separate prerequisites and acceptance.
