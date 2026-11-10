@@ -27,7 +27,7 @@ class SurfaceHeader extends StatelessWidget {
         Expanded(
           child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
             Row(children: [
-              Flexible(child: Semantics(header: true, child: Text(title, maxLines: 1, overflow: TextOverflow.ellipsis, style: textStyle(p, size: TypeScale.title, weight: FontWeight.w600, height: 1.3)))),
+              Flexible(child: Semantics(header: true, child: Text(title, maxLines: 2, overflow: TextOverflow.ellipsis, style: textStyle(p, size: TypeScale.title, weight: FontWeight.w600, height: 1.3)))),
               if (state.content.isSample) ...[const SizedBox(width: 8), const SampleMark()],
             ]),
             if (context != null) Text(context!, maxLines: 1, overflow: TextOverflow.ellipsis, style: textStyle(p, size: 13, color: p.textSecondary, height: 1.4)),

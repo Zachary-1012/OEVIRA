@@ -1,3 +1,4 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:oevira/src/app.dart';
@@ -53,5 +54,21 @@ void main() {
     await tester.tap(flip.first);
     await tester.pumpAndSettle();
     expect(find.text('版本 · 来源 · 方法 · 许可'), findsWidgets);
+  });
+
+  testWidgets('dragging a grip strip moves the same object', (tester) async {
+    await pumpAt(tester, const Size(1440, 900), d: Destination.research);
+    final grip = find.byTooltip('按住这里拿起').last;
+    final before = tester.getTopLeft(grip);
+    final gesture = await tester.startGesture(tester.getCenter(grip), kind: PointerDeviceKind.mouse);
+    for (var n = 0; n < 10; n++) {
+      await gesture.moveBy(const Offset(12, 8));
+      await tester.pump(const Duration(milliseconds: 16));
+    }
+    await gesture.up();
+    await tester.pumpAndSettle();
+    final after = tester.getTopLeft(grip);
+    expect(after.dx - before.dx, greaterThan(60));
+    expect(after.dy - before.dy, greaterThan(40));
   });
 }
