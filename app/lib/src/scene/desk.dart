@@ -36,7 +36,11 @@ class Desk extends StatefulWidget {
     this.onOpen,
     this.onSelect,
     this.trayLabel = '收纳盒',
+    this.compose,
   });
+
+  /// Starting poses for the desk's actual size, applied until the first edit.
+  final Map<String, Pose> Function(Size bounds)? compose;
 
   final SceneController controller;
   final Map<ObjectKind, FaceBuilder> faces;
@@ -51,7 +55,17 @@ class Desk extends StatefulWidget {
 
 class _DeskState extends State<Desk> {
   Size _bounds = const Size(800, 600);
+  Size? _composedFor;
   String? _announcement;
+
+  void _maybeCompose(SceneState scene, Size bounds) {
+    final compose = widget.compose;
+    if (compose == null || scene.revision != 0 || _composedFor == bounds) return;
+    _composedFor = bounds;
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted) _dispatch(Compose(compose(bounds)));
+    });
+  }
 
   void _dispatch(SceneCommand c) => widget.controller.dispatch(c);
 
@@ -70,6 +84,7 @@ class _DeskState extends State<Desk> {
                 borderRadius: BorderRadius.circular(Radii.pane),
                 child: LayoutBuilder(builder: (context, constraints) {
                   _bounds = constraints.biggest;
+                  _maybeCompose(scene, _bounds);
                   return Stack(
                     clipBehavior: Clip.hardEdge,
                     children: [
@@ -148,10 +163,10 @@ class _FloorPainter extends CustomPainter {
           colors: [p.surface.withValues(alpha: p.isNight ? 0.22 : 0.85), p.surfaceSunken.withValues(alpha: 0)],
         ).createShader(rect),
     );
-    final dot = Paint()..color = p.spaceLine.withValues(alpha: p.isNight ? 0.9 : 1);
-    for (var x = 12.0; x < size.width; x += 24) {
-      for (var y = 12.0; y < size.height; y += 24) {
-        canvas.drawCircle(Offset(x, y), 0.9, dot);
+    final dot = Paint()..color = p.spaceLine.withValues(alpha: p.isNight ? 0.7 : 0.8);
+    for (var x = 14.0; x < size.width; x += 28) {
+      for (var y = 14.0; y < size.height; y += 28) {
+        canvas.drawCircle(Offset(x, y), 0.8, dot);
       }
     }
   }
@@ -384,9 +399,21 @@ class _DeskObjectState extends State<_DeskObject> with TickerProviderStateMixin 
     final p = context.palette;
     final i = widget.instance;
     final lifted = widget.grabbed;
+    // Key light from the upper left: shadows fall down and slightly right.
+    // At rest a tight contact shadow plus the paper's own edge give it
+    // thickness; lifted, the contact fades and a wide soft shadow takes over.
+    final night = p.isNight;
     final shadow = lifted
-        ? [BoxShadow(color: p.liftShadow, blurRadius: 28, offset: const Offset(6, 16)), BoxShadow(color: p.contactShadow, blurRadius: 4, offset: const Offset(0, 1))]
-        : [BoxShadow(color: p.contactShadow, blurRadius: 6, offset: const Offset(1, 2)), BoxShadow(color: p.contactShadow.withValues(alpha: 0.08), blurRadius: 18, offset: const Offset(3, 8))];
+        ? [
+            BoxShadow(color: p.liftShadow.withValues(alpha: night ? 0.75 : 0.22), blurRadius: 48, offset: const Offset(10, 28)),
+            BoxShadow(color: p.contactShadow.withValues(alpha: night ? 0.5 : 0.10), blurRadius: 12, offset: const Offset(3, 8)),
+          ]
+        : [
+            BoxShadow(color: p.objectEdge, blurRadius: 0, offset: const Offset(0, 1.5)),
+            BoxShadow(color: p.contactShadow.withValues(alpha: night ? 0.8 : 0.22), blurRadius: 3, offset: const Offset(0.5, 2)),
+            BoxShadow(color: p.contactShadow.withValues(alpha: night ? 0.55 : 0.12), blurRadius: 14, offset: const Offset(3, 8)),
+            BoxShadow(color: p.contactShadow.withValues(alpha: night ? 0.35 : 0.06), blurRadius: 36, offset: const Offset(6, 18)),
+          ];
 
     Widget faceShell(Face face) => _ObjectSurface(
           info: widget.info,
@@ -488,45 +515,68 @@ class _ObjectSurface extends StatelessWidget {
   Widget build(BuildContext context) {
     final p = context.palette;
     final back = face == Face.back;
+    final edge = focused ? p.focus : (selected ? p.accent.withValues(alpha: 0.75) : p.objectEdge);
     return Container(
       decoration: BoxDecoration(
         color: back ? p.paperBack : p.paper,
         borderRadius: BorderRadius.circular(Radii.object),
-        border: Border.all(color: focused ? p.focus : (selected ? p.accent.withValues(alpha: 0.7) : p.objectEdge), width: focused ? 2 : 1),
+        border: Border.all(color: edge, width: focused || selected ? 2 : 1),
+        // Lit top edge: a faint highlight that falls off down the sheet.
+        gradient: LinearGradient(
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+          colors: back ? [p.paperBack, p.paperBack] : [Color.alphaBlend(p.glassEdge.withValues(alpha: p.isNight ? 0.5 : 0.0), p.paper), p.paper],
+          stops: const [0, 0.25],
+        ),
       ),
       clipBehavior: Clip.antiAlias,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           gripListener(
-            Container(
-              height: 36,
-              padding: const EdgeInsets.only(left: 4, right: 2),
-              decoration: BoxDecoration(
-                color: back ? p.surfaceSunken : p.surfaceSunken.withValues(alpha: 0.6),
-                border: Border(bottom: BorderSide(color: p.line)),
-              ),
-              child: Row(children: [
-                Tooltip(message: pinned ? '已固定' : '按住这里拿起', child: LineIcon(pinned ? OIcon.pin : OIcon.grip, size: 16, color: p.textTertiary)),
-                const SizedBox(width: 4),
-                LineIcon(info.icon, size: 16, color: p.accentText),
-                const SizedBox(width: 6),
-                Expanded(
-                  child: Text(
-                    back ? '背面 · ${info.title}' : info.title,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: textStyle(p, size: 13, weight: FontWeight.w600, height: 1.3),
+            Tooltip(
+              message: pinned ? '已固定' : '按住这里拿起',
+              child: Container(
+                constraints: const BoxConstraints(minHeight: 52),
+                padding: const EdgeInsets.fromLTRB(12, 0, 4, 2),
+                decoration: BoxDecoration(border: Border(bottom: BorderSide(color: p.line))),
+                child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, mainAxisSize: MainAxisSize.min, children: [
+                  // Grabber: the same affordance as a sheet handle.
+                  Center(
+                    child: Container(
+                      margin: const EdgeInsets.only(top: 5, bottom: 3),
+                      width: 32,
+                      height: 4,
+                      decoration: BoxDecoration(color: pinned ? p.warning.withValues(alpha: 0.7) : p.lineStrong.withValues(alpha: 0.45), borderRadius: BorderRadius.circular(2)),
+                    ),
                   ),
-                ),
-                IconAction(OIcon.flip, label: back ? '翻回正面' : '翻到背面', size: 32, glyph: 16, onPressed: onFlip),
-                Builder(builder: (context) {
-                  return IconAction(OIcon.more, label: '物件动作', size: 32, glyph: 16, onPressed: () {
-                    final box = context.findRenderObject() as RenderBox;
-                    onMenu(box.localToGlobal(box.size.bottomLeft(Offset.zero)));
-                  });
-                }),
-              ]),
+                  Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                    Padding(padding: const EdgeInsets.only(top: 3), child: LineIcon(pinned ? OIcon.pin : info.icon, size: 16, color: pinned ? p.warning : p.accentText)),
+                    const SizedBox(width: 8),
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.only(top: 1, bottom: 6),
+                        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                          Text(
+                            info.title,
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                            style: textStyle(p, size: 14, weight: FontWeight.w600, height: 1.35),
+                          ),
+                          Text(back ? '背面 · 来源与版本' : info.kindLabel, maxLines: 1, overflow: TextOverflow.ellipsis, style: textStyle(p, size: 11.5, color: p.textTertiary, height: 1.35)),
+                        ]),
+                      ),
+                    ),
+                    IconAction(OIcon.flip, label: back ? '翻回正面' : '翻到背面', size: 32, glyph: 16, onPressed: onFlip),
+                    Builder(builder: (context) {
+                      return IconAction(OIcon.more, label: '物件动作', size: 32, glyph: 16, onPressed: () {
+                        final box = context.findRenderObject() as RenderBox;
+                        onMenu(box.localToGlobal(box.size.bottomLeft(Offset.zero)));
+                      });
+                    }),
+                  ]),
+                ]),
+              ),
             ),
           ),
           Expanded(child: child),

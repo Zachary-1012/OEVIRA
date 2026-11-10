@@ -209,6 +209,14 @@ class Arrange extends SceneCommand {
   final Size bounds;
 }
 
+/// Fits the untouched starting arrangement to the desk's real size. It is a
+/// view of the initial layout, not a user edit, so the revision stays put and
+/// nothing is persisted; once the user moves anything it no longer applies.
+class Compose extends SceneCommand {
+  const Compose(this.poses);
+  final Map<String, Pose> poses;
+}
+
 const _grabbedReach = 48.0;
 
 Offset _clamp(Offset p, Size size, Size bounds) {
@@ -290,6 +298,11 @@ SceneState reduceScene(SceneState s, SceneCommand c) {
       final target = item(id);
       if (target == null) return s;
       return put(target.copyWith(pinned: !target.pinned));
+    case Compose(:final poses):
+      if (s.revision != 0) return s;
+      return s._with(instances: {
+        for (final e in s.instances.entries) e.key: poses.containsKey(e.key) ? e.value.copyWith(pose: poses[e.key]) : e.value,
+      });
     case Arrange(:final bounds):
       var next = s;
       var x = 16.0, y = 16.0, rowHeight = 0.0;

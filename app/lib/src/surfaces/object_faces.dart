@@ -80,9 +80,9 @@ Widget _materialFront(BuildContext context, SourceMaterial m) {
         ),
       ),
       Row(children: [
-        metaText(context, '${m.pages.length} 段 · ${m.provenance.version.split(' ').first}'),
-        const Spacer(),
-        metaText(context, 'Enter 打开阅读'),
+        Expanded(child: metaText(context, '${m.pages.length} 段 · ${m.provenance.version.split(' · ').first}', maxLines: 1)),
+        const SizedBox(width: 6),
+        metaText(context, 'Enter 打开阅读', maxLines: 1),
       ]),
     ]),
   );

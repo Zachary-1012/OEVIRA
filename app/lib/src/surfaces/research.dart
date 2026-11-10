@@ -48,13 +48,54 @@ class _ResearchSurfaceState extends State<ResearchSurface> {
             id: 'desk-${work.materialIds[n]}',
             ref: ObjectRef(ObjectKind.material, work.materialIds[n]),
             pose: Pose(Offset(16 + n * 6.0, 16 + n * 46.0), turn: const [-0.02, 0.015, -0.01, 0.02, -0.015, 0.01][n % 6]),
-            size: const Size(252, 292),
+            size: const Size(228, 272),
             stowed: n >= 5,
           ));
         }
-        items.add(const SpatialInstance(id: 'desk-a-article', ref: ObjectRef(ObjectKind.artifact, 'a-article'), pose: Pose(Offset(290, 16)), size: Size(256, 430)));
+        items.add(const SpatialInstance(id: 'desk-a-article', ref: ObjectRef(ObjectKind.artifact, 'a-article'), pose: Pose(Offset(290, 16)), size: Size(300, 460)));
         return items;
       });
+
+  /// Starting spread for the desk's real size: the argument draft stands at
+  /// the right, the materials lie in two loose columns at the left so every
+  /// title and the top of every page stays readable. A narrow desk falls
+  /// back to one fanned column.
+  Map<String, Pose> _compose(Size b) {
+    final work = s.content.work(_workId)!;
+    final ids = [for (final id in work.materialIds.take(5)) 'desk-$id'];
+    const turns = [-0.018, 0.012, 0.02, -0.012, 0.008];
+    final poses = <String, Pose>{};
+    const pad = 20.0;
+    final aw = (b.width * 0.36).clamp(240.0, 330.0);
+    final twoCols = b.width - aw - pad * 3 >= 2 * 200 + 16;
+    if (b.width < 520) {
+      for (var n = 0; n < ids.length; n++) {
+        poses[ids[n]] = Pose(Offset(12 + n * 6.0, 12 + n * 64.0), turn: turns[n]);
+      }
+      poses['desk-a-article'] = Pose(Offset(math.max(12, b.width - 268), 24 + ids.length * 64.0));
+      return poses;
+    }
+    poses['desk-a-article'] = Pose(Offset(b.width - aw - pad, pad), turn: 0.006);
+    final region = b.width - aw - pad * 3;
+    if (twoCols) {
+      // Left column takes three pages, right column two, each a measured
+      // cascade so a page shows its header, tags and opening lines.
+      final colW = (region - 16) / 2;
+      final step = ((b.height - pad * 2 - 270) / 2).clamp(96.0, 290.0);
+      for (var n = 0; n < ids.length; n++) {
+        final col = n.isOdd ? 1 : 0;
+        final row = n ~/ 2;
+        final x = pad + col * (colW + 16) + row * 8.0;
+        final y = pad + row * step + (col == 1 ? step * 0.5 : 0);
+        poses[ids[n]] = Pose(Offset(x, y), turn: turns[n]);
+      }
+    } else {
+      for (var n = 0; n < ids.length; n++) {
+        poses[ids[n]] = Pose(Offset(pad + n * 10.0, pad + n * 74.0), turn: turns[n]);
+      }
+    }
+    return poses;
+  }
 
   void _open(SpatialInstance i) {
     if (i.ref.kind != ObjectKind.material) {
@@ -72,16 +113,18 @@ class _ResearchSurfaceState extends State<ResearchSurface> {
     final reading = _reading == null ? null : s.content.material(_reading!);
     return LayoutBuilder(builder: (context, constraints) {
       final roomy = constraints.maxWidth >= 860;
-      final showIndex = !widget.narrow && constraints.maxWidth >= 700;
+      // The index docks beside the desk only when the desk still gets room
+      // to spread out; otherwise it is one tap away in the same place.
+      final showIndex = !widget.narrow && constraints.maxWidth >= 1080;
       return Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
         SurfaceHeader(
           state: s,
           title: work.title,
           context: '研究 · 独立研究，不属于客户 · ${materials.length} 份资料 · 下一步：${work.nextStep}',
           actions: [
-            if (widget.narrow)
-              Segmented<_ResearchView>(values: _ResearchView.values, selected: _view, label: (v) => v == _ResearchView.list ? '索引' : '桌面', onChanged: (v) => setState(() => _view = v))
-            else ...[
+            if (!showIndex)
+              Segmented<_ResearchView>(values: _ResearchView.values, selected: _view, label: (v) => v == _ResearchView.list ? '索引' : '桌面', onChanged: (v) => setState(() => _view = v)),
+            if (!widget.narrow) ...[
               OButton('添加资料', icon: OIcon.plus, dense: true, onPressed: () => s.setOverlay(ShellLayer.create)),
               OButton('专注', icon: OIcon.focus, dense: true, tone: ButtonTone.quiet, onPressed: s.toggleFocus),
             ],
@@ -105,7 +148,7 @@ class _ResearchSurfaceState extends State<ResearchSurface> {
                       ),
                       if (roomy) ...[const SizedBox(width: Space.dockGap), SizedBox(width: math.min(340, constraints.maxWidth * 0.34), child: _DraftPane(state: s))],
                     ])
-                  : (widget.narrow && _view == _ResearchView.list)
+                  : (!showIndex && _view == _ResearchView.list)
                       ? _MaterialIndex(state: s, materials: materials, scene: _scene, reading: _reading, onRead: (id) => setState(() => _reading = id))
                       : Desk(
                           controller: _scene,
@@ -113,6 +156,7 @@ class _ResearchSurfaceState extends State<ResearchSurface> {
                           info: (ref) => shellInfo(s, ref),
                           onOpen: _open,
                           onSelect: (i) => s.select(i?.ref),
+                          compose: _compose,
                         ),
             ),
           ]),
