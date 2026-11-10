@@ -100,12 +100,15 @@ class _ReleaseCard extends StatelessWidget {
             ),
             child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
               if (!textual)
+                // No cover in the sample: show what the piece is (a screen, a set
+                // of images, a recording) at a modest size instead of a big
+                // grey placeholder.
                 AspectRatio(
-                  aspectRatio: r.kind == ReleaseKind.podcast ? 2.4 : (r.aspect < 1.5 ? 1.6 : r.aspect),
+                  aspectRatio: 2.4,
                   child: Container(
-                    color: _cover(p),
+                    color: r.kind == ReleaseKind.video ? const Color(0xFF15171A) : _cover(p),
                     child: Stack(children: [
-                      Center(child: LineIcon(_releaseIcon(r.kind), size: 28, color: p.textTertiary)),
+                      Positioned.fill(child: _CoverStandIn(kind: r.kind, images: r.images, seed: r.title.hashCode)),
                       Positioned(left: 10, top: 10, child: _Chip(r.kind.label)),
                       if (r.duration != null) Positioned(right: 10, bottom: 10, child: _Chip(r.duration!)),
                       if (r.images > 0) Positioned(right: 10, bottom: 10, child: _Chip('${r.images} 张')),
@@ -196,4 +199,77 @@ class _Detail extends StatelessWidget {
       ]),
     );
   }
+}
+
+class _CoverStandIn extends StatelessWidget {
+  const _CoverStandIn({required this.kind, required this.images, required this.seed});
+  final ReleaseKind kind;
+  final int images;
+  final int seed;
+
+  @override
+  Widget build(BuildContext context) {
+    final p = context.palette;
+    switch (kind) {
+      case ReleaseKind.video:
+        return Center(
+          child: Container(
+            width: 44,
+            height: 44,
+            decoration: const BoxDecoration(color: Color(0x33FFFFFF), shape: BoxShape.circle),
+            child: const Center(child: LineIcon(OIcon.play, size: 20, color: Colors.white)),
+          ),
+        );
+      case ReleaseKind.gallery:
+        final n = images.clamp(1, 4);
+        return Padding(
+          padding: const EdgeInsets.fromLTRB(12, 36, 12, 12),
+          child: Row(children: [
+            for (var i = 0; i < n; i++) ...[
+              if (i > 0) const SizedBox(width: 6),
+              Expanded(child: Container(decoration: BoxDecoration(color: p.surface.withValues(alpha: 0.55 - i * 0.08), borderRadius: BorderRadius.circular(8)))),
+            ],
+          ]),
+        );
+      case ReleaseKind.podcast:
+        return Padding(
+          padding: const EdgeInsets.fromLTRB(16, 36, 16, 36),
+          child: CustomPaint(painter: _BarsPainter(p.textTertiary.withValues(alpha: 0.6), seed)),
+        );
+      default:
+        // A template: the outline of the page it produces.
+        return Padding(
+          padding: const EdgeInsets.fromLTRB(16, 40, 16, 16),
+          child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+            for (final w in const [0.5, 0.86, 0.72, 0.8])
+              FractionallySizedBox(
+                widthFactor: w,
+                child: Container(height: w == 0.5 ? 10 : 6, margin: const EdgeInsets.only(bottom: 9), decoration: BoxDecoration(color: p.textTertiary.withValues(alpha: w == 0.5 ? 0.45 : 0.25), borderRadius: BorderRadius.circular(3))),
+              ),
+          ]),
+        );
+    }
+  }
+}
+
+class _BarsPainter extends CustomPainter {
+  _BarsPainter(this.color, this.seed);
+  final Color color;
+  final int seed;
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final paint = Paint()
+      ..color = color
+      ..strokeWidth = 2.4
+      ..strokeCap = StrokeCap.round;
+    final mid = size.height / 2;
+    for (var x = 2.0, i = 0; x < size.width; x += 6, i++) {
+      final h = (((i * 31 + seed) % 27) / 27 * 0.8 + 0.15) * mid;
+      canvas.drawLine(Offset(x, mid - h), Offset(x, mid + h), paint);
+    }
+  }
+
+  @override
+  bool shouldRepaint(_BarsPainter old) => old.color != color || old.seed != seed;
 }

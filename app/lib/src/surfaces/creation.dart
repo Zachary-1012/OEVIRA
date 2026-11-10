@@ -190,39 +190,60 @@ class _MediaEditorState extends State<_MediaEditor> with SingleTickerProviderSta
     final current = project.tracks.firstWhere((t) => t.kind == 'video' || t.kind == 'voice', orElse: () => project.tracks.first).clips.where((c) => c.start <= _head && _head < c.end).firstOrNull;
     return Pane(
       padding: const EdgeInsets.all(12),
-      child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
-        Expanded(
-          flex: 5,
+      child: LayoutBuilder(builder: (context, box) {
+        // The viewer takes exactly the height its aspect ratio needs at the
+        // available width; the timeline gets the rest. No dead band between.
+        final wideEditor = box.maxWidth >= 760;
+        final side = wideEditor ? 196.0 + 12 : 0.0;
+        final topH = ((box.maxWidth - side) * (isVideo ? 9 / 16 : 7 / 16)).clamp(120.0, box.maxHeight * 0.55);
+        return Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+        SizedBox(
+          height: topH,
           child: Row(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
             Expanded(
-              child: Container(
-                decoration: BoxDecoration(color: const Color(0xFF101114), borderRadius: BorderRadius.circular(Radii.control)),
-                child: Stack(children: [
-                  Center(
-                    child: AspectRatio(
-                      aspectRatio: isVideo ? 16 / 9 : 1,
-                      child: Container(
-                        margin: const EdgeInsets.all(12),
-                        decoration: BoxDecoration(color: const Color(0xFF1E2126), borderRadius: BorderRadius.circular(4), border: Border.all(color: const Color(0xFF34383F))),
-                        child: Stack(children: [
-                          if (!isVideo) Center(child: _Waveform(seed: _head.floor(), color: const Color(0xFF9FB0FF))),
-                          Positioned(
-                            left: 14,
-                            bottom: 12,
-                            child: Text(current?.label ?? '—', style: textStyle(p, size: 15, weight: FontWeight.w600, color: Colors.white, height: 1.3)),
-                          ),
-                          Positioned(right: 12, top: 10, child: Text(isVideo ? '示例工程 · 无素材画面 · 16:9' : '示例工程 · 波形示意', style: textStyle(p, size: 11, color: Colors.white70, height: 1.2))),
+              // One screen, not a frame inside a frame: the viewer is the
+              // picture area itself at the project's aspect ratio.
+              child: Align(
+                alignment: Alignment.topCenter,
+                child: AspectRatio(
+                  aspectRatio: isVideo ? 16 / 9 : 16 / 7,
+                  child: Container(
+                    clipBehavior: Clip.antiAlias,
+                    decoration: BoxDecoration(
+                      color: const Color(0xFF0B0C0E),
+                      borderRadius: BorderRadius.circular(Radii.surface),
+                      boxShadow: [BoxShadow(color: p.contactShadow.withValues(alpha: p.isNight ? 0.6 : 0.18), blurRadius: 14, offset: const Offset(0, 6))],
+                    ),
+                    child: Stack(children: [
+                      if (isVideo) Positioned.fill(child: CustomPaint(painter: _SafeAreaPainter()))
+                      else Center(child: _Waveform(seed: _head.floor(), color: const Color(0xFFB8BEC8))),
+                      Positioned(
+                        left: 18,
+                        bottom: 14,
+                        right: 18,
+                        child: Row(children: [
+                          Expanded(child: Text(current?.label ?? '—', maxLines: 1, overflow: TextOverflow.ellipsis, style: textStyle(p, size: 15, weight: FontWeight.w600, color: Colors.white, height: 1.3))),
+                          Text(_tc(_head), style: textStyle(p, size: 12.5, weight: FontWeight.w500, color: Colors.white70, height: 1.2).copyWith(fontFeatures: const [FontFeature.tabularFigures()])),
                         ]),
                       ),
-                    ),
+                      Positioned(
+                        left: 14,
+                        top: 12,
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                          decoration: BoxDecoration(color: const Color(0x33FFFFFF), borderRadius: BorderRadius.circular(Radii.pill)),
+                          child: Text(isVideo ? '示例工程 · 无素材画面 · 16:9' : '示例工程 · 波形示意', style: textStyle(p, size: 11, color: Colors.white, height: 1.25)),
+                        ),
+                      ),
+                    ]),
                   ),
-                ]),
+                ),
               ),
             ),
-            if (MediaQuery.sizeOf(context).width >= 700) ...[
+            if (wideEditor) ...[
             const SizedBox(width: 12),
             SizedBox(
-              width: 216,
+              width: 196,
               child: ListView(children: [
                 SectionLabel(isVideo ? '段落' : '章节'),
                 for (final m in project.markers)
@@ -259,9 +280,28 @@ class _MediaEditorState extends State<_MediaEditor> with SingleTickerProviderSta
               overflow: TextOverflow.ellipsis,
             ),
           ),
-          if (MediaQuery.sizeOf(context).width >= 700) ...[
+          if (wideEditor) ...[
             const SizedBox(width: 12),
             Expanded(child: Align(alignment: Alignment.centerRight, child: metaText(context, '点按或拖动时间尺定位 · 方向键逐${isVideo ? '帧' : '秒'} · 空格播放', maxLines: 1))),
+          ] else if (MediaQuery.sizeOf(context).width >= 700) ...[
+            const SizedBox(width: 12),
+            // Markers move next to the transport when the editor is too
+            // narrow for a side column, so they never get clipped.
+            Expanded(
+              child: SizedBox(
+                height: 32,
+                child: ListView(scrollDirection: Axis.horizontal, children: [
+                  for (final m in project.markers)
+                    Padding(
+                      padding: const EdgeInsets.only(left: 6),
+                      child: OButton(m, dense: true, onPressed: () {
+                        final parts = m.split(' ').first.split(':').map(int.parse).toList();
+                        seek(parts[0] * 60.0 + parts[1]);
+                      }),
+                    ),
+                ]),
+              ),
+            ),
           ],
         ]),
         const SizedBox(height: 6),
@@ -305,24 +345,41 @@ class _MediaEditorState extends State<_MediaEditor> with SingleTickerProviderSta
                     Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
                       SizedBox(height: 22, child: CustomPaint(painter: _RulerPainter(p, project.duration, labelW))),
                       for (final t in project.tracks)
-                        Expanded(
+                        SizedBox(
+                          height: ((box.maxHeight - 22) / project.tracks.length - 4).clamp(34.0, 68.0) + 4,
                           child: Container(
                             margin: const EdgeInsets.only(top: 4),
                             child: Stack(children: [
                               Positioned(left: 0, top: 0, bottom: 0, width: labelW - 8, child: Align(alignment: Alignment.centerLeft, child: Text(t.name, maxLines: 1, overflow: TextOverflow.ellipsis, style: textStyle(p, size: 12, color: p.textSecondary, height: 1.2)))),
-                              Positioned.fill(left: labelW, child: Container(decoration: BoxDecoration(color: p.surfaceSunken, borderRadius: BorderRadius.circular(4)))),
+                              Positioned.fill(left: labelW, child: Container(decoration: BoxDecoration(color: p.surfaceSunken, borderRadius: BorderRadius.circular(6)))),
                               for (final c in t.clips)
                                 Positioned(
                                   left: toX(c.start) + 1,
                                   width: (c.end - c.start) / project.duration * w - 2,
                                   top: 2,
                                   bottom: 2,
-                                  child: Container(
-                                    padding: const EdgeInsets.symmetric(horizontal: 6),
-                                    alignment: Alignment.centerLeft,
-                                    decoration: BoxDecoration(color: _trackColor(p, t.kind), borderRadius: BorderRadius.circular(4), border: Border.all(color: p.text.withValues(alpha: 0.12))),
-                                    child: Text(c.label, maxLines: 1, overflow: TextOverflow.clip, style: textStyle(p, size: 11.5, weight: FontWeight.w500, height: 1.1, color: p.isNight ? Colors.white : const Color(0xFF15192A))),
-                                  ),
+                                  child: Builder(builder: (context) {
+                                    final active = _head >= c.start && _head < c.end;
+                                    // Clips are told apart by what they carry (frames,
+                                    // waveform, a title bar), not by a rainbow of fills.
+                                    return Container(
+                                      clipBehavior: Clip.antiAlias,
+                                      decoration: BoxDecoration(
+                                        color: t.kind == 'title' ? p.surface : p.surfaceRaised,
+                                        borderRadius: BorderRadius.circular(6),
+                                        border: Border.all(color: active ? p.accent : p.lineStrong.withValues(alpha: 0.35), width: active ? 1.5 : 1),
+                                      ),
+                                      child: Stack(children: [
+                                        Positioned.fill(child: CustomPaint(painter: _ClipPainter(p, t.kind, c.label.hashCode))),
+                                        Positioned(
+                                          left: 7,
+                                          top: 4,
+                                          right: 4,
+                                          child: Text(c.label, maxLines: 1, overflow: TextOverflow.clip, style: textStyle(p, size: 11.5, weight: FontWeight.w600, height: 1.1, color: p.text)),
+                                        ),
+                                      ]),
+                                    );
+                                  }),
                                 ),
                             ]),
                           ),
@@ -341,19 +398,74 @@ class _MediaEditorState extends State<_MediaEditor> with SingleTickerProviderSta
             ),
           ),
         ),
-      ]),
+      ]);
+      }),
     );
   }
 
-  Color _trackColor(Palette p, String kind) {
-    final base = switch (kind) {
-      'video' => const Color(0xFF6E86F2),
-      'title' => const Color(0xFFB792F0),
-      'audio' || 'voice' => const Color(0xFF4FB79A),
-      _ => const Color(0xFFE2A957),
-    };
-    return base.withValues(alpha: p.isNight ? 0.55 : 0.42);
+}
+
+/// Title-safe and action-safe guides on an empty viewer, so a project with
+/// no footage reads as an empty picture area rather than a placeholder box.
+class _SafeAreaPainter extends CustomPainter {
+  @override
+  void paint(Canvas canvas, Size size) {
+    final rect = Offset.zero & size;
+    canvas.drawRect(rect, Paint()..shader = const RadialGradient(radius: 0.9, colors: [Color(0xFF1A1C20), Color(0xFF0B0C0E)]).createShader(rect));
+    final guide = Paint()
+      ..color = const Color(0x2EFFFFFF)
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 1;
+    canvas.drawRect(rect.deflate(size.shortestSide * 0.05), guide);
+    canvas.drawRect(rect.deflate(size.shortestSide * 0.1), guide..color = const Color(0x1FFFFFFF));
+    final c = rect.center;
+    canvas.drawLine(c - const Offset(9, 0), c + const Offset(9, 0), guide..color = const Color(0x40FFFFFF));
+    canvas.drawLine(c - const Offset(0, 9), c + const Offset(0, 9), guide);
   }
+
+  @override
+  bool shouldRepaint(_SafeAreaPainter old) => false;
+}
+
+/// What a clip carries: a strip of frame cells for picture, a waveform for
+/// sound, an underline bar for titles. All neutral; selection is the accent.
+class _ClipPainter extends CustomPainter {
+  _ClipPainter(this.p, this.kind, this.seed);
+  final Palette p;
+  final String kind;
+  final int seed;
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final ink = Paint()..color = p.textTertiary.withValues(alpha: 0.38);
+    final top = 20.0;
+    if (size.height <= top + 4) return;
+    switch (kind) {
+      case 'video':
+        const cell = 30.0;
+        final band = Rect.fromLTWH(0, top, size.width, size.height - top);
+        canvas.drawRect(band, Paint()..color = p.lineStrong.withValues(alpha: p.isNight ? 0.22 : 0.16));
+        for (var x = cell; x < size.width; x += cell) {
+          canvas.drawLine(Offset(x, top), Offset(x, size.height), Paint()..color = p.surfaceRaised.withValues(alpha: 0.9)..strokeWidth = 1.5);
+        }
+      case 'title':
+        canvas.drawRRect(RRect.fromRectAndRadius(Rect.fromLTWH(7, size.height - 9, size.width * 0.55, 3), const Radius.circular(1.5)), ink);
+      default:
+        final mid = top + (size.height - top) / 2;
+        final amp = (size.height - top) / 2 - 2;
+        final bar = Paint()
+          ..color = p.textTertiary.withValues(alpha: 0.5)
+          ..strokeWidth = 1.6
+          ..strokeCap = StrokeCap.round;
+        for (var x = 4.0, i = 0; x < size.width - 2; x += 3.5, i++) {
+          final h = (((i * 37 + seed) % 29) / 29 * 0.75 + 0.2) * amp;
+          canvas.drawLine(Offset(x, mid - h), Offset(x, mid + h), bar);
+        }
+    }
+  }
+
+  @override
+  bool shouldRepaint(_ClipPainter old) => old.p != p || old.kind != kind || old.seed != seed;
 }
 
 class _RulerPainter extends CustomPainter {

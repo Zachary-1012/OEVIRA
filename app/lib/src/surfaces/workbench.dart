@@ -34,15 +34,15 @@ class WorkbenchSurface extends StatelessWidget {
               SizedBox(width: c.maxWidth >= 1100 ? 360 : 300, child: _Side(state: state)),
             ]),
           ),
-          const SizedBox(height: Space.dockGap),
-          SizedBox(height: 168, child: _ContinueStrip(state: state)),
+          const SizedBox(height: Space.dockGap + 4),
+          _ContinueStrip(state: state),
         ]);
       }
       return ListView(children: [
         header,
         SizedBox(height: narrow ? 460 : 520, child: chat),
         const SizedBox(height: Space.dockGap),
-        SizedBox(height: 168, child: _ContinueStrip(state: state)),
+        _ContinueStrip(state: state, all: true),
         const SizedBox(height: Space.dockGap),
         _Side(state: state, scrolls: false),
       ]);
@@ -121,24 +121,34 @@ class _Side extends StatelessWidget {
   }
 }
 
+/// Whole cards that fit the row, never a half-cut card at the edge. Anything
+/// that does not fit is one link away rather than hidden off-screen.
 class _ContinueStrip extends StatelessWidget {
-  const _ContinueStrip({required this.state});
+  const _ContinueStrip({required this.state, this.all = false});
   final AppState state;
+  final bool all;
 
   @override
   Widget build(BuildContext context) {
     final works = state.content.works;
-    return Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
-      const Padding(padding: EdgeInsets.only(left: 4, bottom: 6), child: SectionLabel('继续工作')),
-      Expanded(
-        child: ListView.separated(
-          scrollDirection: Axis.horizontal,
-          itemCount: works.length,
-          separatorBuilder: (_, _) => const SizedBox(width: Space.dockGap),
-          itemBuilder: (context, n) => SizedBox(width: 292, child: WorkCard(state: state, work: works[n])),
+    return LayoutBuilder(builder: (context, c) {
+      const gap = Space.dockGap;
+      final columns = all ? 1 : ((c.maxWidth + gap) / (240 + gap)).floor().clamp(1, 4);
+      final shown = all ? works : works.take(columns).toList();
+      final cardW = (c.maxWidth - gap * (columns - 1)) / columns;
+      return Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+        Padding(
+          padding: const EdgeInsets.only(left: 4, bottom: 4),
+          child: SectionLabel(
+            '继续工作',
+            trailing: shown.length < works.length ? OButton('全部 ${works.length} 项', dense: true, tone: ButtonTone.quiet, onPressed: () => state.go(Destination.clients)) : null,
+          ),
         ),
-      ),
-    ]);
+        Wrap(spacing: gap, runSpacing: gap, children: [
+          for (final w in shown) SizedBox(width: cardW, height: 136, child: WorkCard(state: state, work: w)),
+        ]),
+      ]);
+    });
   }
 }
 
@@ -156,17 +166,17 @@ class WorkCard extends StatelessWidget {
       button: true,
       label: '继续：${w.title}',
       child: Material(
-        color: p.paper,
-        borderRadius: BorderRadius.circular(Radii.object),
+        color: Colors.transparent,
         child: InkWell(
-          borderRadius: BorderRadius.circular(Radii.object),
+          borderRadius: BorderRadius.circular(Radii.surface),
           onTap: () => state.open(ObjectRef(ObjectKind.work, w.id)),
-          child: Container(
-            padding: const EdgeInsets.fromLTRB(12, 10, 12, 10),
+          child: Ink(
+            padding: const EdgeInsets.fromLTRB(14, 12, 14, 12),
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(Radii.object),
-              border: Border.all(color: p.objectEdge),
-              boxShadow: [BoxShadow(color: p.contactShadow, blurRadius: 4, offset: const Offset(0, 1.5))],
+              color: p.surface,
+              borderRadius: BorderRadius.circular(Radii.surface),
+              border: Border.all(color: p.isNight ? p.line : p.line.withValues(alpha: 0.7)),
+              boxShadow: [BoxShadow(color: p.contactShadow.withValues(alpha: p.isNight ? 0.4 : 0.07), blurRadius: 10, offset: const Offset(0, 3))],
             ),
             child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
               Row(children: [
@@ -177,9 +187,9 @@ class WorkCard extends StatelessWidget {
                 Text(w.updated, style: textStyle(p, size: 12, color: p.textTertiary, height: 1.3)),
               ]),
               const SizedBox(height: 6),
-              Text(w.title, maxLines: 1, overflow: TextOverflow.ellipsis, style: textStyle(p, size: 14.5, weight: FontWeight.w600, height: 1.35)),
-              const SizedBox(height: 4),
-              Expanded(child: Text('下一步：${w.nextStep}', maxLines: 2, overflow: TextOverflow.ellipsis, style: textStyle(p, size: 12.5, color: p.textSecondary, height: 1.45))),
+              Text(w.title, maxLines: 2, overflow: TextOverflow.ellipsis, style: textStyle(p, size: 14.5, weight: FontWeight.w600, height: 1.35)),
+              const SizedBox(height: 3),
+              Expanded(child: Text('下一步：${w.nextStep}', maxLines: 1, overflow: TextOverflow.ellipsis, style: textStyle(p, size: 12.5, color: p.textSecondary, height: 1.45))),
               Text(w.clientId == null ? '独立工作' : '客户 · ${state.content.client(w.clientId!)?.name ?? ''}', style: textStyle(p, size: 12, color: p.textTertiary, height: 1.3)),
             ]),
           ),
