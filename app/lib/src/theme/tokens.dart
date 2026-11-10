@@ -33,10 +33,12 @@ abstract final class Breakpoints {
 }
 
 abstract final class Radii {
-  static const double control = 8;
-  static const double surface = 12;
-  static const double pane = 14;
-  static const double object = 10;
+  // Apple/One UI: concentric radii. Controls sit inside surfaces, surfaces
+  // inside panes, so each step is the inner radius plus its padding.
+  static const double control = 10;
+  static const double surface = 16;
+  static const double pane = 20;
+  static const double object = 14;
   static const double pill = 999;
 }
 
@@ -115,6 +117,10 @@ class Palette {
     required this.objectEdge,
     required this.paper,
     required this.paperBack,
+    required this.selection,
+    required this.floorTop,
+    required this.floorBottom,
+    required this.glassEdge,
   });
 
   final Brightness brightness;
@@ -152,18 +158,28 @@ class Palette {
   final Color paper;
   final Color paperBack;
 
+  /// Neutral selection fill (Apple sidebar / ChatGPT list), never a blue slab.
+  final Color selection;
+
+  /// Window floor lit by one key light from the upper left.
+  final Color floorTop;
+  final Color floorBottom;
+
+  /// Inner highlight on the top edge of glass and lifted objects.
+  final Color glassEdge;
+
   bool get isNight => brightness == Brightness.dark;
 
   static const day = Palette(
     brightness: Brightness.light,
-    space: Color(0xFFE9EBEF),
+    space: Color(0xFFE8EAEE),
     spaceLine: Color(0xFFD9DCE2),
-    chrome: Color(0xD9F7F8FA),
-    chromeLine: Color(0x1F1B2230),
+    chrome: Color(0x8CFFFFFF),
+    chromeLine: Color(0x141B2230),
     surface: Color(0xFFFFFFFF),
     surfaceRaised: Color(0xFFFFFFFF),
-    surfaceSunken: Color(0xFFF3F4F7),
-    line: Color(0xFFE1E4EA),
+    surfaceSunken: Color(0xFFF4F4F5),
+    line: Color(0xFFE6E7EA),
     lineStrong: Color(0xFF8C93A1),
     text: Color(0xFF15181E),
     textSecondary: Color(0xFF4A515E),
@@ -178,23 +194,27 @@ class Palette {
     danger: Color(0xFFB4232F),
     dangerSoft: Color(0xFFFBE9EA),
     warningSoft: Color(0xFFFBF1DD),
-    contactShadow: Color(0x2E0E1320),
-    liftShadow: Color(0x330E1320),
-    objectEdge: Color(0xFFCDD1D9),
+    contactShadow: Color(0x290E1320),
+    liftShadow: Color(0x2E0E1320),
+    objectEdge: Color(0xFFD5D8DE),
     paper: Color(0xFFFFFFFF),
     paperBack: Color(0xFFF6F7F9),
+    selection: Color(0x12000000),
+    floorTop: Color(0xFFF3F4F6),
+    floorBottom: Color(0xFFDCDFE5),
+    glassEdge: Color(0xCCFFFFFF),
   );
 
   static const night = Palette(
     brightness: Brightness.dark,
-    space: Color(0xFF0E1014),
+    space: Color(0xFF0E0F12),
     spaceLine: Color(0xFF1C2027),
-    chrome: Color(0xCC161A20),
+    chrome: Color(0x99262A31),
     chromeLine: Color(0x24FFFFFF),
-    surface: Color(0xFF181B21),
-    surfaceRaised: Color(0xFF1F232A),
-    surfaceSunken: Color(0xFF13161B),
-    line: Color(0xFF2B3039),
+    surface: Color(0xFF1A1C20),
+    surfaceRaised: Color(0xFF212328),
+    surfaceSunken: Color(0xFF141518),
+    line: Color(0xFF2C2E33),
     lineStrong: Color(0xFF7D8594),
     text: Color(0xFFECEEF2),
     textSecondary: Color(0xFFB4BAC5),
@@ -214,5 +234,9 @@ class Palette {
     objectEdge: Color(0xFF353B46),
     paper: Color(0xFF1D2128),
     paperBack: Color(0xFF191C22),
+    selection: Color(0x1AFFFFFF),
+    floorTop: Color(0xFF1B1E24),
+    floorBottom: Color(0xFF0A0B0E),
+    glassEdge: Color(0x24FFFFFF),
   );
 }

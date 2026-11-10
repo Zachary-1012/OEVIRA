@@ -31,28 +31,29 @@ class _LogoPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     canvas.scale(size.width / 24);
-    final stroke = size.width <= 18 ? 2.1 : 1.8;
-    final outer = Paint()
-      ..color = color
-      ..style = PaintingStyle.stroke
-      ..strokeWidth = stroke
-      ..strokeCap = StrokeCap.round;
-    final inner = Paint()
-      ..color = accent
+    // Small sizes get a heavier line so the two gaps and the fold survive
+    // at 16px in one colour; the geometry stays the same at every size.
+    final stroke = size.width <= 18 ? 2.6 : (size.width <= 24 ? 2.25 : 2.0);
+    Paint pen(Color c) => Paint()
+      ..color = c
       ..style = PaintingStyle.stroke
       ..strokeWidth = stroke
       ..strokeCap = StrokeCap.round
       ..strokeJoin = StrokeJoin.round;
-    // Outer arc: opens at upper right, leaving a 2-unit gap.
-    canvas.drawArc(const Rect.fromLTRB(2.5, 2.5, 21.5, 21.5), -math.pi * 0.18, -math.pi * 1.48, false, outer);
-    // Second arc continues the ring and folds inward toward the centre.
+    const c = Offset(12, 12);
+    const r = 8.8;
+    double rad(double deg) => deg * math.pi / 180;
+    final ring = Rect.fromCircle(center: c, radius: r);
+    // Two related open arcs on one ring (body ≈ 19.6 of 24 units). The gaps
+    // sit at upper right and lower left, each wider than 3 units.
+    canvas.drawArc(ring, rad(-30), rad(170), false, pen(color)); // right/lower arc
+    canvas.drawArc(ring, rad(165), rad(105), false, pen(color)); // left/upper arc
+    // Inward fold: the upper arc's end turns in toward the centre.
+    final start = c + Offset(r * math.cos(rad(270)), r * math.sin(rad(270)));
     final fold = Path()
-      ..moveTo(19.9, 7.9)
-      ..arcToPoint(const Offset(12, 21.5), radius: const Radius.circular(9.5))
-      ..moveTo(19.9, 7.9)
-      ..quadraticBezierTo(15.6, 9.2, 13.6, 12.6)
-      ..quadraticBezierTo(12.6, 14.4, 14.6, 15.2);
-    canvas.drawPath(fold, inner);
+      ..moveTo(start.dx, start.dy)
+      ..quadraticBezierTo(16.6, 6.4, 13.2, 11.6);
+    canvas.drawPath(fold, pen(accent));
   }
 
   @override

@@ -48,16 +48,42 @@ class WorkspaceShell extends StatelessWidget {
         },
         child: Focus(
           autofocus: true,
-          child: ColoredBox(
-            color: p.space,
+          child: DecoratedBox(
+            // The content layer's floor: stable ambient light plus one key light
+            // from the upper left, so the glass layers above have something to
+            // pass through (HIG Materials).
+            decoration: BoxDecoration(
+              gradient: LinearGradient(begin: Alignment.topLeft, end: Alignment.bottomRight, colors: [p.floorTop, p.space, p.floorBottom], stops: const [0, 0.45, 1]),
+            ),
             child: LayoutBuilder(builder: (context, constraints) {
               final width = shellWidthFor(constraints.maxWidth);
               return Stack(children: [
+                const Positioned.fill(child: IgnorePointer(child: _KeyLight())),
                 Positioned.fill(child: _Frame(state: state, width: width, size: constraints.biggest)),
                 if (state.overlay != ShellLayer.none) Positioned.fill(child: CommandLayer(state: state)),
               ]);
             }),
           ),
+        ),
+      ),
+    );
+  }
+}
+
+/// Soft key light pooled at the upper left of the floor. It is what makes the
+/// translucent navigation and tool layers read as material rather than paint.
+class _KeyLight extends StatelessWidget {
+  const _KeyLight();
+
+  @override
+  Widget build(BuildContext context) {
+    final p = context.palette;
+    return DecoratedBox(
+      decoration: BoxDecoration(
+        gradient: RadialGradient(
+          center: const Alignment(-0.85, -1.1),
+          radius: 0.9,
+          colors: [p.isNight ? const Color(0x1F8DB5FF) : const Color(0xB3FFFFFF), const Color(0x00FFFFFF)],
         ),
       ),
     );
@@ -162,7 +188,7 @@ class _Layer extends StatelessWidget {
     return DecoratedBox(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(Radii.pane),
-        boxShadow: [BoxShadow(color: p.liftShadow, blurRadius: 30, offset: const Offset(0, 12))],
+        boxShadow: [BoxShadow(color: p.liftShadow, blurRadius: 40, offset: const Offset(0, 18))],
       ),
       child: child,
     );
@@ -221,17 +247,32 @@ class ChromeMaterial extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final p = context.palette;
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(radius),
-      child: BackdropFilter(
-        filter: ui.ImageFilter.blur(sigmaX: 18, sigmaY: 18),
-        child: Container(
-          decoration: BoxDecoration(
-            color: p.chrome,
-            borderRadius: BorderRadius.circular(radius),
-            border: border ? Border.all(color: p.chromeLine) : null,
+    final r = BorderRadius.circular(radius);
+    // Liquid-Glass-like functional layer: blur of what lies beneath, a light
+    // tint that is brighter at the lit edge, a 1px inner highlight and an
+    // outer hairline. Body text never sits on it without its own solid base.
+    return DecoratedBox(
+      decoration: BoxDecoration(
+        borderRadius: r,
+        boxShadow: [BoxShadow(color: p.contactShadow.withValues(alpha: p.isNight ? 0.35 : 0.07), blurRadius: 18, offset: const Offset(0, 6))],
+      ),
+      child: ClipRRect(
+        borderRadius: r,
+        child: BackdropFilter(
+          filter: ui.ImageFilter.blur(sigmaX: 30, sigmaY: 30),
+          child: Container(
+            decoration: BoxDecoration(
+              borderRadius: r,
+              gradient: LinearGradient(
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                colors: [Color.alphaBlend(p.glassEdge.withValues(alpha: p.isNight ? 0.06 : 0.35), p.chrome), p.chrome],
+              ),
+              border: border ? Border.all(color: p.chromeLine) : null,
+            ),
+            foregroundDecoration: border ? BoxDecoration(borderRadius: r, border: Border(top: BorderSide(color: p.glassEdge, width: 1))) : null,
+            child: child,
           ),
-          child: child,
         ),
       ),
     );
@@ -255,7 +296,7 @@ class TitleBar extends StatelessWidget {
         child: Row(children: [
           IconAction(OIcon.navPanel, label: state.navShown ? '收起导航' : '展开导航', selected: state.navShown, onPressed: state.toggleNav),
           const SizedBox(width: 6),
-          OeviraLogo(size: 22, color: p.text, accent: p.accent),
+          OeviraLogo(size: 24, color: p.text, accent: p.accent),
           const SizedBox(width: 8),
           if (!narrow) Text('寰意', style: textStyle(p, size: 16, weight: FontWeight.w600, height: 1.2)),
           if (!narrow) ...[
@@ -321,13 +362,22 @@ class _SearchField extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 0),
       child: Container(
         height: 36,
-        decoration: BoxDecoration(color: p.surface, borderRadius: BorderRadius.circular(Radii.control), border: Border.all(color: p.line)),
-        padding: const EdgeInsets.symmetric(horizontal: 10),
+        decoration: BoxDecoration(
+          color: p.surface.withValues(alpha: p.isNight ? 0.55 : 0.72),
+          borderRadius: BorderRadius.circular(Radii.pill),
+          border: Border.all(color: p.chromeLine),
+        ),
+        padding: const EdgeInsets.symmetric(horizontal: 14),
         child: Row(children: [
           LineIcon(OIcon.search, size: 16, color: p.textTertiary),
           const SizedBox(width: 8),
           Expanded(child: Text(compact ? '搜索' : '搜索工作、资料、作品与主体', maxLines: 1, overflow: TextOverflow.ellipsis, style: textStyle(p, size: 13, color: p.textTertiary, height: 1.2))),
-          if (!compact) Text('Ctrl K', style: textStyle(p, size: 12, color: p.textTertiary, height: 1.2)),
+          if (!compact)
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 1),
+              decoration: BoxDecoration(color: p.selection, borderRadius: BorderRadius.circular(5)),
+              child: Text('Ctrl K', style: textStyle(p, size: 11.5, color: p.textTertiary, height: 1.3)),
+            ),
         ]),
       ),
     );
@@ -364,8 +414,8 @@ class NavPanel extends StatelessWidget {
             children: [
               for (final group in NavGroup.values) ...[
                 Padding(
-                  padding: const EdgeInsets.fromLTRB(10, 8, 10, 4),
-                  child: Semantics(header: true, child: Text(group.label, style: textStyle(p, size: 12, weight: FontWeight.w600, color: p.textTertiary, height: 1.3))),
+                  padding: const EdgeInsets.fromLTRB(10, 12, 10, 4),
+                  child: Semantics(header: true, child: Text(group.label, style: textStyle(p, size: 11.5, weight: FontWeight.w600, color: p.textTertiary, height: 1.3))),
                 ),
                 for (final d in Destination.inGroup(group))
                   _NavItem(
@@ -428,9 +478,15 @@ class _NavItem extends StatelessWidget {
           LineIcon(destination.icon, size: 20, color: selected ? p.accentText : p.textSecondary, accent: selected ? p.accent.withValues(alpha: 0.22) : null),
           const SizedBox(width: 10),
           Expanded(
-            child: Text(destination.label, style: textStyle(p, size: TypeScale.dense, weight: selected ? FontWeight.w600 : FontWeight.w500, color: selected ? p.accentText : p.text, height: 1.3)),
+            child: Text(destination.label, style: textStyle(p, size: TypeScale.dense, weight: selected ? FontWeight.w600 : FontWeight.w400, color: p.text, height: 1.3)),
           ),
-          if (badge != null) Text(badge!, style: textStyle(p, size: 12, color: p.textTertiary, height: 1.2)),
+          if (badge != null)
+            Container(
+              constraints: const BoxConstraints(minWidth: 20),
+              padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 1),
+              decoration: BoxDecoration(color: p.selection, borderRadius: BorderRadius.circular(Radii.pill)),
+              child: Text(badge!, textAlign: TextAlign.center, style: textStyle(p, size: 11.5, weight: FontWeight.w500, color: p.textSecondary, height: 1.35)),
+            ),
         ]),
       ),
     );

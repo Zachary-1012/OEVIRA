@@ -28,11 +28,11 @@ class IconAction extends StatelessWidget {
         label: label,
         child: _Pressable(
           onPressed: onPressed,
-          radius: Radii.control,
-          fill: selected ? p.accentSoft : null,
+          radius: size >= Targets.click ? Radii.control : Radii.control - 2,
+          fill: selected ? p.selection : null,
           child: SizedBox.square(
             dimension: size,
-            child: Center(child: LineIcon(icon, size: glyph, color: color ?? (selected ? p.accentText : p.textSecondary))),
+            child: Center(child: LineIcon(icon, size: glyph, color: color ?? (selected ? p.text : p.textSecondary))),
           ),
         ),
       ),
@@ -57,7 +57,7 @@ class OButton extends StatelessWidget {
     final p = context.palette;
     final (bg, fg, border) = switch (tone) {
       ButtonTone.primary => (p.accent, p.onAccent, Colors.transparent),
-      ButtonTone.standard => (p.surface, p.text, p.line),
+      ButtonTone.standard => (p.surfaceRaised, p.text, p.line),
       ButtonTone.quiet => (Colors.transparent, p.textSecondary, Colors.transparent),
       ButtonTone.danger => (p.dangerSoft, p.danger, Colors.transparent),
     };
@@ -67,13 +67,14 @@ class OButton extends StatelessWidget {
       enabled: !disabled,
       child: _Pressable(
         onPressed: onPressed,
-        radius: Radii.control,
+        radius: Radii.pill,
         fill: bg,
         border: border,
+        shadow: tone == ButtonTone.standard || tone == ButtonTone.primary,
         child: ConstrainedBox(
-          constraints: BoxConstraints(minHeight: dense ? 32 : Targets.click),
+          constraints: BoxConstraints(minHeight: dense ? 34 : Targets.click),
           child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: dense ? 10 : 14),
+            padding: EdgeInsets.symmetric(horizontal: dense ? 12 : 16),
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
@@ -92,13 +93,14 @@ class OButton extends StatelessWidget {
 /// Hover, press and keyboard focus feedback shared by every custom control.
 /// Feedback is immediate; no animation delays the first visible change.
 class _Pressable extends StatefulWidget {
-  const _Pressable({required this.child, required this.onPressed, required this.radius, this.fill, this.border});
+  const _Pressable({required this.child, required this.onPressed, required this.radius, this.fill, this.border, this.shadow = false});
 
   final Widget child;
   final VoidCallback? onPressed;
   final double radius;
   final Color? fill;
   final Color? border;
+  final bool shadow;
 
   @override
   State<_Pressable> createState() => _PressableState();
@@ -136,6 +138,7 @@ class _PressableState extends State<_Pressable> {
             color: widget.fill,
             borderRadius: BorderRadius.circular(widget.radius),
             border: Border.all(color: _focus ? p.focus : (widget.border ?? Colors.transparent), width: _focus ? 2 : 1),
+            boxShadow: widget.shadow ? [BoxShadow(color: p.contactShadow.withValues(alpha: p.isNight ? 0.5 : 0.10), blurRadius: 2, offset: const Offset(0, 1))] : null,
           ),
           foregroundDecoration: overlay == null ? null : BoxDecoration(color: overlay, borderRadius: BorderRadius.circular(widget.radius)),
           child: widget.child,
@@ -163,7 +166,7 @@ class RowAction extends StatelessWidget {
       child: _Pressable(
         onPressed: onPressed,
         radius: Radii.control,
-        fill: selected ? p.accentSoft : null,
+        fill: selected ? p.selection : null,
         child: ConstrainedBox(constraints: const BoxConstraints(minHeight: Targets.click), child: Padding(padding: padding, child: child)),
       ),
     );
@@ -236,7 +239,7 @@ class SectionLabel extends StatelessWidget {
 
 /// Solid content surface. Body text always sits on one of these.
 class Pane extends StatelessWidget {
-  const Pane({super.key, required this.child, this.padding = const EdgeInsets.all(Space.lg), this.color, this.radius = Radii.pane});
+  const Pane({super.key, required this.child, this.padding = const EdgeInsets.all(Space.lg), this.color, this.radius = Radii.surface});
   final Widget child;
   final EdgeInsets padding;
   final Color? color;
@@ -249,7 +252,8 @@ class Pane extends StatelessWidget {
       decoration: BoxDecoration(
         color: color ?? p.surface,
         borderRadius: BorderRadius.circular(radius),
-        border: Border.all(color: p.line),
+        border: Border.all(color: p.isNight ? p.line : p.line.withValues(alpha: 0.7)),
+        boxShadow: [BoxShadow(color: p.contactShadow.withValues(alpha: p.isNight ? 0.4 : 0.06), blurRadius: 8, offset: const Offset(0, 2))],
       ),
       padding: padding,
       child: child,
