@@ -274,6 +274,164 @@ def emit_media_render_notification(connection, claim: dict, render_id: str, *, s
     )
 
 
+
+def emit_business_job_notification(connection, claim: dict, result: dict, *, status: str, now: str | None = None) -> dict | None:
+    """Emit a business-result notice from the open job-completion transaction."""
+    if status != "completed":
+        return None
+    workspace_id = claim["workspace_id"]
+    recipient = claim.get("user_id")
+    if not recipient:
+        job = connection.execute(
+            "SELECT user_id FROM jobs WHERE id = ? AND workspace_id = ?",
+            (claim["id"], workspace_id),
+        ).fetchone()
+        recipient = job["user_id"] if job is not None else None
+    if not recipient:
+        return None
+    result_id = result["id"]
+    version = int(result.get("current_version") or result.get("version") or 1)
+    work_id = claim.get("work_id") or result.get("work_id")
+    title = result.get("title") or "业务分析结果已完成"
+    return emit_result_notification(
+        connection,
+        workspace_id=workspace_id,
+        recipient_user_id=recipient,
+        source_kind="business",
+        source_ref={
+            "kind": "business_result",
+            "id": result_id,
+            "revision": str(version),
+            "version": version,
+            "work_id": work_id,
+        },
+        title=title,
+        body=f"业务分析已完成，成果版本为第 {version} 版。",
+        job_id=claim["id"],
+        send_status="recorded",
+        now=now,
+    )
+
+
+def emit_monitor_signal_notification(
+    connection,
+    *,
+    workspace_id: str,
+    recipient_user_id: str,
+    signal_id: str,
+    title: str,
+    summary: str,
+    config_version: int,
+    work_id: str | None = None,
+    now: str | None = None,
+) -> dict | None:
+    """Emit a monitoring-signal notice. Idempotent on the signal id (signals have no job_id)."""
+    existing = connection.execute(
+        "SELECT * FROM result_notifications WHERE workspace_id = ? AND source_kind = 'monitoring' AND json_extract(source_ref_json, '$.id') = ?",
+        (workspace_id, signal_id),
+    ).fetchone()
+    if existing is not None:
+        return {
+            "id": existing["id"],
+            "workspace_id": existing["workspace_id"],
+            "recipient_user_id": existing["recipient_user_id"],
+            "source_kind": existing["source_kind"],
+            "source_ref": _loads(existing["source_ref_json"], {}),
+            "title": existing["title"],
+            "body": existing["body"],
+            "job_id": existing["job_id"],
+            "send_status": existing["send_status"],
+            "delivery_attempts": existing["delivery_attempts"],
+            "read_at": existing["read_at"],
+            "created_at": existing["created_at"],
+            "updated_at": existing["updated_at"],
+        }
+    version = int(config_version)
+    return emit_result_notification(
+        connection,
+        workspace_id=workspace_id,
+        recipient_user_id=recipient_user_id,
+        source_kind="monitoring",
+        source_ref={
+            "kind": "monitor_signal",
+            "id": signal_id,
+            "revision": str(version),
+            "version": version,
+            "work_id": work_id,
+        },
+        title=title,
+        body=summary,
+        job_id=None,
+        send_status="recorded",
+        now=now,
+    )
+
+
+_SIGNAL_INSERT = (
+    "INSERT OR IGNORE INTO monitor_signals("
+    "id, monitor_id, workspace_id, source_id, run_id, run_source_id, observation_id, "
+    "material_id, config_version, title, summary, matched_keywords_json, evidence_json, "
+    "previous_sha256, current_sha256, captured_at, created_at) "
+    "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
+)
+
+
+def insert_monitor_signal(
+    connection,
+    *,
+    signal_id: str,
+    monitor_id: str,
+    workspace_id: str,
+    source_id: str,
+    run_id: str,
+    run_source_id: str,
+    observation_id: str,
+    material_id: str,
+    config_version: int,
+    title: str,
+    summary: str,
+    matched_keywords_json: str,
+    evidence_json: str,
+    previous_sha256: str | None,
+    current_sha256: str,
+    captured_at: str,
+    created_at: str,
+    recipient_user_id: str,
+    work_id: str | None = None,
+    now: str | None = None,
+) -> str | None:
+    """Insert a monitor signal if new, and emit a result notice on the same connection.
+
+    Returns the signal id when a row was actually inserted, otherwise None.
+    Callers must already be inside a write transaction; this function never
+    opens its own (SQLite transactions do not nest).
+    """
+    connection.execute(
+        _SIGNAL_INSERT,
+        (
+            signal_id, monitor_id, workspace_id, source_id, run_id, run_source_id,
+            observation_id, material_id, config_version, title, summary,
+            matched_keywords_json, evidence_json, previous_sha256, current_sha256,
+            captured_at, created_at,
+        ),
+    )
+    changed = connection.execute("SELECT changes() AS n").fetchone()["n"]
+    if not changed:
+        return None
+    emit_monitor_signal_notification(
+        connection,
+        workspace_id=workspace_id,
+        recipient_user_id=recipient_user_id,
+        signal_id=signal_id,
+        title=title,
+        summary=summary,
+        config_version=config_version,
+        work_id=work_id,
+        now=now or created_at,
+    )
+    return signal_id
+
+
 def register_notifications_routes(app) -> None:
     store = app.extensions["oevira.store"]
 
