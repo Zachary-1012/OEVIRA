@@ -21,6 +21,7 @@ from .business_execution import install_business_execution_schema, register_busi
 from .collaboration import install_collaboration_schema, register_collaboration_boundary, register_collaboration_routes, register_review_routes
 from .notes import install_notes_schema, register_notes_routes
 from .notifications import install_notifications_schema, register_notifications_routes
+from .method_applications import install_method_applications_schema, register_method_application_routes
 from .community import install_community_schema, register_community_routes
 from .community import is_public_read_route
 from .account import AccountService, install_account_schema
@@ -93,6 +94,7 @@ def create_app(
     install_collaboration_schema(store)
     install_notes_schema(store)
     install_notifications_schema(store)
+    install_method_applications_schema(store)
     install_business_execution_schema(store)
     install_community_schema(store)
     install_account_schema(store)
@@ -270,6 +272,7 @@ def create_app(
     register_collaboration_routes(app)
     register_notes_routes(app)
     register_notifications_routes(app)
+    register_method_application_routes(app)
     register_review_routes(app)
     register_business_execution_routes(app)
     register_community_routes(app)
