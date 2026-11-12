@@ -19,6 +19,7 @@ from .documents_api import register_routes as register_document_routes
 from .media_api import register_media_routes
 from .business_execution import install_business_execution_schema, register_business_execution_routes
 from .collaboration import install_collaboration_schema, register_collaboration_boundary, register_collaboration_routes, register_review_routes
+from .notes import install_notes_schema, register_notes_routes
 from .community import install_community_schema, register_community_routes
 from .community import is_public_read_route
 from .account import AccountService, install_account_schema
@@ -89,6 +90,7 @@ def create_app(
     install_source_use_schema(store)
     app.extensions["oevira.source_use"] = SourceUseService(store)
     install_collaboration_schema(store)
+    install_notes_schema(store)
     install_business_execution_schema(store)
     install_community_schema(store)
     install_account_schema(store)
@@ -264,6 +266,7 @@ def create_app(
     register_revision_routes(app, store)
     register_collaboration_boundary(app)
     register_collaboration_routes(app)
+    register_notes_routes(app)
     register_review_routes(app)
     register_business_execution_routes(app)
     register_community_routes(app)
