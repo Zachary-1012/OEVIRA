@@ -6622,6 +6622,9 @@ def _finish_render_job(store, claim: dict, render_id: str, *, status: str, code:
             (status, code, message, progress_completed, progress_label, now, claim["id"],
              claim["workspace_id"], claim["generation"]),
         )
+        if status == "completed":
+            from .notifications import emit_media_render_notification
+            emit_media_render_notification(connection, claim, render_id, status=status, now=now)
 
 
 def _finalize_media_render(store, claim: dict, render_row, target: Path, stage: Path) -> bool:
