@@ -370,18 +370,8 @@ _TOOL_FIELD_SCHEMAS = {
 
 
 def _business_operations() -> list[str]:
-    from .business_execution import (
-        CAMPAIGN_OPERATIONS,
-        DECISION_OPERATIONS,
-        ECONOMICS_OPERATIONS,
-        EVENT_OPERATIONS,
-        MEASUREMENT_OPERATIONS,
-        SERVICE_OPERATIONS,
-    )
-    return sorted(
-        ECONOMICS_OPERATIONS | CAMPAIGN_OPERATIONS | MEASUREMENT_OPERATIONS
-        | SERVICE_OPERATIONS | EVENT_OPERATIONS | DECISION_OPERATIONS
-    )
+    from .business_execution import all_business_operations
+    return sorted(all_business_operations())
 
 
 def _tool_field_schema(tool_name: str, field_name: str) -> dict:

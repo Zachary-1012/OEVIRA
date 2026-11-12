@@ -25,6 +25,16 @@ MEASUREMENT_OPERATIONS = {"experiment_design", "experiment_analysis", "attributi
 SERVICE_OPERATIONS = {"incident_brief", "service_response"}
 EVENT_OPERATIONS = {"propagation_network", "propagation_hawkes", "adoption_diffusion"}
 DECISION_OPERATIONS = {"decision_comparison"}
+BRAND_OPERATIONS = {"brand_recognition"}
+
+
+def all_business_operations() -> frozenset[str]:
+    """Every operation the Business evaluators, queue and contracts share."""
+    return frozenset(
+        ECONOMICS_OPERATIONS | CAMPAIGN_OPERATIONS | MEASUREMENT_OPERATIONS
+        | SERVICE_OPERATIONS | EVENT_OPERATIONS | DECISION_OPERATIONS | BRAND_OPERATIONS
+    )
+
 
 
 def install_business_execution_schema(store):
@@ -141,6 +151,9 @@ def evaluate_business(operation: str, inputs: dict, *, is_cancelled=None, campai
         elif operation in DECISION_OPERATIONS:
             from .business_analysis_decision import evaluate_decision
             result = evaluate_decision(operation, inputs, is_cancelled=is_cancelled)
+        elif operation in BRAND_OPERATIONS:
+            from .business_analysis_brand import evaluate_brand_recognition
+            result = evaluate_brand_recognition(operation, inputs)
         else:
             raise ApiError("UNKNOWN_BUSINESS_OPERATION", "This business operation is not supported", 400)
     except ValueError as error:
@@ -1670,7 +1683,7 @@ def register_business_execution_routes(app) -> None:
     @app.get("/api/business/operations")
     def business_operations():
         from .business_contracts import CONTRACT_VERSION, list_operation_contracts
-        operations = sorted(ECONOMICS_OPERATIONS | CAMPAIGN_OPERATIONS | MEASUREMENT_OPERATIONS | SERVICE_OPERATIONS | EVENT_OPERATIONS | DECISION_OPERATIONS)
+        operations = sorted(all_business_operations())
         return _success({
             "operations": operations,
             "formats": ["docx", "pptx", "xlsx", "pdf", "html"],
@@ -1698,7 +1711,7 @@ def register_business_execution_routes(app) -> None:
         if set(data) - {"operation", "inputs", "citations", "subjects", "relationships", "tables", "title"} or not isinstance(data.get("inputs"), dict):
             raise ApiError("INVALID_INPUT", "Provide a professional business operation and its inputs", 400)
         _string(data.get("operation"), "operation", maximum=100)
-        if data.get("operation") not in ECONOMICS_OPERATIONS | CAMPAIGN_OPERATIONS | MEASUREMENT_OPERATIONS | SERVICE_OPERATIONS | EVENT_OPERATIONS | DECISION_OPERATIONS:
+        if data.get("operation") not in all_business_operations():
             raise ApiError("UNKNOWN_BUSINESS_OPERATION", "This business operation is not supported", 400)
         key = _key(_idempotency_key())
         fingerprint = _hash({"work_id": work_id, "request": data})

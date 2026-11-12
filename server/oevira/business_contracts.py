@@ -874,6 +874,97 @@ def _decision_comparison() -> dict:
     )
 
 
+
+def _brand_recognition() -> dict:
+    asset = _object(
+        {
+            "id": _TEXT,
+            "legal_name": _TEXT,
+            "use": _TEXT,
+            "channel": _TEXT,
+            "variant_version": _TEXT,
+        },
+        "One legal brand asset at a specific use, channel and variant version.",
+        required=("id", "legal_name", "use", "channel", "variant_version"),
+        additional=True,
+    )
+    answer = _object(
+        {
+            "id": _TEXT,
+            "respondent_id": _TEXT,
+            "asset_id": _TEXT,
+            "channel": _TEXT,
+            "text": _TEXT,
+            "coded": _string(
+                "Coding against the declared inclusion and exclusion rules.",
+                enum=("recognized", "misrecognized", "unknown", "excluded"),
+            ),
+        },
+        "One raw unaided answer after coding. Unknown remains in the denominator; excluded answers do not.",
+        required=("id", "respondent_id", "asset_id", "channel", "text", "coded"),
+        additional=True,
+    )
+    return _contract(
+        "brand_recognition", "brand",
+        _object(
+            {
+                "goal": _TEXT,
+                "assets": _array(asset, "Legal assets, uses, channels and variant versions in the ledger.", minimum=1),
+                "population": _object(
+                    {"definition": _TEXT, "recruitment": _TEXT},
+                    "Research population and recruitment. Missing coverage stays unknown.",
+                    additional=True,
+                ),
+                "unaided_test": _object(
+                    {
+                        "rules": _TEXT,
+                        "exposure": _TEXT,
+                        "prompted": _boolean("True when the test prompted the brand; prompted tests are not unaided measurements."),
+                    },
+                    "Unaided test rules and exposure conditions.",
+                    additional=True,
+                ),
+                "raw_answers": _array(answer, "Coded raw answers. Absent answers yield no measured rates."),
+                "coding": _object(
+                    {"version": _TEXT, "inclusion": _TEXT, "exclusion": _TEXT},
+                    "Coding and inclusion/exclusion rules used on the raw answers.",
+                    additional=True,
+                ),
+                "existing_tests": _array(
+                    _object(
+                        {
+                            "id": _TEXT,
+                            "comparable": _boolean("Whether the prior test meets this edition's comparability rules."),
+                            "reason": _TEXT,
+                        },
+                        "Comparability of an existing test. Incomparable tests are not pooled into measured rates.",
+                        additional=True,
+                    ),
+                    "Existing tests considered for comparability only.",
+                ),
+                "predicted_recognition": _number(
+                    "If supplied, this figure is ignored. A prediction is never a measured unaided recognition rate.",
+                    nullable=True,
+                ),
+                "aesthetic_judgments": _array(
+                    _object({}, "An aesthetic judgment. Ignored for measured recognition.", additional=True),
+                    "Aesthetic judgments cannot pass as measured recognition.",
+                ),
+            },
+            "Brand recognition and asset consistency. Measured unaided rates come only from coded raw answers; unknown stays in the denominator.",
+            required=("goal", "assets"),
+            additional=False,
+        ),
+        sections=("purpose", "asset_ledger", "unaided_recognition", "cross_channel_differences", "application_plan"),
+        result_notes=(
+            "Aesthetic judgment or AI prediction cannot pass as measured recognition.",
+            "Unknown remains in the denominator. Excluded answers do not.",
+            "Rates are not fabricated when raw answers are missing.",
+            "A prompted test is not an unaided measurement. Incomparable prior tests are not pooled.",
+        ),
+    )
+
+
 def _build_contracts() -> dict[str, dict]:
     builders = (
         _economics_operating, _economics_consumer, _economics_scenario,
@@ -885,6 +976,7 @@ def _build_contracts() -> dict[str, dict]:
         _service_incident, _service_response,
         _events_network, _events_hawkes, _events_adoption,
         _decision_comparison,
+        _brand_recognition,
     )
     contracts = {}
     for builder in builders:
@@ -912,18 +1004,8 @@ class BusinessContractError(Exception):
 
 def implemented_operations() -> frozenset[str]:
     """Operations currently implemented by the Business evaluators."""
-    from .business_execution import (
-        CAMPAIGN_OPERATIONS,
-        DECISION_OPERATIONS,
-        ECONOMICS_OPERATIONS,
-        EVENT_OPERATIONS,
-        MEASUREMENT_OPERATIONS,
-        SERVICE_OPERATIONS,
-    )
-    return frozenset(
-        ECONOMICS_OPERATIONS | CAMPAIGN_OPERATIONS | MEASUREMENT_OPERATIONS
-        | SERVICE_OPERATIONS | EVENT_OPERATIONS | DECISION_OPERATIONS
-    )
+    from .business_execution import all_business_operations
+    return all_business_operations()
 
 
 def assert_contracts_cover_implemented() -> None:
