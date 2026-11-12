@@ -1175,15 +1175,17 @@ class HostStream:
                 layout = {}
             width = layout.get("clientWidth")
             height = layout.get("clientHeight")
+            # If the session cannot report layout, waiting cannot converge. Do
+            # not spin, and do not use page.wait_for_timeout — that API is the
+            # stream pump interval, not a layout barrier.
+            if width is None or height is None:
+                return
             try:
                 if int(width) == expected_width and int(height) == expected_height:
                     return
             except (TypeError, ValueError):
-                pass
-            try:
-                binding.page.wait_for_timeout(16)
-            except Exception:
                 return
+            time.sleep(0.016)
 
     def _start_screencast(self, binding: _PageBinding) -> None:
         if binding.cdp is None:
