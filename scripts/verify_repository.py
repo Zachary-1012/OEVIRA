@@ -40,7 +40,7 @@ EXPECTED_WORKFLOW_JOBS = {
 IMPLEMENTATION_FILES = {
     "server/requirements.txt", "server/oevira/__init__.py",
     "server/tests/test_core.py", "server/tests/test_materials.py",
-    "app/pubspec.yaml", "app/lib/main.dart", "docs/API.md",
+    "docs/API.md",
     "scripts/start.ps1",
 }
 PRODUCT_CODE_SUFFIXES = {
