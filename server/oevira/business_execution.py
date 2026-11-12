@@ -26,6 +26,8 @@ SERVICE_OPERATIONS = {"incident_brief", "service_response"}
 EVENT_OPERATIONS = {"propagation_network", "propagation_hawkes", "adoption_diffusion"}
 DECISION_OPERATIONS = {"decision_comparison"}
 BRAND_OPERATIONS = {"brand_recognition"}
+CREATIVE_COMPARISON_OPERATIONS = {"competitive_ad_comparison"}
+KOS_QUALITY_OPERATIONS = {"kos_batch_quality"}
 
 
 def all_business_operations() -> frozenset[str]:
@@ -33,6 +35,7 @@ def all_business_operations() -> frozenset[str]:
     return frozenset(
         ECONOMICS_OPERATIONS | CAMPAIGN_OPERATIONS | MEASUREMENT_OPERATIONS
         | SERVICE_OPERATIONS | EVENT_OPERATIONS | DECISION_OPERATIONS | BRAND_OPERATIONS
+        | CREATIVE_COMPARISON_OPERATIONS | KOS_QUALITY_OPERATIONS
     )
 
 
@@ -154,6 +157,12 @@ def evaluate_business(operation: str, inputs: dict, *, is_cancelled=None, campai
         elif operation in BRAND_OPERATIONS:
             from .business_analysis_brand import evaluate_brand_recognition
             result = evaluate_brand_recognition(operation, inputs)
+        elif operation in CREATIVE_COMPARISON_OPERATIONS:
+            from .business_analysis_ads import evaluate_competitive_ad_comparison
+            result = evaluate_competitive_ad_comparison(operation, inputs)
+        elif operation in KOS_QUALITY_OPERATIONS:
+            from .business_analysis_kos import evaluate_kos_batch_quality
+            result = evaluate_kos_batch_quality(operation, inputs)
         else:
             raise ApiError("UNKNOWN_BUSINESS_OPERATION", "This business operation is not supported", 400)
     except ValueError as error:

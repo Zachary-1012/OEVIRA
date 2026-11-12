@@ -965,6 +965,143 @@ def _brand_recognition() -> dict:
     )
 
 
+
+def _competitive_ad_comparison() -> dict:
+    evidence = _array(_REF, "Evidence anchors (material, segment and exact quote) for an observation.")
+    classification = _object(
+        {
+            "value": _TEXT,
+            "kind": _string("Observation, interpretation or unknown. Observations require evidence.", enum=("observation", "interpretation", "unknown")),
+            "evidence": evidence,
+        },
+        "One creative classification with its evidence anchors.",
+        additional=True,
+    )
+    ad = _object(
+        {
+            "id": _TEXT,
+            "publisher": _TEXT,
+            "media": _TEXT,
+            "source": _object({"material_id": _TEXT, "version": _integer("Exact saved Material version.", minimum=1)}, "Exact advertisement Source/Material version.", required=("material_id",), additional=True),
+            "landing_page": _object({"material_id": _TEXT, "version": _integer("Exact landing-page Material version.", minimum=1)}, "Exact landing-page Material version. Omit when no landing page was captured.", additional=True, required=()),
+            "landing_mismatch": classification,
+            "market": _TEXT,
+            "language": _TEXT,
+            "period": _TEXT,
+            "use": _TEXT,
+            "classifications": _object(
+                {"hook": classification, "format": classification, "offer": classification, "CTA": classification, "awareness_stage": classification},
+                "hook/format/offer/CTA/awareness_stage classifications.",
+                additional=True,
+            ),
+            "approved_effect": _object(
+                {"count": _integer("Approved raw effect count.", minimum=0), "unit": _TEXT, "basis": _TEXT},
+                "Approved effect raw counts and口径. Missing effect is excluded from ranking, not treated as zero.",
+                additional=True,
+            ),
+            "unknown": _array(_object({}, "An explicit unknown.", additional=True), "Unknowns that stay unknown."),
+            "abstentions": _array(_object({}, "An abstention.", additional=True), "Coder abstentions, preserved."),
+            "manual_corrections": _array(_object({}, "A manual correction.", additional=True), "Manual corrections, preserved."),
+        },
+        "One advertisement and its optional landing page.",
+        required=("id", "publisher", "media", "source"),
+        additional=True,
+    )
+    return _contract(
+        "competitive_ad_comparison", "campaign",
+        _object(
+            {
+                "goal": _TEXT,
+                "market": _TEXT,
+                "language": _TEXT,
+                "period": _TEXT,
+                "use": _TEXT,
+                "classification_method_version": _TEXT,
+                "inclusion": _TEXT,
+                "exclusion": _TEXT,
+                "coverage": _object({}, "Declared coverage of the comparison set.", additional=True),
+                "ads": _array(ad, "Advertisements at exact Source/Material versions.", minimum=1),
+            },
+            "Competitive advertisement and landing-page comparison. A missing landing page is not judged as a mismatch; a missing approved effect does not enter effect ranking.",
+            required=("goal", "classification_method_version", "ads"),
+            additional=False,
+        ),
+        sections=("purpose", "classifications", "landing_comparison", "effect_ranking", "unknowns"),
+        result_notes=(
+            "A missing landing page is not judged as a mismatch.",
+            "Only approved effect raw counts enter effect ranking; a missing effect is not treated as zero.",
+            "Public ads do not prove effect. Observation, interpretation and unknown stay distinct.",
+        ),
+    )
+
+
+def _kos_batch_quality() -> dict:
+    indicator = _object(
+        {
+            "numerator": _integer("Counted successes or observations.", minimum=0),
+            "denominator": _integer("Declared denominator. A zero or missing denominator yields no rate.", minimum=0),
+            "excluded": _integer("Excluded observations, outside the denominator.", minimum=0),
+            "unknown": _integer("Unknown observations, reported separately.", minimum=0),
+        },
+        "One of the eight quality indicators.",
+        additional=True,
+    )
+    batch = _object(
+        {
+            "id": _TEXT,
+            "account_id": _TEXT,
+            "rule_version": _TEXT,
+            "status": _string("Batch review state.", enum=("verified", "unverified", "anomalous")),
+            "kind": _string("Native period collection or a single manual snapshot.", enum=("native_period", "manual_snapshot")),
+            "period": _TEXT,
+            "review_labels": _array(_object({}, "A review label and its sample coverage.", additional=True), "Review labels."),
+            "sample_coverage": _object({"numerator": _integer("Reviewed sample size.", minimum=0), "denominator": _integer("Sample frame.", minimum=0)}, "Review sample coverage.", additional=True),
+            "attribution_evidence": _array(_REF, "Attribution evidence for the subject account."),
+            "indicators": _object(
+                {name: indicator for name in ("acquisition", "valid_content", "subject_precision", "duplicates", "author_resolution", "time", "engagement", "evidence_completeness")},
+                "Eight quality indicators. Missing indicators are not fabricated.",
+                additional=False,
+            ),
+        },
+        "An existing collection batch. This operation does not create a second source store.",
+        required=("id", "account_id", "rule_version"),
+        additional=True,
+    )
+    decision = _object(
+        {
+            "id": _TEXT,
+            "purpose": _TEXT,
+            "required_indicators": _array(_TEXT, "Indicators this decision depends on."),
+            "conditions_version": _TEXT,
+            "requires_native_period": _boolean("True when a manual snapshot cannot stand in for a native period metric."),
+            "period": _TEXT,
+        },
+        "A decision use and the conditions that qualify a batch for it.",
+        required=("id", "purpose", "conditions_version"),
+        additional=True,
+    )
+    return _contract(
+        "kos_batch_quality", "campaign",
+        _object(
+            {
+                "goal": _TEXT,
+                "batches": _array(batch, "Existing collection batches, subject accounts and rule versions.", minimum=1),
+                "decision_uses": _array(decision, "Decision uses whose eligibility is computed from the eight indicators.", minimum=1),
+            },
+            "KOS batch quality and decision eligibility. Unverified or anomalous batches cannot formal-tier or effect-rank; a manual snapshot cannot pose as a native period metric.",
+            required=("goal", "batches", "decision_uses"),
+            additional=False,
+        ),
+        sections=("purpose", "indicators", "decision_eligibility", "review"),
+        result_notes=(
+            "Eight indicators are returned separately with numerator, denominator, excluded and unknown.",
+            "Unverified or anomalous batches are not eligible for formal tiering or effect ranking.",
+            "A manual snapshot cannot pose as a native day, week or month metric.",
+            "Corrections recompute the submitted impact set; no second source or permission store is created.",
+        ),
+    )
+
+
 def _build_contracts() -> dict[str, dict]:
     builders = (
         _economics_operating, _economics_consumer, _economics_scenario,
@@ -977,6 +1114,8 @@ def _build_contracts() -> dict[str, dict]:
         _events_network, _events_hawkes, _events_adoption,
         _decision_comparison,
         _brand_recognition,
+        _competitive_ad_comparison,
+        _kos_batch_quality,
     )
     contracts = {}
     for builder in builders:
