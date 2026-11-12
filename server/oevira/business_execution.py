@@ -1794,7 +1794,11 @@ def process_business_analysis_job(app, claim):
             if not claim_can_commit(connection, claim, allow_stopping=True):
                 return
             state = "partial" if current["cancel_requested"] else "completed"
-            connection.execute("UPDATE jobs SET status=?,artifact_id=?,progress_completed=2,progress_label='专业结果已保存',updated_at=? WHERE id=? AND lease_generation=?", (state, result["id"], utc_now(), claim["id"], claim["generation"]))
+            now = utc_now()
+            connection.execute("UPDATE jobs SET status=?,artifact_id=?,progress_completed=2,progress_label='专业结果已保存',updated_at=? WHERE id=? AND lease_generation=?", (state, result["id"], now, claim["id"], claim["generation"]))
+            if state == "completed":
+                from .notifications import emit_business_job_notification
+                emit_business_job_notification(connection, claim, result, status=state, now=now)
     except ApiError as error:
         _set_job_error(store, claim["id"], claim["generation"], error.code, error.message)
     except Exception as error:

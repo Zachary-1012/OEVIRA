@@ -2576,9 +2576,29 @@ def _harvest_one(store, run_source_id: str, now: str) -> bool:
                     "本次来源正文未变化；这是规则复评结果，不是新的来源事件。"
                 )
                 signal_id = str(uuid.uuid4())
-                connection.execute(
-                    "INSERT OR IGNORE INTO monitor_signals(id, monitor_id, workspace_id, source_id, run_id, run_source_id, observation_id, material_id, config_version, title, summary, matched_keywords_json, evidence_json, previous_sha256, current_sha256, captured_at, created_at) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
-                    (signal_id, current["monitor_id"], current["workspace_id"], current["source_id"], current["run_id"], current["id"], observation_id, material["id"], current["config_version"], f"规则复评匹配：{source['label'] or material['title']}", summary, json.dumps(included, ensure_ascii=False), json.dumps(evidence, ensure_ascii=False), previous_sha, current_sha, captured_at, now),
+                from .notifications import insert_monitor_signal
+                insert_monitor_signal(
+                    connection,
+                    signal_id=signal_id,
+                    monitor_id=current["monitor_id"],
+                    workspace_id=current["workspace_id"],
+                    source_id=current["source_id"],
+                    run_id=current["run_id"],
+                    run_source_id=current["id"],
+                    observation_id=observation_id,
+                    material_id=material["id"],
+                    config_version=current["config_version"],
+                    title=f"规则复评匹配：{source['label'] or material['title']}",
+                    summary=summary,
+                    matched_keywords_json=json.dumps(included, ensure_ascii=False),
+                    evidence_json=json.dumps(evidence, ensure_ascii=False),
+                    previous_sha256=previous_sha,
+                    current_sha256=current_sha,
+                    captured_at=captured_at,
+                    created_at=now,
+                    recipient_user_id=monitor["owner_user_id"],
+                    work_id=monitor["work_id"],
+                    now=now,
                 )
                 reason = summary
                 evaluated = True
@@ -2610,9 +2630,29 @@ def _harvest_one(store, run_source_id: str, now: str) -> bool:
                             existing_evidence.add(marker)
                         if len(evidence) >= _MAX_SIGNAL_CHANGES:
                             break
-                connection.execute(
-                    "INSERT OR IGNORE INTO monitor_signals(id, monitor_id, workspace_id, source_id, run_id, run_source_id, observation_id, material_id, config_version, title, summary, matched_keywords_json, evidence_json, previous_sha256, current_sha256, captured_at, created_at) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
-                    (signal_id, current["monitor_id"], current["workspace_id"], current["source_id"], current["run_id"], current["id"], observation_id, material["id"], current["config_version"], f"来源有变化：{source['label'] or material['title']}", summary, json.dumps(included, ensure_ascii=False), json.dumps(evidence, ensure_ascii=False), previous_sha, current_sha, captured_at, now),
+                from .notifications import insert_monitor_signal
+                insert_monitor_signal(
+                    connection,
+                    signal_id=signal_id,
+                    monitor_id=current["monitor_id"],
+                    workspace_id=current["workspace_id"],
+                    source_id=current["source_id"],
+                    run_id=current["run_id"],
+                    run_source_id=current["id"],
+                    observation_id=observation_id,
+                    material_id=material["id"],
+                    config_version=current["config_version"],
+                    title=f"来源有变化：{source['label'] or material['title']}",
+                    summary=summary,
+                    matched_keywords_json=json.dumps(included, ensure_ascii=False),
+                    evidence_json=json.dumps(evidence, ensure_ascii=False),
+                    previous_sha256=previous_sha,
+                    current_sha256=current_sha,
+                    captured_at=captured_at,
+                    created_at=now,
+                    recipient_user_id=monitor["owner_user_id"],
+                    work_id=monitor["work_id"],
+                    now=now,
                 )
                 reason = summary
 
