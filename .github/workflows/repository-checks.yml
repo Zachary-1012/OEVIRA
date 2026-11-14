@@ -1,4 +1,4 @@
-name: OEVIRA Repository Gate
+name: OEVIRA Product Development Gate
 
 on:
   push:
@@ -14,7 +14,10 @@ jobs:
   contracts:
     name: Repository contracts
     runs-on: ubuntu-latest
-    timeout-minutes: 5
+    timeout-minutes: 25
+    env:
+      PYTHONPATH: server
+      PYTHONUTF8: '1'
     steps:
       - uses: actions/checkout@v5
         with:
@@ -22,15 +25,50 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.13'
-      - name: Validate actual structure, documents and preserved attribution
+      - name: Install pinned product dependencies
+        run: python -m pip install -r server/requirements.txt -c server/constraints.txt
+      - name: Check repository and source contracts
         run: python scripts/verify_repository.py
-      - name: Test admission failures and release boundary
+      - name: Verify repository admission regressions
         run: python -m unittest discover -s tests -v
+      - name: Verify product persistence, authorization and processing
+        run: python -m unittest discover -s server/tests -v
+      - name: Obtain the verified Flutter SDK
+        if: hashFiles('app/pubspec.yaml') != ''
+        uses: actions/checkout@v5
+        with:
+          repository: flutter/flutter
+          ref: 6a19cca56475dbfba1478ee68d7bd0c2ef891da1
+          path: .runtime/flutter
+          persist-credentials: false
+      - name: Add Flutter to path
+        if: hashFiles('app/pubspec.yaml') != ''
+        shell: pwsh
+        run: Add-Content -LiteralPath $env:GITHUB_PATH -Value "$env:GITHUB_WORKSPACE/.runtime/flutter/bin"
+      - name: Resolve locked client dependencies
+        if: hashFiles('app/pubspec.yaml') != ''
+        working-directory: app
+        run: flutter pub get --enforce-lockfile
+      - name: Analyze client
+        if: hashFiles('app/pubspec.yaml') != ''
+        working-directory: app
+        run: flutter analyze
+      - name: Verify client behavior
+        if: hashFiles('app/pubspec.yaml') != ''
+        working-directory: app
+        run: flutter test
+      - name: Build actual Web client
+        if: hashFiles('app/pubspec.yaml') != ''
+        working-directory: app
+        run: flutter build web --release --no-web-resources-cdn
 
   windows:
     name: Cross-platform repository checks
     runs-on: windows-latest
-    timeout-minutes: 5
+    timeout-minutes: 30
+    env:
+      PYTHONPATH: server
+      PYTHONUTF8: '1'
     steps:
       - uses: actions/checkout@v5
         with:
@@ -38,11 +76,39 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.13'
-      - name: Validate UTF-8 documents and native paths
-        env:
-          PYTHONUTF8: '1'
+      - name: Install pinned product dependencies
+        run: python -m pip install -r server/requirements.txt -c server/constraints.txt
+      - name: Check native paths and repository contracts
         run: python scripts/verify_repository.py
-      - name: Test native-path admission and failure handling
-        env:
-          PYTHONUTF8: '1'
+      - name: Verify repository admission regressions
         run: python -m unittest discover -s tests -v
+      - name: Verify product persistence, authorization and processing
+        run: python -m unittest discover -s server/tests -v
+      - name: Obtain the verified Flutter SDK
+        if: hashFiles('app/pubspec.yaml') != ''
+        uses: actions/checkout@v5
+        with:
+          repository: flutter/flutter
+          ref: 6a19cca56475dbfba1478ee68d7bd0c2ef891da1
+          path: .runtime/flutter
+          persist-credentials: false
+      - name: Add Flutter to path
+        if: hashFiles('app/pubspec.yaml') != ''
+        shell: pwsh
+        run: Add-Content -LiteralPath $env:GITHUB_PATH -Value "$env:GITHUB_WORKSPACE/.runtime/flutter/bin"
+      - name: Resolve locked client dependencies
+        if: hashFiles('app/pubspec.yaml') != ''
+        working-directory: app
+        run: flutter pub get --enforce-lockfile
+      - name: Analyze client
+        if: hashFiles('app/pubspec.yaml') != ''
+        working-directory: app
+        run: flutter analyze
+      - name: Verify client behavior
+        if: hashFiles('app/pubspec.yaml') != ''
+        working-directory: app
+        run: flutter test
+      - name: Build actual Windows application
+        if: hashFiles('app/pubspec.yaml') != ''
+        working-directory: app
+        run: flutter build windows --release

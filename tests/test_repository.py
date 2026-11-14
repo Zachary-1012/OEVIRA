@@ -34,45 +34,34 @@ class RepositoryAdmissionTests(unittest.TestCase):
 
     def test_approved_structure_is_not_a_release(self):
         self.assertEqual(self.validate(), [])
-        self.assertTrue(any("PRODUCT_NOT_IMPLEMENTED" in error for error in validator.validate(self.root, require_product=True, tracked_paths=self.tracked_paths)))
-
-    def test_environment_commands_do_not_change_the_specification_stage(self):
-        for relative in ("scripts/setup.ps1", "scripts/start.ps1", "scripts/stop.ps1", "scripts/check_python_runtime.py"):
-            self.assertTrue((self.root / relative).is_file(), relative)
-        self.assertEqual(self.validate(), [])
-        path = self.root / ".oevira/repository.json"
-        manifest = json.loads(path.read_text(encoding="utf-8"))
-        manifest["stage"] = "development"
-        path.write_text(json.dumps(manifest), encoding="utf-8")
-        self.assertTrue(any("own blocking checks" in error for error in self.validate()))
+        self.assertTrue(any("PRODUCT_NOT_RELEASED" in error for error in validator.validate(self.root, require_product=True, tracked_paths=self.tracked_paths)))
 
     def test_missing_specification_blocks(self):
         (self.root / "docs/PRODUCT-SPEC.md").unlink()
         self.assertTrue(any("Required specification" in error for error in self.validate()))
 
-    def test_product_code_cannot_hide_in_specification_gate(self):
-        (self.root / "server/app.py").write_text("print('not accepted')\n", encoding="utf-8")
-        self.assertTrue(any("implementation cannot enter" in error for error in self.validate()))
+    def test_development_requires_real_build_inputs(self):
+        (self.root / "server/requirements.txt").unlink()
+        self.assertTrue(any("Required development source" in error for error in self.validate()))
 
-    def test_product_code_cannot_hide_in_docs_scripts_or_tests(self):
+    def test_product_code_cannot_hide_in_documentation(self):
         cases = (
             ("docs/hidden.py", "print('hidden')\n", "hidden in docs"),
-            ("scripts/helper.py", "print('helper')\n", "Non-specification file in scripts"),
-            ("scripts/unapproved.ps1", "Write-Output 'helper'\n", "Non-specification file in scripts"),
-            ("scripts/setup/extra.ps1", "Write-Output 'helper'\n", "Non-specification file in scripts"),
-            ("tests/product_hook.py", "print('hook')\n", "Non-specification file in tests"),
         )
         for relative, source, expected in cases:
             with self.subTest(relative=relative):
                 path = self.root / relative
                 path.parent.mkdir(parents=True, exist_ok=True)
                 path.write_text(source, encoding="utf-8")
+                self.tracked_paths.append(relative)
                 self.assertTrue(any(expected in error for error in self.validate()))
                 path.unlink()
+                self.tracked_paths.remove(relative)
 
     def test_private_data_blocks(self):
         (self.root / "docs/runtime.private.json").write_text("{}", encoding="utf-8")
-        self.assertTrue(any("Private data" in error for error in self.validate()))
+        self.tracked_paths.append("docs/runtime.private.json")
+        self.assertTrue(any("Sensitive or ignored" in error for error in self.validate()))
 
     def test_manifest_cannot_weaken_fixed_source_hash_or_check_sets(self):
         path = self.root / ".oevira/repository.json"
@@ -97,6 +86,7 @@ class RepositoryAdmissionTests(unittest.TestCase):
             ("  pull_request:\n    branches: [main]", "  pull_request:\n    branches: [develop]", "pull_request checks for main"),
             ("    name: Repository contracts", "    name: Renamed contracts", "check name"),
             ("        run: python -m unittest discover -s tests -v\n", "", "missing required step"),
+            ("        run: flutter build windows --release\n", "", "missing required step"),
         )
         for old, new, expected in changes:
             with self.subTest(expected=expected):
@@ -145,8 +135,7 @@ class RepositoryAdmissionTests(unittest.TestCase):
         manifest = json.loads(path.read_text(encoding="utf-8"))
         manifest["release_ready"] = True
         path.write_text(json.dumps(manifest), encoding="utf-8")
-        self.assertTrue(any("own blocking checks" in error for error in self.validate()))
-
+        self.assertTrue(any("full-product release" in error for error in self.validate()))
 
     def test_active_link_to_existing_external_file_blocks(self):
         # A historical-root link once passed on the developer's machine because
@@ -159,6 +148,7 @@ class RepositoryAdmissionTests(unittest.TestCase):
             with (self.root / "README.md").open("a", encoding="utf-8") as document:
                 document.write(f"\n[historical source]({target})\n")
             self.assertTrue(any("Active document link leaves repository" in error for error in self.validate()))
+
 
 class ContinuityContextTests(unittest.TestCase):
     def test_latest_authorization_is_not_replaced_by_a_stale_wait_gate(self):

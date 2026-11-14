@@ -73,6 +73,51 @@ Without `-CheckOnly`, setup installs the pinned server dependencies and, unless
 builds Web and Windows. `-Flutter` selects the existing Flutter command. These
 actions can access dependency registries; preparation is not release acceptance.
 
+## Build from the resolved dependencies
+
+After setup has resolved the Flutter dependencies, build one or both native
+clients without running another package resolution:
+
+```powershell
+& 'D:\寰意\scripts\build.ps1' -Target Windows
+& 'D:\寰意\scripts\build.ps1' -Target Web
+& 'D:\寰意\scripts\build.ps1' -Target Web,Windows
+```
+
+The build entry passes `--no-pub` and writes outputs under `app\build`. For a
+Windows build it locates the installed Visual Studio `vswhere.exe` and sets the
+correct `ProgramFiles(x86)` value only in the build process, then restores the
+original process environment. Flutter still checks the installed C++ tools,
+CMake and Windows SDK; the script does not install or change them.
+
+When the root path contains non-ASCII characters, the Windows build uses a
+temporary free drive alias for the same physical root to avoid Flutter's known
+Windows build-path limitation. The script confirms the alias target before use
+and removes only that mapping in `finally`; the generated output remains under
+`D:\寰意\app\build`.
+
+## Install the local Media speech runtime
+
+The optional, isolated CPU speech runtime is not part of `server/requirements.txt`
+and is never installed or downloaded by API startup or a product request. The
+explicit installer uses the pinned OpenAI Whisper base checkpoint and the
+official eSpeak NG source release, writes only beneath the ignored `.runtime`,
+and keeps their licenses/runtime manifests there. It does not change the primary
+API virtual environment or install software globally:
+
+```powershell
+& 'D:\寰意\scripts\install_media_speech_runtime.ps1' -VerifyOnly
+& 'D:\寰意\scripts\install_media_speech_runtime.ps1' -Runtime whisper
+& 'D:\寰意\scripts\install_media_speech_runtime.ps1' -Runtime espeak
+& 'D:\寰意\scripts\install_media_speech_runtime.ps1' -Runtime all
+```
+
+Whisper runs CPU-only in a separate Python 3.13.15 environment. eSpeak NG is
+built into the local runtime from its pinned source tag with optional system
+audio/device backends disabled. The capability endpoint reports each engine's
+actual availability; it does not claim professional speech quality from an
+installed binary or voice list.
+
 ## Start and stop local development
 
 ```powershell

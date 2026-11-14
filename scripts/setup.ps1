@@ -4,7 +4,7 @@ $ErrorActionPreference = 'Stop'
 $repoRoot = [System.IO.Path]::GetFullPath((Join-Path $PSScriptRoot '..'))
 $requiredInputs = @('scripts\check_python_runtime.py', 'server\requirements.txt', 'server\constraints.txt')
 if (-not $SkipClientBuild) {
-    $requiredInputs += @('app\pubspec.yaml', 'app\pubspec.lock', 'app\lib\main.dart', 'app\web\index.html', 'app\windows\CMakeLists.txt', 'app\windows\runner\CMakeLists.txt', 'app\windows\runner\main.cpp')
+    $requiredInputs += @('app\pubspec.yaml', 'app\pubspec.lock', 'app\lib\main.dart', 'app\web\index.html', 'app\windows\CMakeLists.txt', 'app\windows\runner\CMakeLists.txt', 'app\windows\runner\main.cpp', 'scripts\visual_studio_environment.ps1')
 }
 $missingInputs = @($requiredInputs | Where-Object { -not (Test-Path -LiteralPath (Join-Path $repoRoot $_) -PathType Leaf) })
 if ($missingInputs.Count) {
@@ -86,16 +86,12 @@ if (-not $environmentExists) {
 & $pythonPath -m pip install --disable-pip-version-check -r (Join-Path $repoRoot 'server\requirements.txt') -c (Join-Path $repoRoot 'server\constraints.txt')
 if ($LASTEXITCODE -ne 0) { throw 'Product dependencies did not install.' }
 if (-not $SkipClientBuild) {
-    $originalProgramFiles = [Environment]::GetEnvironmentVariable('ProgramFiles(x86)', 'Process')
-    $configuredVswhere = Join-Path $originalProgramFiles 'Microsoft Visual Studio\Installer\vswhere.exe'
-    $systemProgramFiles = Join-Path $env:SystemDrive 'Program Files (x86)'
-    $systemVswhere = Join-Path $systemProgramFiles 'Microsoft Visual Studio\Installer\vswhere.exe'
-    if (-not (Test-Path -LiteralPath $configuredVswhere) -and (Test-Path -LiteralPath $systemVswhere)) {
-        # Only correct this build process's lookup; preserve the user's OS settings.
-        [Environment]::SetEnvironmentVariable('ProgramFiles(x86)', $systemProgramFiles, 'Process')
-    }
-    Push-Location (Join-Path $repoRoot 'app')
+    . (Join-Path $PSScriptRoot 'visual_studio_environment.ps1')
+    $visualStudioEnvironment = Set-OeviraVisualStudioLookupPath
+    $locationPushed = $false
     try {
+        Push-Location (Join-Path $repoRoot 'app')
+        $locationPushed = $true
         & $flutterPath pub get --enforce-lockfile
         if ($LASTEXITCODE -ne 0) { throw 'Flutter dependencies did not resolve.' }
         & $flutterPath build web --release --no-web-resources-cdn
@@ -103,8 +99,8 @@ if (-not $SkipClientBuild) {
         & $flutterPath build windows --release
         if ($LASTEXITCODE -ne 0) { throw 'Windows build did not complete.' }
     } finally {
-        Pop-Location
-        [Environment]::SetEnvironmentVariable('ProgramFiles(x86)', $originalProgramFiles, 'Process')
+        if ($locationPushed) { Pop-Location }
+        Restore-OeviraVisualStudioLookupPath -OriginalValue $visualStudioEnvironment.OriginalValue
     }
 }
 Write-Output 'Development dependencies are prepared. Use scripts/start.ps1 -CheckOnly to check the selected client. Preparation does not establish product acceptance.'

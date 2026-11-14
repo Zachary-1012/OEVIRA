@@ -18,5 +18,5 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.13'
-      - name: Block release of a specification-only repository
+      - name: Require complete product and release acceptance
         run: python scripts/verify_repository.py --require-product

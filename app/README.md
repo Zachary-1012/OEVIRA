@@ -4,6 +4,7 @@ Flutter Web / Windows application source belongs here. macOS and iOS use the
 same business contracts when their device-specific work is enabled.
 Navigation, page behavior, identity and accessibility are defined in ../DESIGN.md.
 
-No application implementation is included in the specification baseline.
-Implement real API-bound user outcomes; do not add a counter demo or a placeholder
-shell and claim the product is available. Tests belong alongside the application.
+Application source and tests are present. Their existence does not establish
+approved visual quality, complete API-bound workflows or accepted native builds.
+Use [the development guide](../scripts/README.md) for root-bound preparation and
+runtime checks. A placeholder shell or a successful build is not product delivery.
