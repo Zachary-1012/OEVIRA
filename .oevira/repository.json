@@ -14,7 +14,7 @@
     "architecture": "docs/ARCHITECTURE.md",
     "acceptance": "docs/ACCEPTANCE.md"
   },
-  "source_roots": ["app", "server", "website", "assets"],
+  "source_roots": ["app", "server", "assets"],
   "required_checks": ["Repository contracts", "Cross-platform repository checks"],
   "preserved_sha256": {
     "LICENSE": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",

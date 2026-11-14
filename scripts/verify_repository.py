@@ -13,7 +13,7 @@ from pathlib import PurePosixPath
 from urllib.parse import unquote, urlsplit
 
 ROOT = Path(__file__).resolve().parents[1]
-DIRECTORIES = {".agents", ".codex", ".github", ".oevira", "app", "assets", "docs", "scripts", "server", "tests", "website"}
+DIRECTORIES = {".agents", ".codex", ".github", ".oevira", "app", "assets", "docs", "scripts", "server", "tests"}
 ROOT_FILES = {".editorconfig", ".gitattributes", ".gitignore", "AGENTS.md", "CONTRIBUTING.md", "DESIGN.md", "LICENSE", "NOTICE", "PRODUCT.md", "README.md", "THIRD_PARTY_NOTICES.md"}
 IGNORED = {
     ".git", ".runtime", ".venv", "data", "__pycache__", ".pytest_cache",
@@ -25,7 +25,7 @@ DOCUMENTS = {
     "experience": "DESIGN.md", "architecture": "docs/ARCHITECTURE.md",
     "acceptance": "docs/ACCEPTANCE.md",
 }
-EXPECTED_SOURCE_ROOTS = ["app", "server", "website", "assets"]
+EXPECTED_SOURCE_ROOTS = ["app", "server", "assets"]
 EXPECTED_REQUIRED_CHECKS = ["Repository contracts", "Cross-platform repository checks"]
 EXPECTED_PRESERVED_SHA256 = {
     "LICENSE": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
