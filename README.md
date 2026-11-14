@@ -31,7 +31,6 @@
 ```text
 app/          Flutter Web / Windows 客户端
 server/       Python 产品核心、API 与后台工作进程
-website/      Astro 官网，展示与真实入口
 assets/       原创身份资产与获准公共素材
 docs/         唯一产品规格、26领域合同、设计依据、架构与验收
 研究资料/     忽略提交：研究原件、来源结构与逐件保全映射

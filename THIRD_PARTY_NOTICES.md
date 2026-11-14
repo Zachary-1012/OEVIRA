@@ -198,27 +198,6 @@ SciPy and NumPy notices above describe the exact installed distributions, not a
 separate redistribution review. Any shipped runtime must carry the applicable
 original license texts and notices for the actual packaged wheels and binaries.
 
-## Public website build dependencies
-
-The selected local website preparation uses Astro 7.3.3 (MIT) with the actual lock in `website/package-lock.json`. The specification tree and an unpublished development tree can contain different files; this notice is not a claim that the build metadata or source website has been published. The following targeted remediation pins remain inside Astro's permitted dependency ranges:
-
-| Package | Bound version | Package license |
-|---|---:|---|
-| Astro | 7.3.3 | MIT |
-| sharp | 0.35.5 | Apache-2.0 |
-| smol-toml | 1.9.0 | BSD-3-Clause |
-| source-map-js | 1.2.2 | BSD-3-Clause |
-| undici | 8.12.2 | MIT |
-| Vite | 8.3.3 | MIT |
-| Zod | 4.6.6 | MIT |
-| Rolldown | 1.2.16 | MIT; retain the chosen platform binding's notices |
-| @astrojs/compiler-rs | 0.4.1 | MIT; retain the chosen native component's notices |
-| esbuild | 0.28.2 | MIT; retain platform binary notices |
-
-The installed `@img/sharp-win32-x64` 0.35.5 distribution declares Apache-2.0 AND LGPL-3.0-or-later and includes its own complete LICENSE; the wrapper's Apache label does not relicense libvips or its bundled dependencies. Preserve their original license texts, notices and applicable binary/source/relinking obligations when redistributing the build toolchain. A deployed static website does not automatically distribute every developer dependency; inspect the actual emitted JavaScript, images, fonts and other shipped assets separately.
-
-Upstream identities are https://github.com/withastro/astro (Astro), https://github.com/lovell/sharp (sharp), https://github.com/squirrelchat/smol-toml (smol-toml), https://github.com/7rulnik/source-map-js (source-map-js), https://github.com/nodejs/undici (undici), https://github.com/vitejs/vite (Vite), https://github.com/colinhacks/zod (Zod), https://github.com/rolldown/rolldown (Rolldown) and https://github.com/evanw/esbuild (esbuild). Exact resolved artifacts and integrity values remain in the lock; the installed distributions' notices must be retained rather than replaced by this short register. An advisory query with no returned matches is a dated observation, not a future guarantee of security or permission to ignore newly applicable advisories.
-
 ## Self-hosted browser HLS playback dependency
 
 The selected dependency is **hls.js 1.7.4**, from video-dev/hls.js tag v1.7.4,
